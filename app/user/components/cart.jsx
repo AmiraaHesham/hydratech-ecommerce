@@ -144,7 +144,7 @@ export default function Cart() {
                               {product.oldUnitPrice} {t("currency")}
                             </span>
                           ) : (
-                            "--"
+                            ""
                           )}
                         </div>
                       </td>

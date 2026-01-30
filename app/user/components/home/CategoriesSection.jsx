@@ -21,7 +21,7 @@ export default function CategorySection({ categories }) {
 
   return (
     <div className="flex flex-col justify-center items-center mt-10">
-      <div className="w-full flex justify-center items-center text-center px-10 text-2xl font-semibold h-12 bg-gray-100">
+      <div className="w-full flex justify-center items-center text-center px-10 text-2xl font-semibold h-12 shadow-md shadow-gray-300 bg-gray-100">
         <h1 className="flex items-center gap-2 text-gray-600">
           <BiCategory className="text-red-600" />
           {t("categories")}

@@ -43,7 +43,7 @@ export default function OrdersHistory() {
     getOrders();
   }, []);
   return (
-    <div data-aos="fade-up" className=" bg-[#F9FAFB] ">
+    <div data-aos="fade-up" >
       <div className="flex justify-between items-center  mb-16">
         <div className="flex flex-col gap-2">
           <span className="text-3xl font-bold">{t('orderHistory')} </span>

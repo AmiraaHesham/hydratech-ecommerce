@@ -17,7 +17,7 @@ export default function FeatuerProducts({ FeatuerProducts }) {
 
   return (
     <div className="flex flex-col justify-center items-center  relative mt-28">
-      <div className="w-full flex justify-center items-center gap-2 text-center px-10 text-2xl font-semibold bg-gray-100  h-12 ">
+      <div className="w-full flex justify-center items-center gap-2 text-center px-10 text-2xl shadow-md shadow-gray-300 font-semibold bg-gray-100  h-12 ">
         <span className=" text-red-600 rounded-full  p-1">
           <AiFillStar className="" />
         </span>
