@@ -9,7 +9,11 @@ module.exports = {
     extend: {
      screens:{
       'xs':'300px'
-     }
+     },
+      fontFamily: {
+        sans: ['var(--font-cairo)', 'sans-serif'],
+        Cairo: ['var(--font-cairo)'],
+      },
     },
   },
   plugins: [],

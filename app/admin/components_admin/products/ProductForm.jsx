@@ -7,7 +7,10 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useLanguage } from "../../../../context/LanguageContext.js";
 import { Switch } from "@headlessui/react";
 import { FaCircle, FaTimes } from "react-icons/fa";
-import { getCategories } from "../../../../utils/functions.jsx";
+import {
+  getCategories,
+  getProductDetails,
+} from "../../../../utils/functions.jsx";
 import {
   getRequest,
   postRequest,
@@ -16,6 +19,7 @@ import {
 import { useRefresh } from "../../../../context/refreshContext.jsx";
 import { useIdContext } from "../../../../context/idContext.jsx";
 import { GoStarFill } from "react-icons/go";
+import { toast } from "react-toastify";
 
 export default function FormProduct() {
   const [enabledActive, setenabledActive] = useState(true);
@@ -27,7 +31,9 @@ export default function FormProduct() {
     nameEn: "",
     nameAr: "",
     price: 0,
-    description: "",
+    oldPrice: 0,
+    descriptionEn: "",
+    descriptionAr: "",
     category: {
       id: 0,
       nameAr: "",
@@ -74,7 +80,7 @@ export default function FormProduct() {
 
   const showeCategories = async () => {
     const resData = await getCategories();
-    setItemCategory(resData);
+    setItemCategory(resData.data);
     console.log(resData);
   };
 
@@ -86,12 +92,13 @@ export default function FormProduct() {
     formData.append("nameAr", product.nameAr);
     formData.append("code", product.code);
     formData.append("price", product.price);
-    formData.append("description", product.description);
+    formData.append("descriptionAr", product.descriptionAr);
+    formData.append("descriptionEn", product.descriptionEn);
     formData.append("favorite", enabledFavorite);
     formData.append("active", enabledActive);
     formData.append("itemCategoryId", product.category.id);
     formData.append("mainImage", product.mainImagefile);
-    formData.append("itemImages", [product.img2file, product.img3file]);
+    // formData.append("itemImages", [product.img2file, product.img3file]);
     console.log(formData);
 
     await postRequest("/api/admin/items", formData, t("message_AddText"));
@@ -100,8 +107,10 @@ export default function FormProduct() {
       nameEn: "",
       nameAr: "",
       price: 0,
-      description: "",
-      category: { id: 0,nameAr: "",nameEn: "",},
+      oldPrice: 0,
+      descriptionAr: "",
+      descriptionEn: "",
+      category: { id: 0, nameAr: "", nameEn: "" },
       code: "",
       mainImage: "",
       img2: "",
@@ -118,14 +127,17 @@ export default function FormProduct() {
       labelImg.classList.remove("hidden");
       const labelUpload = document.querySelector("#label-mainImage");
       labelUpload.classList.add("hidden");
-      const res = await getRequest(`/api/public/items/${selectedProductId}`);
+      const res = await getProductDetails(selectedProductId);
+
       setProduct((prev) => ({
         ...prev,
         nameEn: res.nameEn,
         nameAr: res.nameAr,
         code: res.code,
         price: res.price,
-        description: res.description,
+        oldPrice: res.oldPrice,
+        descriptionAr: res.descriptionAr,
+        descriptionEn: res.descriptionEn,
         mainImage:
           process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL + res.mainImageURL || "",
         img2: res.img2 || "",
@@ -146,18 +158,20 @@ export default function FormProduct() {
         nameAr: "",
         code: "",
         price: 0,
-        description: "",
+        oldPrice: 0,
+        descriptionAr: "",
+        descriptionEn: "",
         mainImage: "",
         img2: "",
         img3: "",
-        category: {id: 0,nameAr: "",nameEn: "",},
+        category: { id: 0, nameAr: "", nameEn: "" },
       }));
       setenabledFavorite(false);
       setenabledActive(true);
       const labelsUpload = document.querySelectorAll(
         "#label-mainImage",
         "#label-img2",
-        "#label-img3"
+        "#label-img3",
       );
       // labelsUpload.forEach((e) => {
       //   e.style.display = "flex";
@@ -166,14 +180,17 @@ export default function FormProduct() {
   }, [selectedProductId]);
 
   const updataProduct = async () => {
-    let form = document.querySelector("#add-product-form");
+    if(product.oldPrice > product.price && product.oldPrice != 0){
+ let form = document.querySelector("#add-product-form");
     form.classList.add("hidden");
     const formData = new FormData();
     formData.append("nameEn", product.nameEn);
     formData.append("nameAr", product.nameAr);
     formData.append("code", product.code);
     formData.append("price", product.price);
-    formData.append("description", product.description);
+    formData.append("oldPrice", product.oldPrice);
+    formData.append("descriptionAr", product.descriptionAr);
+    formData.append("descriptionEn", product.descriptionEn);
     formData.append("active", enabledActive);
     formData.append("favorite", enabledFavorite);
     if (product.mainImagefile) {
@@ -183,7 +200,7 @@ export default function FormProduct() {
     await putRequest(
       `/api/admin/items/${selectedProductId}`,
       formData,
-      t("message_EditText")
+      t("message_EditText"),
     );
     triggerRefresh();
 
@@ -193,15 +210,26 @@ export default function FormProduct() {
       nameAr: "",
       code: "",
       price: 0,
-      description: "",
+      oldPrice: 0,
+      descriptionAr: "",
+      descriptionEn: "",
       mainImage: "",
       img2: "",
       img3: "",
-       category: {id: 0,nameAr: "",nameEn: "",},
-
+      category: { id: 0, nameAr: "", nameEn: "" },
     }));
     setenabledFavorite(false);
     setenabledActive(true);
+    const oldPrice = document.querySelector('#oldPrice')
+      oldPrice.classList.remove('border-red-600')
+    }
+    else{
+      const oldPrice = document.querySelector('#oldPrice')
+      oldPrice.classList.add('border-red-600')
+       toast.error(t("check_oldPrice"));
+
+    }
+   
   };
   useEffect(() => {
     showeCategories();
@@ -243,16 +271,17 @@ export default function FormProduct() {
                 <span
                   id="delete-mainImage"
                   className="hidden"
-                  // onClick={() => {
-                  //   const deleteImg = document.querySelector("#delete-mainImage");
-                  //   deleteImg.classList.add("hidden");
-                  //   const labelImg = document.querySelector("#mainImage");
-                  //   labelImg.classList.add("hidden");
-                  //   const labelUpload =
-                  //     document.querySelector("#label-mainImage");
-                  //   labelUpload.classList.remove("hidden");
-                  //   setProduct((prev) => ({ ...prev, mainImagefile: {} }));
-                  // }}
+                  onClick={() => {
+                    const deleteImg =
+                      document.querySelector("#delete-mainImage");
+                    deleteImg.classList.add("hidden");
+                    const labelImg = document.querySelector("#mainImage");
+                    labelImg.classList.add("hidden");
+                    const labelUpload =
+                      document.querySelector("#label-mainImage");
+                    labelUpload.classList.remove("hidden");
+                    setProduct((prev) => ({ ...prev, mainImagefile: {} }));
+                  }}
                 >
                   <FaTimes />
                 </span>
@@ -420,20 +449,6 @@ export default function FormProduct() {
                 className="w-full bg-[#F9FAFB] outline-none text-blue-900 text-base  my-1  p-1 border rounded-md"
               />
             </div>
-            <div className="w-full">
-              <label className="text-xs text-gray-600">{t("Price")}</label>
-              <input
-                value={product.price || ""}
-                onChange={(e) =>
-                  setProduct((prev) => ({ ...prev, price: e.target.value }))
-                }
-                required
-                className=" bg-[#F9FAFB] w-full outline-none text-blue-900 text-base  my-1  p-1 border rounded-md"
-              />
-            </div>
-          </div>
-
-          <div className="flex md:flex-row  xs:flex-col items-start  justify-between gap-3">
             <div className="w-full ">
               <label className="text-xs text-gray-600">{t("Category")}</label>
               <select
@@ -450,7 +465,7 @@ export default function FormProduct() {
                   console.log(e.target);
                 }}
                 required
-                className="w-full bg-[#F9FAFB] outline-none text-blue-900 text-base my-2 p-2 border rounded-md"
+                className="w-full bg-[#F9FAFB] outline-none text-blue-900 text-base my-2 p-1 border rounded-md"
               >
                 <option value={product.category.id}>
                   {localStorage.lang === "ar"
@@ -470,11 +485,40 @@ export default function FormProduct() {
                   : ""}
               </select>
             </div>
-            <div className="w-full mt-2">
-              <label className="w-full">
-                <h1 className="text-xs text-gray-600">{t("product_state ")}</h1>
-              </label>
-              <div className="bg-[#F9FAFB] flex items-center justify-between h-9    px-3 my-2 border rounded-md ">
+          </div>
+
+          <div className="flex md:flex-row  xs:flex-col items-start  justify-between gap-3">
+            <div className="w-full">
+              <label className="text-xs text-gray-600">{t("Price")}</label>
+              <input
+                value={product.price || ""}
+                onChange={(e) =>
+                  setProduct((prev) => ({ ...prev, price: e.target.value }))
+                }
+                required
+                className=" bg-[#F9FAFB] w-full outline-none text-blue-900 text-base  my-1  p-1 border rounded-md"
+              />
+            </div>
+            <div className="w-full">
+              <label className="text-xs text-gray-600">{t("old_price")}</label>
+              <input
+                value={product.oldPrice || ""}
+                onChange={(e) =>
+                  setProduct((prev) => ({ ...prev, oldPrice: e.target.value }))
+                }
+                required
+                id="oldPrice"
+
+                className=" bg-[#F9FAFB] w-full outline-none text-blue-900 text-base  my-1  p-1 border rounded-md"
+              />
+            </div>
+          </div>
+          <div className="w-full my-2">
+            <label className="w-full">
+              <h1 className="text-xs text-gray-600">{t("product_state ")}</h1>
+            </label>
+            <div className="flex md:flex-row  xs:flex-col items-center  justify-between gap-3">
+              <div className="bg-[#F9FAFB] flex items-center justify-between h-10 w-full    px-3 my-2 border rounded-md ">
                 <h1 className="text-xs text-gray-600">
                   {t("visible_in_store")}
                 </h1>
@@ -489,7 +533,7 @@ export default function FormProduct() {
                   <FaCircle />
                 </button>
               </div>
-              <div className="bg-[#F9FAFB] flex items-center justify-between   h-10   px-3  border rounded-md ">
+              <div className="bg-[#F9FAFB] flex items-center justify-between w-full  h-10   px-3  border rounded-md ">
                 <h1 className="text-xs text-gray-600">
                   {t("featured-product")}
                 </h1>
@@ -506,13 +550,29 @@ export default function FormProduct() {
               </div>
             </div>
           </div>
-          <label className="text-xs text-gray-700">{t("description")}</label>
+          <label className="text-xs text-gray-700">
+            {t("description")}* [En]
+          </label>
           <textarea
             type="text"
             required
-            value={product.description || ""}
+            value={product.descriptionEn || ""}
             onChange={(e) =>
-              setProduct((prev) => ({ ...prev, description: e.target.value }))
+              setProduct((prev) => ({ ...prev, descriptionEn: e.target.value }))
+            }
+            className="w-full bg-[#F9FAFB] outline-none mb-2 text-blue-900 text-base  my-1  p-1 
+            border rounded-md"
+          />
+          <label className="text-xs text-gray-700">
+            {t("description")}* [AR]
+          </label>
+
+          <textarea
+            type="text"
+            required
+            value={product.descriptionAr || ""}
+            onChange={(e) =>
+              setProduct((prev) => ({ ...prev, descriptionAr: e.target.value }))
             }
             className="w-full bg-[#F9FAFB] outline-none mb-2 text-blue-900 text-base  my-1  p-1 
             border rounded-md"
@@ -525,7 +585,7 @@ export default function FormProduct() {
               <button
                 type="submit"
                 id="btn-saveProduct"
-                className="bg-blue-600 h-8  px-3 text-white w-full hover:bg-blue-800 rounded-lg"
+                className="bg-red-600 h-8  px-3 text-white w-full hover:bg-red-800 rounded-lg"
                 onClick={addProduct}
               >
                 {t("save")}
@@ -533,7 +593,7 @@ export default function FormProduct() {
               <button
                 type="submit"
                 id="btn-editProduct"
-                className="bg-blue-600 h-8  px-3 text-white w-full  hover:bg-blue-800 rounded-lg"
+                className="bg-red-600 h-8  px-3 text-white w-full  hover:bg-red-800 rounded-lg"
                 onClick={updataProduct}
               >
                 {t("save-changes")}
@@ -542,7 +602,7 @@ export default function FormProduct() {
 
             <button
               type="submit"
-              className="bg-white w-full  border h-8  px-3 text-gray-700ss   hover:bg-blue-800 hover:text-white rounded-lg"
+              className="bg-white w-full  border h-8  px-3 text-gray-700ss   hover:bg-red-800 hover:text-white rounded-lg"
               onClick={() => {
                 let form = document.querySelector("#add-product-form");
                 form.classList.add("hidden");

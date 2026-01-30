@@ -40,21 +40,21 @@ export default function ProductsTable() {
   };
 
   const productFavorite = async (productId) => {
-    await postRequest(`/api/admin/items/${productId}/favorite`, "");
+    await postRequest(`/api/admin/items/${productId}/favorite`, "", t("message_AddText"));
     triggerRefresh();
   };
 
   const productUnfavorite = async (productId) => {
-    await postRequest(`/api/admin/items/${productId}/unfavorite`, "");
+    await postRequest(`/api/admin/items/${productId}/unfavorite`, "", t("message_AddText"));
     triggerRefresh();
   };
   const productActive = async (productId) => {
-    await postRequest(`/api/admin/items/${productId}/activate`, "");
+    await postRequest(`/api/admin/items/${productId}/activate`, "", t("message_AddText"));
     triggerRefresh();
   };
 
   const productDeaactive = async (productId) => {
-    await postRequest(`/api/admin/items/${productId}/deactivate`, "");
+    await postRequest(`/api/admin/items/${productId}/deactivate`, "", t("message_AddText"));
     triggerRefresh();
   };
 
@@ -103,14 +103,14 @@ export default function ProductsTable() {
             }}
           />
           <button
-            className="text-lg bg-blue-300 hover:bg-blue-500 p-1 text-white  rounded-md"
+            className="text-lg bg-red-300 hover:bg-red-500 p-1 text-white  rounded-md"
             onClick={getAllProducts}
           >
             <IoMdSearch />
           </button>
         </div>
         <button
-          className="p-2 text-white xs:text-xs md:text-sm rounded-md bg-blue-500 text-center flex items-center justify-center gap-2"
+          className="p-2 text-white xs:text-xs md:text-sm rounded-md bg-red-500 text-center flex items-center justify-center gap-2"
           onClick={() => {
             let form = document.querySelector("#add-product-form");
             form.classList.remove("hidden");
@@ -120,7 +120,7 @@ export default function ProductsTable() {
             let btn_editProduct = document.querySelector("#btn-editProduct");
             btn_editProduct.classList.add("hidden");
             btn_saveProduct.classList.remove("hidden");
-            nameFormProduct.innerHTML = "Add Product";
+            nameFormProduct.innerHTML = t("add_product");
             setSelectedProductId(null)
           }}
         >
@@ -133,7 +133,7 @@ export default function ProductsTable() {
 
       <div
         ref={productTableRef}
-        className=" rounded-xl w-full border  h-screen mt-3 overflow-hidden xs:overflow-x-scroll lg:overflow-auto overflow-y-scroll "
+        className=" rounded-xl w-full border  h-screen mt-3 overflow-hidden xs:overflow-x-scroll lg:overflow-x-auto overflow-y-scroll "
       >
         <table className=" xs:w-[200%] lg:w-full">
           <thead className="bg-[#F9FAFB] text-xs text-justify">
@@ -141,7 +141,8 @@ export default function ProductsTable() {
               <th className="w-[10%]"></th>
               <th className="w-[30%]">{t("PRODUCT_NAME")}</th>
               <th className="w-[20%]">{t("product_category")}</th>
-              <th className="w-[20%]">{t("price")}</th>
+              <th className="w-[15%]">{t("price")}</th>
+              <th className="w-[15%]">{t("old_price")}</th>
               {/* <th></th> */}
 
               <th className="w-[20%]"></th>
@@ -225,11 +226,16 @@ export default function ProductsTable() {
                   </td>
                   <td
                     className="text-sm font-bold"
-                    onClick={() => itemProductId(product)}
-                  >
-                    {product.price}
+                    onClick={() => itemProductId(product)}>
+                    {product.price.toLocaleString('en-US')}
                   </td>
                   {/* <td></td> */}
+                   <td
+                    className="text-sm font-bold text-gray-600"
+                    onClick={() => itemProductId(product)}
+                  >
+                    {product.oldPrice?product.oldPrice.toLocaleString('en-US')+' '+'{t("currency")}':'--'} 
+                  </td>
                   <td>
                     <button
                       className="text-red-800 text-sm flex items-center gap-1 bg-red-300 px-2 py-1 font-semibold rounded-md hover:bg-red-400"

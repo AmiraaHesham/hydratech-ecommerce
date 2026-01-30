@@ -141,7 +141,7 @@ export default function UserInfo() {
               <div className="grid md:grid-cols-3 xs:grid-cols-2 gap-7 mt-3">
                 <div className="bg-white border flex flex-col gap-5 rounded-lg p-5">
                   <div className="flex items-center  gap-2">
-                    <span className="text-lg text-blue-600 bg-blue-100 p-1 rounded-md"></span>
+                    <span className="text-lg text-blue-600 bg-red-100 p-1 rounded-md"></span>
                     <h1 className="text-base  text-gray-500 font-semibold">
                       {t("total_orders")}
                     </h1>
@@ -153,7 +153,7 @@ export default function UserInfo() {
 
                 <div className="bg-white border flex flex-col gap-5 rounded-lg p-5">
                   <div className="flex items-center  gap-2">
-                    <span className="text-lg text-blue-600 bg-blue-100 p-1 rounded-md"></span>
+                    <span className="text-lg text-blue-600 bg-red-100 p-1 rounded-md"></span>
                     <h1 className="text-base  text-gray-500 font-semibold">
                       {t("delivered_orders")}
                     </h1>
@@ -164,7 +164,7 @@ export default function UserInfo() {
                 </div>
                 <div className="bg-white border flex flex-col gap-5 rounded-lg p-5">
                   <div className="flex items-center  gap-2">
-                    <span className="text-lg text-blue-600 bg-blue-100 p-1 rounded-md"></span>
+                    <span className="text-lg text-blue-600 bg-red-100 p-1 rounded-md"></span>
                     <h1 className="text-base text-gray-500 font-semibold">
                       {t("canceled_orders")}
                     </h1>
@@ -179,66 +179,56 @@ export default function UserInfo() {
                 <div className="md:order-1 w-full   xs:order-2">
                   <Orders_Table />
                 </div>
-                <div className="md:order-2 xs:order-1 xs:w-full h-[400px] md:w-[50%] bg-white">
-                  <div className="  bg-white p-7  border rounded-lg">
-                    <div className="flex justify-between items-center ">
-                      <h1 className="text-lg font-semibold">
-                        {t("user_info")}
-                      </h1>
-                      {/* <button className={`text-blue-700`}>{t("view_profile")}</button> */}
-                    </div>
-                    <div>
-                      <div className="flex gap-5 mt-5 items-center">
-                        <span className="text-2xl text-gray-500 bg-gray-100 p-2 rounded-md">
-                          <PiUserListFill />
-                        </span>
+            <div className="md:order-2 xs:order-1 xs:w-full h-[400px] md:w-[50%] bg-white">
+      <div className="  bg-white p-7  border rounded-lg">
+        <div className="flex justify-between items-center ">
+          <h1 className="text-lg font-semibold">{t("user_info")}</h1>
+          {/* <button className={`text-blue-700`}>{t("view_profile")}</button> */}
+        </div>
+        <div>
+          <div className="flex gap-5 mt-5 items-center">
+            <span className="text-2xl text-red-500 bg-gray-100 p-2 rounded-md">
+              <PiUserListFill />
+            </span>
 
-                        <div>
-                          <h1 className="font-semibold">{userInfo.username}</h1>
-                          <h2 className="text-sm text-gray-500">
-                            B.D {userInfo.birthDate}
-                          </h2>
-                        </div>
-                      </div>
-                      <div className="flex gap-5 mt-5 items-center">
-                        <span className="text-2xl text-gray-500 bg-gray-100 p-2 rounded-md">
-                          <MdEmail />
-                        </span>
-                        <div>
-                          <h1 className="font-semibold text-gray-500">
-                            {t("Email Address")}
-                          </h1>
-                          <h2 className="text-sm text-blue-600">
-                            {userInfo.email}
-                          </h2>
-                        </div>
-                      </div>
-                      <div className="flex gap-5 mt-5 items-center">
-                        <span className="text-2xl text-gray-500 bg-gray-100 p-2 rounded-md">
-                          <MdLocalPhone />
-                        </span>
+            <div>
+              <h1 className="font-semibold">{userInfo.firstName + " "+ userInfo.lastName}</h1>
+              {/* <h2 className="text-sm text-gray-500">B.D birthDate</h2> */}
+            </div>
+          </div>
+          <div className="flex gap-5 mt-5 items-center">
+            <span className="text-2xl text-red-500 bg-gray-100 p-2 rounded-md">
+              <MdEmail />
+            </span>
+            <div>
+              {/* <h1 className="font-semibold text-gray-500">
+                {t("Email Address")}
+              </h1> */}
+              <h2 className=" font-semibold">{userInfo.email}</h2>
+            </div>
+          </div>
+          <div className="flex gap-5 mt-5 items-center">
+            <span className="text-2xl text-red-500 bg-gray-100 p-2 rounded-md">
+              <MdLocalPhone />
+            </span>
 
-                        <div>
-                          <h1 className="font-semibold text-gray-500">
-                            {t("Phone Number")}
-                          </h1>
-                          <h2 className="text-sm ">01062230344</h2>
-                        </div>
-                      </div>
-                    </div>
-                    <hr className="my-10" />
-                    <div>
-                      <div>
-                        <h1 className="font-semibold text-lg">
-                          {t("Shipping Address")}
-                        </h1>
-                        <h2 className="texxt-sm text-gray-500 mt-5">
-                          {userInfo.address}
-                        </h2>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            <div>
+              {/* <h1 className="font-semibold text-gray-500">
+                {t("Phone Number")}
+              </h1> */}
+              <h2 className="font-semibold">{userInfo.phone}</h2>
+            </div>
+          </div>
+        </div>
+        <hr className="my-10" />
+        <div>
+          <div>
+            <h1 className="font-semibold text-lg">{t("Shipping Address")}</h1>
+            <h2 className="texxt-sm text-gray-500 mt-5">{userInfo.address}</h2>
+          </div>
+        </div>
+      </div>
+    </div>
               </div>
             </div>
   

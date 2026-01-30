@@ -66,8 +66,11 @@ export default function SignIn() {
   // }
   return (
     
-      <div className=" w-full h-screen flex justify-center items-center bg-gray-100 ">
+      <div className=" w-full h-screen flex justify-center items-center  ">
+        <div className="h-screen w-full bg-gray-100">
         <SignInForm />
+
+        </div>
     </div>
   );
 }

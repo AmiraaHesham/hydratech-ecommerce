@@ -1,0 +1,164 @@
+"use client";
+import Image from "next/image";
+import { MdDelete } from "react-icons/md";
+import { getRequest } from "../../../utils/requestsUtils";
+import { useEffect, useState } from "react";
+import { useLanguage } from "../../../context/LanguageContext";
+
+export default function OrderDetails({ orderId }) {
+  const [order, setOrder] = useState([]);
+  const [totalOrder, setTotalOrder] = useState();
+  const [totalDiscount, setTotalDiscount] = useState();
+  const [itemsNum, setItemsNum] = useState();
+  const [createdDate, setCreatedDate] = useState();
+  const [state, setState] = useState();
+  const shappingCost = 50;
+  const { t } = useLanguage();
+  const getOrder = async () => {
+    const res = await getRequest(`/api/orders/${orderId}`);
+    setOrder(res.orderItemLines);
+    setTotalOrder(res.total);
+    setItemsNum(res.orderItemLines.length);
+    setState(res.state);
+    setCreatedDate(res.createdDate);
+    setTotalDiscount(res.totalDiscount);
+  };
+
+  useEffect(() => {
+    getOrder();
+  }, []);
+  const date = new Date(createdDate);
+  const dateOnly = date.toLocaleDateString("en-US");
+  return (
+    <div className="w-full h-full p-10">
+      <div className="flex md:flex-row xs:flex-col h-[500px] gap-7 ">
+        <div className=" rounded-xl w-full  border overflow-hidden overflow-x-auto md:overflow-x-hidden overflow-y-scroll ">
+          <table className="  xs:w-[200%] lg:w-full   ">
+            <thead className="bg-[#F9FAFB] text-xs text-gray-500  text-justify">
+              <tr className=" text-gray-500 h-12">
+                <th className="w-[30%] px-5">{t("product")} </th>
+                <th className="w-[25%]">{t("price")} </th>
+                <th className="w-[15%] ">{t("discount")} </th>
+                <th className="w-[20%] px-7 ">{t("quantity")} </th>
+                <th className="w-[15%] ">{t("total")} </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white text-md w-full  ">
+              {/* {order.length != 0 ? ( */}
+              {order.map((product, index) => {
+                return (
+                  <tr key={index} className=" text-blue-950 border w-full">
+                    <td className="px-5">
+                      <div className="flex orderss-center gap-3">
+                        <Image
+                          alt=""
+                          src={`${process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL}${product.item.mainImageURL}`}
+                          width={45}
+                          height={45}
+                          className="rounded-full border my-1 p-1"
+                        />
+
+                        <div>
+                          <h1 className="font-semibold text-sm">
+                            {localStorage.lang === "ar"
+                              ? product.item.nameAr
+                              : product.item.nameEn}
+                          </h1>
+                          <h1 className="text-xs  text-gray-500">
+                            {product.item.code}
+                          </h1>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="font-semibold text-red-500">
+                      <div>
+                        <span>
+                          {" "}
+                          {product.unitPrice} {t("currency")}{" "}
+                        </span>
+
+                        {product.oldUnitPrice ? (
+                          <span className="text-gray-400 line-through text-sm mx-2 opacity-90">
+                            {product.oldUnitPrice} {t("currency")}
+                          </span>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    </td>
+                    <td className="">
+                      <div className="flex gap-5">
+                        {product.oldUnitPrice ? (
+                          <span className="bg-green-600 text-sm px-2 text-white rounded-md">
+                            {(
+                              ((product.oldUnitPrice - product.unitPrice) /
+                                product.oldUnitPrice) *
+                              100
+                            ).toFixed()}
+                            %
+                          </span>
+                        ) : (
+                          "--"
+                        )}
+                      </div>
+                    </td>
+                    <td className="text-sm">
+                      <div className="  gap-3 rounded-lg h-full text-center w-[100px] border text-gray-600 bg-white">
+                        <span className="font-medium  text-sm w-16 text-center">
+                          {product.quantity}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="text-sm font-semibold">
+                      {product.totalPrice} {t("currency")}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+        <div className=" h-screen md:w-[40%]  xs:w-full">
+          <div className=" h-[500px] p-7  w-full bg-white rounded-lg border">
+            <h1 className="mb-10 text-2xl font-bold">{t("orderSummary")} </h1>
+
+            <div className="flex justify-between orderss-center mb-5">
+              <span className="text-gray-600"> {t('createdDate')}</span>
+              <span className="font-semibold">{dateOnly}</span>
+            </div>
+            <div className="flex justify-between orderss-center mb-5">
+              <span className="text-gray-600"> {t("state")} </span>
+              <span className="font-semibold">{state} </span>
+            </div>
+            <div className="flex justify-between orderss-center mb-5">
+              <span className="text-gray-600">
+                {t("totalProducts") + " " + itemsNum}
+              </span>
+
+              <span className="font-semibold">
+                {totalOrder+ ' ' + t('currency')}
+              </span>
+            </div>
+           <div className="flex justify-between items-center mb-5">
+              <span className="text-gray-600">{t('totalDiscount')} </span>
+              <span className="font-semibold">{totalDiscount+ ' ' + t('currency')} </span>
+            </div>
+
+             <div className="flex justify-between items-center">
+              <span className="text-gray-600">{t('shippingCost')} </span>
+              <span className="font-semibold">{shappingCost+ ' ' + t('currency')}</span>
+            </div>
+            
+            <hr className="my-6" />
+            <div className="flex justify-between orderss-center text-2xl font-semibold">
+                <span>{t('grandTotal')} </span>
+              <span className="text-red-500">
+                {totalOrder === 0 ? 0 : totalOrder + shappingCost+ ' ' + t('currency')}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

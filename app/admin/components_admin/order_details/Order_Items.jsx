@@ -2,15 +2,34 @@
 import { useLanguage } from "../../../../context/LanguageContext.js";
 import { MdEditNote } from "react-icons/md";
 import Image from "next/image";
+import { getRequest } from "../../../../utils/requestsUtils.js";
+import { useEffect, useState } from "react";
+import { useOrderDetailsContext } from "../../../../context/orderDetailsContext.jsx";
 
-export default function Orders_Details() {
+export default function OrdersItems({ orderId }) {
   const { t } = useLanguage();
+  const [orderItems, setOrderItems] = useState([]);
+    const {setSelectedOrderState} = useOrderDetailsContext()
+    const {setSelectedOrderCode} = useOrderDetailsContext()
+    const {setSelectedOrderDate} = useOrderDetailsContext()
 
+  const [orderTotalPrice, setOrderTotalPrice] = useState("");
+  const orderItem = async () => {
+    const res = await getRequest(`/api/orders/${orderId}`);
+    setOrderItems(res.orderItemLines);
+    setOrderTotalPrice(res.total)
+    setSelectedOrderState(res.state)
+    setSelectedOrderDate(res.createdDate)
+    setSelectedOrderCode(res.code)
+  };
+  useEffect(() => {
+    orderItem();
+  }, []);
   return (
     <div className="w-full ">
       <div className="h-16 flex border-t  border-l border-r rounded-t-lg items-center justify-between  px-6 bg-white">
-        <h1 className="text-lg">{t("order_items")} (3)</h1>
-        <h2 className="text-gray-500"> {t("Total")}: 1,179 EG</h2>
+        <h1 className="text-lg">{t("order_items")} ({orderItems.length})</h1>
+        <span className="text-gray-600"> {t("Total")}: <span className="text-lg text-red-500 font-semibold">{orderTotalPrice.toLocaleString('en-US')} EG</span> </span>
       </div>
       <div className=" rounded-b-lg  w-full h-[435px]  border overflow-hidden overflow-y-scroll ">
         <table className=" w-full  rounded-lg  ">
@@ -24,273 +43,43 @@ export default function Orders_Details() {
             </tr>
           </thead>
           <tbody className="bg-white text-md w-full ">
-            {/* (
-                  {
-                    (allCateg.map = (category, index) => {
-                      <tr
-                        key={index}
-                        className="text-center text-blue-950 border  hover:bg-gray-50 "
-                      >
-                        <td className="py-5">{index}</td>
-                        <td>{category.imageURL}</td>
-                        <td>{category.name}</td>
-                        <td>{category.product_count}</td>
-                        <td className="text-2xl">
-                          <span className="text-blue-800"><FiEdit /></span> 
-                        <span className="text-red-800"><MdDelete/></span>
-                        </td>
-                      </tr>;
-                    })
-                  }
-                  ) */}
-
-            <tr
-              className=" text-blue-950 border-b w-full hover:bg-gray-50"
-            
-             
-            >
-              <td></td>
-              <td>
-                <div className="flex items-center gap-3">
+            {orderItems.map((item, index) => {
+              return (
+                <tr
+                  key={index}
+                  className=" text-blue-950 border-b w-full hover:bg-gray-50"
+                >
+                  <td></td>
                   <td>
-                    <Image
-                      alt=""
-                      src="/img.jpg"
-                      width={55}
-                      height={55}
-                      className="rounded-xl  my-1 p-1"
-                    />
+                    <div className="flex items-center gap-3">
+                      <div>
+                        <Image
+                          alt=""
+                          src={process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL + item.item.mainImageURL}
+                          width={55}
+                          height={55}
+                          className="rounded-xl  my-1 p-1"
+                        />
+                      </div>
+                      <div>
+                        <h1 className="font-semibold text-sm">{localStorage.lang==='ar'? item.item.nameAr:item.item.nameEn}</h1>
+                        <h1 className="text-xs  text-gray-500">
+                          {item.item.code}
+                        </h1>
+                      </div>
+                    </div>
                   </td>
-                  <div>
-                    <h1 className="font-semibold text-sm">Jane Cooper</h1>
-                    <h1 className="text-xs  text-gray-500">Jane@example.com</h1>
-                  </div>
-                </div>
-              </td>
-              <td className="text-sm font-semibold text-center text-gray-500">
-                EG 1,200.00
-              </td>
-              <td className="text-sm text-center text-gray-500">1</td>
-
-              <td className="text-sm font-semibold text-center">EG 1,200.00</td>
-            </tr>
-            <tr
-              className=" text-blue-950 border w-full hover:bg-gray-50"
-              onClick={() =>
-                navigate.push("/admin/orders_page/OrderDetailsPage")
-              }
-            >
-              <td></td>
-              <td>
-                <div className="flex items-center gap-3">
-                  <td>
-                    <Image
-                      alt=""
-                      src="/img.jpg"
-                      width={55}
-                      height={55}
-                      className="rounded-xl  my-1 p-1"
-                    />
+                  <td className="text-sm font-semibold text-center text-gray-500">
+                    EG {item.item.price.toLocaleString('en-US')}
                   </td>
-                  <div>
-                    <h1 className="font-semibold text-sm">Jane Cooper</h1>
-                    <h1 className="text-xs  text-gray-500">Jane@example.com</h1>
-                  </div>
-                </div>
-              </td>
-              <td className="text-sm font-semibold text-center text-gray-500">
-                EG 1,200.00
-              </td>
-              <td className="text-sm text-center text-gray-500">1</td>
+                  <td className="text-sm text-center text-gray-500">{item.quantity}</td>
 
-              <td className="text-sm font-semibold text-center">EG 1,200.00</td>
-            </tr>
-            <tr
-              className=" text-blue-950 border w-full hover:bg-gray-50"
-              onClick={() =>
-                navigate.push("/admin/orders_page/OrderDetailsPage")
-              }
-            >
-              <td></td>
-              <td>
-                <div className="flex items-center gap-3">
-                  <td>
-                    <Image
-                      alt=""
-                      src="/img.jpg"
-                      width={55}
-                      height={55}
-                      className="rounded-xl  my-1 p-1"
-                    />
+                  <td className="text-sm font-semibold text-center">
+                    EG {item.totalPrice.toLocaleString('en-US')}
                   </td>
-                  <div>
-                    <h1 className="font-semibold text-sm">Jane Cooper</h1>
-                    <h1 className="text-xs  text-gray-500">Jane@example.com</h1>
-                  </div>
-                </div>
-              </td>
-              <td className="text-sm font-semibold text-center text-gray-500">
-                EG 1,200.00
-              </td>
-              <td className="text-sm text-center text-gray-500">1</td>
-
-              <td className="text-sm font-semibold text-center">EG 1,200.00</td>
-            </tr>
-            <tr
-              className=" text-blue-950 border w-full hover:bg-gray-50"
-              onClick={() =>
-                navigate.push("/admin/orders_page/OrderDetailsPage")
-              }
-            >
-              <td></td>
-              <td>
-                <div className="flex items-center gap-3">
-                  <td>
-                    <Image
-                      alt=""
-                      src="/img.jpg"
-                      width={55}
-                      height={55}
-                      className="rounded-xl  my-1 p-1"
-                    />
-                  </td>
-                  <div>
-                    <h1 className="font-semibold text-sm">Jane Cooper</h1>
-                    <h1 className="text-xs  text-gray-500">Jane@example.com</h1>
-                  </div>
-                </div>
-              </td>
-              <td className="text-sm font-semibold text-center text-gray-500">
-                EG 1,200.00
-              </td>
-              <td className="text-sm text-center text-gray-500">1</td>
-
-              <td className="text-sm font-semibold text-center">EG 1,200.00</td>
-            </tr>
-            <tr
-              className=" text-blue-950 border w-full hover:bg-gray-50"
-              onClick={() =>
-                navigate.push("/admin/orders_page/OrderDetailsPage")
-              }
-            >
-              <td></td>
-              <td>
-                <div className="flex items-center gap-3">
-                  <td>
-                    <Image
-                      alt=""
-                      src="/img.jpg"
-                      width={55}
-                      height={55}
-                      className="rounded-xl  my-1 p-1"
-                    />
-                  </td>
-                  <div>
-                    <h1 className="font-semibold text-sm">Jane Cooper</h1>
-                    <h1 className="text-xs  text-gray-500">Jane@example.com</h1>
-                  </div>
-                </div>
-              </td>
-              <td className="text-sm font-semibold text-center text-gray-500">
-                EG 1,200.00
-              </td>
-              <td className="text-sm text-center text-gray-500">1</td>
-
-              <td className="text-sm font-semibold text-center">EG 1,200.00</td>
-            </tr>
-            <tr
-              className=" text-blue-950 border w-full hover:bg-gray-50"
-              onClick={() =>
-                navigate.push("/admin/orders_page/OrderDetailsPage")
-              }
-            >
-              <td></td>
-              <td>
-                <div className="flex items-center gap-3">
-                  <td>
-                    <Image
-                      alt=""
-                      src="/img.jpg"
-                      width={55}
-                      height={55}
-                      className="rounded-xl  my-1 p-1"
-                    />
-                  </td>
-                  <div>
-                    <h1 className="font-semibold text-sm">Jane Cooper</h1>
-                    <h1 className="text-xs  text-gray-500">Jane@example.com</h1>
-                  </div>
-                </div>
-              </td>
-              <td className="text-sm font-semibold text-center text-gray-500">
-                EG 1,200.00
-              </td>
-              <td className="text-sm text-center text-gray-500">1</td>
-
-              <td className="text-sm font-semibold text-center">EG 1,200.00</td>
-            </tr>
-            <tr
-              className=" text-blue-950 border w-full hover:bg-gray-50"
-              onClick={() =>
-                navigate.push("/admin/orders_page/OrderDetailsPage")
-              }
-            >
-              <td></td>
-              <td>
-                <div className="flex items-center gap-3">
-                  <td>
-                    <Image
-                      alt=""
-                      src="/img.jpg"
-                      width={55}
-                      height={55}
-                      className="rounded-xl  my-1 p-1"
-                    />
-                  </td>
-                  <div>
-                    <h1 className="font-semibold text-sm">Jane Cooper</h1>
-                    <h1 className="text-xs  text-gray-500">Jane@example.com</h1>
-                  </div>
-                </div>
-              </td>
-              <td className="text-sm font-semibold text-center text-gray-500">
-                EG 1,200.00
-              </td>
-              <td className="text-sm text-center text-gray-500">1</td>
-
-              <td className="text-sm font-semibold text-center">EG 1,200.00</td>
-            </tr>
-            <tr
-              className=" text-blue-950 border w-full hover:bg-gray-50"
-              onClick={() =>
-                navigate.push("/admin/orders_page/OrderDetailsPage")
-              }
-            >
-              <td></td>
-              <td>
-                <div className="flex items-center gap-3">
-                  <td>
-                    <Image
-                      alt=""
-                      src="/img.jpg"
-                      width={55}
-                      height={55}
-                      className="rounded-xl  my-1 p-1"
-                    />
-                  </td>
-                  <div>
-                    <h1 className="font-semibold text-sm">Jane Cooper</h1>
-                    <h1 className="text-xs  text-gray-500">Jane@example.com</h1>
-                  </div>
-                </div>
-              </td>
-              <td className="text-sm font-semibold text-center text-gray-500">
-                EG 1,200.00
-              </td>
-              <td className="text-sm text-center text-gray-500">1</td>
-
-              <td className="text-sm font-semibold text-center">EG 1,200.00</td>
-            </tr>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

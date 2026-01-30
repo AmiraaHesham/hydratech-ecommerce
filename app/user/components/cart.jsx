@@ -1,0 +1,280 @@
+"use client";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { useLanguage } from "../../../context/LanguageContext";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import { MdDelete } from "react-icons/md";
+import { AiFillSafetyCertificate } from "react-icons/ai";
+import {
+  deleteRequest,
+  getRequest,
+  postRequest,
+} from "../../../utils/requestsUtils";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import Link from "next/link";
+
+export default function Cart() {
+  const { t } = useLanguage();
+  const [items, setItems] = useState([]);
+  const [totalOrder, setTotalOrder] = useState(0);
+  const [totalDiscount, setTotalDiscount] = useState(0);
+  const [itemNum, setItemNum] = useState(0);
+  const userId = localStorage.id;
+  const shappingCost = 50;
+  const [isFirstAction, setIsFirstAction] = useState(true);
+  const [loading, setLoding] = useState(false);
+  const navigate = useRouter();
+
+  const getProductInCart = async () => {
+    const res = await getRequest(`/api/shopCarts/${userId}`);
+    setItems(res.itemLines);
+    setTotalOrder(res.total);
+    setItemNum(res.itemLines.length);
+    setTotalDiscount(res.totalDiscount);
+  };
+  const changeQuantity = async (itemId, newQuantity) => {
+    await postRequest(
+      `/api/shopCarts/${userId}/changeQuantity`,
+      {
+        itemLineId: itemId,
+        quantity: newQuantity,
+      },
+      "",
+    );
+    getProductInCart();
+  };
+
+  const deleteItemFormCart = async (itemLineId) => {
+    await deleteRequest(
+      `/api/shopCarts/${userId}/deleteLine/${itemLineId}`,
+      t("message_DeleteText"),
+    );
+    getProductInCart();
+  };
+
+  const placeOrder = async () => {
+    if (items.length != 0) {
+      if (isFirstAction) {
+        setLoding(true);
+
+        getProductInCart();
+      } else {
+        const res = await postRequest(`/api/orders/${userId}/placeOrder`);
+        navigate.push("/user/pages/ordershistory");
+        console.log(res);
+      }
+      setIsFirstAction(!isFirstAction);
+    } else {
+      toast.error(t('noProductsInCart'));
+    }
+  };
+
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: false,
+    });
+    getProductInCart();
+  }, []);
+  return (
+    <div data-aos="fade-up" className="p-10 h-full ">
+      <div className="flex justify-between py-5">
+        <div className="">
+          <h1 className="text-4xl font-bold mb-2"> {t('shoppingCart')} </h1>
+          <span className="text-sm text-gray-500 font-semibold">
+         {t('inYourCart') +' '+itemNum+' '+t('products')}
+          </span>
+        </div>
+        <Link href='/user/home' className="text-sm font-semibold text-red-600 flex items-center gap-2">
+          <h1>{t('continueShopping')} </h1>
+                <span className="mt-2">
+           {localStorage.lang === 'ar'? <FaArrowLeft /> : <FaArrowRight />} 
+          </span>
+        </Link>
+      </div>
+      <div className="flex md:flex-row xs:flex-col h-[500px] gap-7 ">
+        <div className=" rounded-xl w-full  border overflow-hidden overflow-x-auto md:overflow-x-hidden overflow-y-scroll ">
+          <table className="  xs:w-[200%] lg:w-full   ">
+            <thead className="bg-[#F9FAFB] text-xs text-gray-500  text-justify">
+              <tr className=" text-gray-500 h-12">
+                <th className="w-[30%] px-5">{t('product')} </th>
+                <th className="w-[25%]">{t('price')} </th>
+                <th className="w-[15%] ">{t('discount')} </th>
+                <th className="w-[20%] px-7 ">{t('quantity')} </th>
+                <th className="w-[15%] ">{t('total')} </th>
+                <th className="w-[10%] px-3">{t("delete")} </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white text-md w-full  ">
+              {items.length != 0 ? (
+                items.map((product, index) => {
+                  return (
+                    <tr key={index} className=" text-blue-950 border w-full">
+                      <td className="px-5">
+                        <div className="flex items-center gap-3">
+                          <Image
+                            alt=""
+                            src={`${process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL}${product.item.mainImageURL}`}
+                            width={45}
+                            height={45}
+                            className="rounded-full border my-1 p-1"
+                          />
+
+                          <div>
+                            <h1 className="font-semibold text-sm">
+                              {localStorage.lang === "ar"
+                                ? product.item.nameAr
+                                : product.item.nameEn}
+                            </h1>
+                            <h1 className="text-xs  text-gray-500">
+                              {product.item.code}
+                            </h1>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="font-semibold text-red-500">
+                        <div>
+                          <span> {product.unitPrice} {t("currency")} </span>
+
+                          {product.oldUnitPrice ? (
+                            <span className="text-gray-400 line-through text-sm mx-2 opacity-90">
+                              {product.oldUnitPrice} {t("currency")}
+                            </span>
+                          ) : (
+                            "--"
+                          )}
+                        </div>
+                      </td>
+                      <td className="">
+                        <div className="flex gap-5">
+                          {product.oldUnitPrice ? (
+                            <span className="bg-green-600 text-sm px-2 text-white rounded-md">
+                              {(
+                                ((product.oldUnitPrice - product.unitPrice) /
+                                  product.oldUnitPrice) *
+                                100
+                              ).toFixed()}
+                              %
+                            </span>
+                          ) : (
+                            "--"
+                          )}
+                        </div>
+                      </td>
+                      <td className="text-sm">
+                        <div className="flex items-center gap-3 rounded-lg px-1 h-full w-[100px] border text-gray-600 bg-white">
+                          {/* زر النقصان */}
+                          <button
+                            onClick={() => {
+                              changeQuantity(
+                                product.itemLineId,
+                                product.quantity + 1,
+                              );
+                            }}
+                            className="text-xl font-bold text-gray-600  hover:text-blue-600"
+                          >
+                            +
+                          </button>
+
+                          {/* الرقم */}
+                          <span className="font-medium text-sm w-16 text-center">
+                            {product.quantity}
+                          </span>
+
+                          {/* زر الزيادة */}
+                          <button
+                            onClick={() => {
+                              if (product.quantity > 1) {
+                                changeQuantity(
+                                  product.itemLineId,
+                                  product.quantity - 1,
+                                );
+                              }
+                            }}
+                            className="text-xl font-bold text-gray-600 hover:text-blue-600"
+                          >
+                            −
+                          </button>
+                        </div>
+                      </td>
+                      <td className="text-sm font-semibold">
+                        {product.totalPrice} {t("currency")}
+                      </td>
+                      <td className=" font-semibold text-lg text-gray-600 px-5 cursor-pointer">
+                        <button
+                          className=""
+                          onClick={() => {
+                            deleteItemFormCart(product.itemLineId);
+                          }}
+                        >
+                          <MdDelete />
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })
+              ) : (
+                <tr>
+                  <td colSpan="6" className="text-center p-4">
+                   {t('noProductsInCart')}
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+        <div className=" h-screen md:w-[40%]  xs:w-full">
+          <div className=" h-[500px] p-7  w-full bg-white rounded-lg border">
+            <h1 className="mb-10 text-2xl font-bold">{t('orderSummary')} </h1>
+            <div className="flex justify-between items-center mb-5">
+              <span className="text-gray-600"> { t('totalProducts') +' '+(itemNum)}</span>
+              <span className="font-semibold">{totalOrder + ' ' + t('currency')} </span>
+            </div>
+            <div className="flex justify-between items-center mb-5">
+              <span className="text-gray-600">{t('totalDiscount')} </span>
+              <span className="font-semibold">{totalDiscount+ ' ' + t('currency')} </span>
+            </div>
+
+            <div className="flex justify-between items-center">
+              <span className="text-gray-600">{t('shippingCost')} </span>
+              <span className="font-semibold">{shappingCost+ ' ' + t('currency')}</span>
+            </div>
+            <hr className="my-6" />
+            <div className="flex justify-between items-center text-2xl font-semibold">
+              <span>{t('grandTotal')} </span>
+              <span className="text-red-500">
+                {totalOrder === 0 ? 0 : totalOrder + shappingCost+ ' ' + t('currency')}
+              </span>
+            </div>
+            <button
+              className={`flex justify-center items-center w-full  py-2 rounded-md mt-10 text-white text-lg  ${
+                items.length === 0
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-red-600 hover:bg-red-700"
+              }`}
+              onClick={placeOrder}
+            >
+              {isFirstAction ?t("proceedToCheckout") : t("confirmOrder")}
+            </button>
+            <div className="flex gap-4 p-2 w-full bg-red-50 mt-5 rounded-md">
+              <span className="text-2xl text-red-600 mt-1">
+                <AiFillSafetyCertificate />
+              </span>
+              <div>
+                <h1 className="text-red-600  font-semibold">
+                  {t('secureShopping')}
+                </h1>
+                <h2 className="text-gray-600 text-xs">
+                 {t('protectedData')}
+                </h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

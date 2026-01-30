@@ -146,7 +146,7 @@ const addBlock = async (userId) => {
                 <td   onClick={() => {
                   setSelectedUserId(user.userId)
                   navigate.push("/admin/UsersPage/UserInfo")}}>
-                  <div className="bg-blue-100 w-[80px] text-center rounded-full text-blue-700  px-2 font-semibold text-xs">
+                  <div className="bg-red-100 w-[80px] text-center rounded-full text-blue-700  px-2 font-semibold text-xs">
                     <h1>10 </h1>
                     <h2>{t("orders")}</h2>
                   </div>

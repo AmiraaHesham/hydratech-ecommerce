@@ -73,7 +73,7 @@ export default function Sliders() {
             </div>
          <button
             id="btn-livePreview"
-            className="p-2  bg-blue-300 text-white hover:bg-blue-600 text-sm rounded-md"
+            className="p-2  bg-red-300 text-white hover:bg-red-600 text-sm rounded-md"
             onClick={() => {
               const LivePreview = document.querySelector("#LivePreview");
               LivePreview.classList.remove("hidden");
@@ -89,7 +89,7 @@ export default function Sliders() {
           </button>
           <button
             id="btn-hide"
-            className="hidden p-2 bg-blue-600 text-white hover:bg-blue-300 text-sm rounded-md"
+            className="hidden p-2 bg-red-600 text-white hover:bg-red-300 text-sm rounded-md"
             onClick={() => {
               const btn_hide = document.querySelector("#btn-hide");
               btn_hide.classList.add("hidden");

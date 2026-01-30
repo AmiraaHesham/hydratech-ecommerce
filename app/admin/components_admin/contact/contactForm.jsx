@@ -66,7 +66,7 @@ export default function ContactForm() {
       >
         <div className="flex justify-between items-center ">
           <div className="flex items-center gap-3 p-4">
-            <span className="text-2xl text-blue-700">
+            <span className="text-2xl text-red-700">
               <MdContactPage />
             </span>
             <h1 className="lg:text-xl xs:text-base font-semibold ">
@@ -75,7 +75,7 @@ export default function ContactForm() {
           </div>
           <div className="flex justify-end  ">
             <button
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded-md flex items-center justify-end gap-2  md:text-base xs:text-base "
+              className="bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded-md flex items-center justify-end gap-2  md:text-base xs:text-base "
               onClick={addContactInfo}
             >
               <IoMdSave />{" "}
@@ -123,7 +123,7 @@ export default function ContactForm() {
             <div className="flex lg:flex-row xs:flex-col w-full  justify-between   gap-3 xs:px-5 lg:px-10 rounded-md py-2 bg-[#f3f4f6a1] ">
               <label className="font-semibold xs:w-[200px] lg:w-[320px]  flex gap-3 items-center">
                 <span className="text-xl text-gray-700">
-                  <FaSquarePhone />{" "}
+                  <FaSquarePhone />
                 </span>
                 <h1 className=" text-gray-500 md:text-sm xs:text-xs ">
                   {t("support-phone-number")}
@@ -155,7 +155,7 @@ export default function ContactForm() {
           </div>
         </div>
         <div className="flex items-center gap-3 mt-9 p-4">
-          <span className="text-2xl text-blue-700">
+          <span className="text-2xl text-red-700">
             <IoMdShare />
           </span>
           <h1 className="lg:text-xl xs:text-base font-semibold ">
@@ -266,7 +266,7 @@ export default function ContactForm() {
             <div className="flex lg:flex-row xs:flex-col w-full  justify-between gap-2 xs:px-5 lg:px-10 rounded-md py-2 bg-[#f3f4f6a1] ">
               <label className="font-semibold xs:w-[200px] lg:w-[320px]  flex gap-3 items-center">
                 <span className="text-xl text-pink-600">
-                  <FaInstagramSquare />{" "}
+                  <FaInstagramSquare />
                 </span>
                 <h1 className=" text-gray-500  md:text-sm xs:text-xs">
                   Instagram

@@ -110,7 +110,7 @@ export default function CategoryForm() {
         formData.append("imageFile", photo.imageFile);
       }
       await putRequest(
-        `/api/admin/itemCategory/${selectedId}`,
+        `/api/admin/itemCategory/${selectedCategoryId}`,
         formData,
         t("message_EditText")
       );
@@ -127,6 +127,7 @@ export default function CategoryForm() {
   };
 
   useEffect(() => {
+    console.log('>>>>>>>>..' +selectedCategoryId)
     CategoryData();
   }, [CategoryData]);
   return (
@@ -216,7 +217,7 @@ export default function CategoryForm() {
               <button
                 type="submit"
                 id="btn-saveCategory"
-                className="bg-blue-600 py-2 px-3 text-white mt-7  hover:bg-blue-800 rounded-lg  "
+                className="bg-red-600 py-2 px-3 text-white mt-7  hover:bg-red-800 rounded-lg  "
                 onClick={() => {
                   addCategory();
                 }}
@@ -226,7 +227,7 @@ export default function CategoryForm() {
               <button
                 type="submit"
                 id="btn-editCategory"
-                className=" hidden bg-blue-600 py-2 px-3 text-white mt-7  hover:bg-blue-800 rounded-lg"
+                className=" hidden bg-red-600 py-2 px-3 text-white mt-7  hover:bg-red-800 rounded-lg"
                 onClick={() => {
                   updateCategory();
                 }}

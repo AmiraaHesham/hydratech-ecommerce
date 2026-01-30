@@ -44,16 +44,16 @@ export default function Header({ page_title }) {
     let ar = document.querySelector("#ar");
 
     if (localStorage.lang === "en") {
-      en.classList.add("bg-blue-600");
-      ar.classList.add("bg-blue-200");
+      en.classList.add("bg-red-600");
+      ar.classList.add("bg-red-200");
 
-      en.classList.remove("bg-blue-200");
-      ar.classList.remove("bg-blue-600");
+      en.classList.remove("bg-red-200");
+      ar.classList.remove("bg-red-600");
     } else {
-      ar.classList.add("bg-blue-600");
-      en.classList.add("bg-blue-200");
-      en.classList.remove("bg-blue-600");
-      ar.classList.remove("bg-blue-200");
+      ar.classList.add("bg-red-600");
+      en.classList.add("bg-red-200");
+      en.classList.remove("bg-red-600");
+      ar.classList.remove("bg-red-200");
     }
   });
 

@@ -88,7 +88,7 @@ export default function AdminsTable() {
         </div>
         <div className="">
           <button
-            className="p-2 text-white xs:text-xs md:text-sm rounded-md bg-blue-500 text-center flex items-center justify-center gap-2"
+            className="p-2 text-white xs:text-xs md:text-sm rounded-md bg-red-500 text-center flex items-center justify-center gap-2"
             onClick={() => {
               let form = document.querySelector("#add-admin-form");
               form.classList.remove("hidden");

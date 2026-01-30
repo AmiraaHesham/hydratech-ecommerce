@@ -13,9 +13,9 @@ export default function RecentOrders_table() {
       <h1 className="md:text-lg xs:text-sm font-bold">{t("quick-actions")}</h1>
         <div className="grid md:grid-cols-4 xs:grid-cols-2 gap-5 mt-3 items-center">
 
-<Link href='/admin/Products'>
+<Link href='/admin/page/Products'>
 <div className="  bg-[#F9FAFB] py-3 rounded-md flex flex-col items-center justify-center">
-    <span  className="text-xl text-blue-600   bg-blue-100 p-3 rounded-full"><FaPlusSquare /></span>
+    <span  className="text-xl text-red-600   bg-red-100 p-3 rounded-full"><FaPlusSquare /></span>
     <h1 className="text-xs font-semibold mt-2">{t("add_product")}</h1>
 </div></Link>
 <div className="  bg-[#F9FAFB] py-3 rounded-md  flex flex-col items-center justify-center">

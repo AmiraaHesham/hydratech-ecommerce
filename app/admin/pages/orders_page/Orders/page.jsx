@@ -3,16 +3,20 @@ import Header from "../../../components_admin/Header";
 import Orders_Details from "../../../components_admin/orders/Orders_Details";
 import Orders_Failter from "../../../../components/Failter";
 import Orders_Table from "../../../components_admin/orders/Orders_Table";
+import Image from "next/image";
 
 export default function Orders() {
+  // const role =
+  //   typeof window !== "undefined" ? localStorage.getItem("role") : null;
+  // if(role === "ADMIN"){
   return (
      <div className="h-full bg-[#F9FAFB]">
          <main className=" flex border  ">
-           <SideMenu orders={"bg-[#e0e7ff6e] text-[#6158ff]"} />
+           <SideMenu orders={"bg-red-100 text-red-500"} />
            <div className="w-full">
              <Header page_title={"Orders Management"} />
              {/* <div className="flex w-full flex-col justify-center items-center mt-6 relative"> */}
-          <div className="flex w-full flex-col justify-center items-center  relative">
+          <div className="flex w-full  flex-col justify-center items-center  relative">
              <div className="w-[90%] mt-3 ">
               <Orders_Details />
               <Orders_Failter placeholder={"Search by order code or name"}  />
@@ -23,4 +27,18 @@ export default function Orders() {
          </main>
        </div>
   )
+// }
+//    else{
+//     return(
+//       <div className="w-full h-screen flex justify-center items-center text-center">
+//         <div className=" ">
+//           <div className="flex justify-center items-center mb-20">
+// <Image src='/Images/logo.png' width={200} height={200} alt='logo ' className="flex justify-center items-center"/>
+
+//           </div>
+//       <h1 className="text-2xl font-semibold ">You are not authorized to view this page</h1>
+//         </div>
+        
+//         </div>
+//     )}
 }

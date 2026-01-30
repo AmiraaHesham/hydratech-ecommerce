@@ -1,3 +1,4 @@
+"use client"
 import { FaHourglassStart } from "react-icons/fa";
 import { IoMdCart } from "react-icons/io";
 
@@ -11,7 +12,7 @@ export default function Dashboard_Details() {
           <div className="w-full grid lg:grid-cols-4 xs:grid-cols-2 lg:gap-10 xs:gap-2 "> 
                 <div className="bg-white border flex flex-col gap-5 rounded-lg p-3">
                   <div className="flex items-center  gap-2">
-                    <span className="md:text-2xl xs:text-lg text-blue-600 bg-blue-100 p-1 rounded-md"><IoMdCart /></span>
+                    <span className="md:text-2xl xs:text-lg text-red-600 bg-red-100 p-1 rounded-md"><IoMdCart /></span>
                     <h1 className="md:text-lg xs:text-sm  text-gray-500 font-semibold">{t("total_orders")}</h1>
                   </div>
                   <h1 className="md:text-2xl xs:text-lg  font-bold">3,456</h1>

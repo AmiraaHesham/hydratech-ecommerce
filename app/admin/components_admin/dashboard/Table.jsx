@@ -13,7 +13,7 @@ export default function RecentOrders_table() {
     <div className="mt-5 w-full">
         <div className="flex justify-between items-center px-5 h-16 border-s border-t rounded-t-md bg-white">
         <h1 className="text-lg font-semibold ">{t("recent_orders")}</h1>
-        <button className="text-sm text-blue-600">{t("view_all_orders")} </button>
+        <button className="text-sm text-red-600">{t("view_all_orders")} </button>
            </div>
            <div className=" rounded-b-xl w-full h-[370px] border-s border-b   overflow-y-scroll ">
                 <table className=" xs:w-[220%] lg:w-full   ">
@@ -34,14 +34,14 @@ export default function RecentOrders_table() {
                             (allCateg.map = (category, index) => {
                               <tr
                                 key={index}
-                                className="text-center text-blue-950 border  hover:bg-gray-50 "
+                                className="text-center text-red-950 border  hover:bg-gray-50 "
                               >
                                 <td className="py-5">{index}</td>
                                 <td>{category.imageURL}</td>
                                 <td>{category.name}</td>
                                 <td>{category.product_count}</td>
                                 <td className="text-2xl">
-                                  <span className="text-blue-800"><FiEdit /></span> 
+                                  <span className="text-red-800"><FiEdit /></span> 
                                 <span className="text-red-800"><MdDelete/></span>
                                 </td>
                               </tr>;
@@ -50,17 +50,17 @@ export default function RecentOrders_table() {
                           ) */}
         
                 
-                <tr className=" text-blue-950 border w-full hover:bg-gray-50"
+                <tr className=" text-red-950 border w-full hover:bg-gray-50"
                     onClick={() => navigate.push('/admin/orders_page/OrderDetailsPage')}
                     >
                       <td></td>
         
-                      <td className="font-semibold text-blue-500">#ORD-7782</td>
+                      <td className="font-semibold text-red-500">#ORD-7782</td>
                       <td className="text-sm">Oct 24, 2023</td>
         
                       <td>
                         <div className="flex items-center gap-3">
-                          <td>
+                          <div>
                             <Image
                               alt=""
                               src="/img.jpg"
@@ -68,7 +68,7 @@ export default function RecentOrders_table() {
                               height={45}
                               className="rounded-full border my-1 p-1"
                             />
-                          </td>
+                          </div>
                           <div>
                             <h1 className="font-semibold text-sm">Jane Cooper</h1>
                             <h1 className="text-xs  text-gray-500">Jane@example.com</h1>
@@ -79,10 +79,64 @@ export default function RecentOrders_table() {
                       <td className="text-sm font-semibold">EG 1,200.00</td>
                       <td className="text-sm font-semibold">Pending</td>
                     </tr>
-                    <tr className=" text-blue-950 border  hover:bg-gray-50 ">
+                    {/* <tr className=" text-red-950 border  hover:bg-gray-50 ">
                       <td></td>
         
-                      <td className="font-semibold text-blue-500">#ORD-7782</td>
+                      <td className="font-semibold text-red-500">#ORD-7782</td>
+                      <td className="text-sm">Oct 24, 2023</td>
+        
+                      <td>
+                        <div className="flex items-center gap-3">
+                          <div>
+                            <Image
+                              alt=""
+                              src="/img.jpg"
+                              width={45}
+                              height={45}
+                              className="rounded-full border my-1 p-1"
+                            />
+                          </div>
+                          <div>
+                            <h1 className="font-semibold text-sm">Jane Cooper</h1>
+                            <h1 className="text-xs text-gray-500">Jane@example.com</h1>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="text-sm">iphone15 pro, ...</td>
+                      <td className="text-sm font-semibold">EG 1,200.00</td>
+                      <td className="text-sm font-semibold">Pending</td>
+                    </tr>
+                       <tr className=" text-red-950 border  hover:bg-gray-50 ">
+                      <td></td>
+        
+                      <td className="font-semibold text-red-500">#ORD-7782</td>
+                      <td className="text-sm">Oct 24, 2023</td>
+        
+                      <td>
+                        <div className="flex items-center gap-3">
+                          <div>
+                            <Image
+                              alt=""
+                              src="/img.jpg"
+                              width={45}
+                              height={45}
+                              className="rounded-full border my-1 p-1"
+                            />
+                          </div>
+                          <div>
+                            <h1 className="font-semibold text-sm">Jane Cooper</h1>
+                            <h1 className="text-xs text-gray-500">Jane@example.com</h1>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="text-sm">iphone15 pro, ...</td>
+                      <td className="text-sm font-semibold">EG 1,200.00</td>
+                      <td className="text-sm font-semibold">Pending</td>
+                    </tr>
+                       <tr className=" text-red-950 border  hover:bg-gray-50 ">
+                      <td></td>
+        
+                      <td className="font-semibold text-red-500">#ORD-7782</td>
                       <td className="text-sm">Oct 24, 2023</td>
         
                       <td>
@@ -106,10 +160,10 @@ export default function RecentOrders_table() {
                       <td className="text-sm font-semibold">EG 1,200.00</td>
                       <td className="text-sm font-semibold">Pending</td>
                     </tr>
-                       <tr className=" text-blue-950 border  hover:bg-gray-50 ">
+                       <tr className=" text-red-950 border  hover:bg-gray-50 ">
                       <td></td>
         
-                      <td className="font-semibold text-blue-500">#ORD-7782</td>
+                      <td className="font-semibold text-red-500">#ORD-7782</td>
                       <td className="text-sm">Oct 24, 2023</td>
         
                       <td>
@@ -133,64 +187,10 @@ export default function RecentOrders_table() {
                       <td className="text-sm font-semibold">EG 1,200.00</td>
                       <td className="text-sm font-semibold">Pending</td>
                     </tr>
-                       <tr className=" text-blue-950 border  hover:bg-gray-50 ">
+                       <tr className=" text-red-950 border  hover:bg-gray-50 ">
                       <td></td>
         
-                      <td className="font-semibold text-blue-500">#ORD-7782</td>
-                      <td className="text-sm">Oct 24, 2023</td>
-        
-                      <td>
-                        <div className="flex items-center gap-3">
-                          <td>
-                            <Image
-                              alt=""
-                              src="/img.jpg"
-                              width={45}
-                              height={45}
-                              className="rounded-full border my-1 p-1"
-                            />
-                          </td>
-                          <div>
-                            <h1 className="font-semibold text-sm">Jane Cooper</h1>
-                            <h1 className="text-xs text-gray-500">Jane@example.com</h1>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="text-sm">iphone15 pro, ...</td>
-                      <td className="text-sm font-semibold">EG 1,200.00</td>
-                      <td className="text-sm font-semibold">Pending</td>
-                    </tr>
-                       <tr className=" text-blue-950 border  hover:bg-gray-50 ">
-                      <td></td>
-        
-                      <td className="font-semibold text-blue-500">#ORD-7782</td>
-                      <td className="text-sm">Oct 24, 2023</td>
-        
-                      <td>
-                        <div className="flex items-center gap-3">
-                          <td>
-                            <Image
-                              alt=""
-                              src="/img.jpg"
-                              width={45}
-                              height={45}
-                              className="rounded-full border my-1 p-1"
-                            />
-                          </td>
-                          <div>
-                            <h1 className="font-semibold text-sm">Jane Cooper</h1>
-                            <h1 className="text-xs text-gray-500">Jane@example.com</h1>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="text-sm">iphone15 pro, ...</td>
-                      <td className="text-sm font-semibold">EG 1,200.00</td>
-                      <td className="text-sm font-semibold">Pending</td>
-                    </tr>
-                       <tr className=" text-blue-950 border  hover:bg-gray-50 ">
-                      <td></td>
-        
-                      <td className="font-semibold text-blue-500">#ORD-7782</td>
+                      <td className="font-semibold text-red-500">#ORD-7782</td>
                       <td className="text-sm">Oct 24, 2023</td>
         
                       <td>
@@ -214,10 +214,10 @@ export default function RecentOrders_table() {
                       <td className="text-sm font-semibold">EG 1,200.00</td>
                       <td className="text-sm font-semibold">Pending</td>
                     </tr> 
-                      <tr className=" text-blue-950 border  hover:bg-gray-50 ">
+                      <tr className=" text-red-950 border  hover:bg-gray-50 ">
                       <td></td>
         
-                      <td className="font-semibold text-blue-500">#ORD-7782</td>
+                      <td className="font-semibold text-red-500">#ORD-7782</td>
                       <td className="text-sm">Oct 24, 2023</td>
         
                       <td>
@@ -241,10 +241,10 @@ export default function RecentOrders_table() {
                       <td className="text-sm font-semibold">EG 1,200.00</td>
                       <td className="text-sm font-semibold">Pending</td>
                     </tr>
-                      <tr className=" text-blue-950 border  hover:bg-gray-50 ">
+                      <tr className=" text-red-950 border  hover:bg-gray-50 ">
                       <td></td>
         
-                      <td className="font-semibold text-blue-500">#ORD-7782</td>
+                      <td className="font-semibold text-red-500">#ORD-7782</td>
                       <td className="text-sm">Oct 24, 2023</td>
         
                       <td>
@@ -268,10 +268,10 @@ export default function RecentOrders_table() {
                       <td className="text-sm font-semibold">EG 1,200.00</td>
                       <td className="text-sm font-semibold">Pending</td>
                     </tr>
-                      <tr className=" text-blue-950 border  hover:bg-gray-50 ">
+                      <tr className=" text-red-950 border  hover:bg-gray-50 ">
                       <td></td>
         
-                      <td className="font-semibold text-blue-500">#ORD-7782</td>
+                      <td className="font-semibold text-red-500">#ORD-7782</td>
                       <td className="text-sm">Oct 24, 2023</td>
         
                       <td>
@@ -294,7 +294,7 @@ export default function RecentOrders_table() {
                       <td className="text-sm">iphone15 pro, ...</td>
                       <td className="text-sm font-semibold">EG 1,200.00</td>
                       <td className="text-sm font-semibold">Pending</td>
-                    </tr>
+                    </tr> */}
         
                   </tbody>
                 </table>

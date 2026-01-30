@@ -5,19 +5,22 @@ import Table_Category from "../../components_admin/categories/CategoryTable";
 import axios from "axios";
 // import React, {  useRef, useState } from "react";
 import FormCategory from "../../components_admin/categories/CategoryForm";
+import Image from "next/image";
 
 
 export default function Categorys() {
 
-
+// const role =
+//     typeof window !== "undefined" ? localStorage.getItem("role") : null;
+//   if(role === "ADMIN"){
   return (
-     <div className=" ">
+    <div className="h-screen bg-[#F9FAFB]">
           <main className=" flex border  ">
-            <SideMenu categoryies={"bg-[#e0e7ff6e] text-[#6158ff]"} />
-            <div className="w-full h-full bg-[#F9FAFB]">
+            <SideMenu categoryies={"bg-red-100 text-red-500"} />
+        <div className="w-full bg-[#F9FAFB]">
           <Header page_title= {"Categories Management"} />
-
-          <div className=" mx-5 mt-5 relative h-full bg-[#F9FAFB] ">
+<div className=" w-full bg-[#F9FAFB]">
+ <div className=" mt-5 mx-5 relative h-full  ">
           <div className="flex justify-center md:w-[80%] xs:w-full absolute items-center ">
             <FormCategory />
           </div>
@@ -25,7 +28,23 @@ export default function Categorys() {
 
           </div>
         </div>
+</div>
+         
       </main>
     </div>
-  );
+  )
+  // ;}
+  //  else{
+  //     return(
+  //       <div className="w-full h-screen flex justify-center items-center text-center">
+  //         <div className=" ">
+  //           <div className="flex justify-center items-center mb-20">
+  // <Image src='/Images/logo.png' width={200} height={200} alt='logo ' className="flex justify-center items-center"/>
+  
+  //           </div>
+  //       <h1 className="text-2xl font-semibold ">You are not authorized to view this page</h1>
+  //         </div>
+          
+  //         </div>
+  //     )}
 }

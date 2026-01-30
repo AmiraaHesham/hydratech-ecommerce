@@ -1,12 +1,36 @@
 import { getRequest, postRequest } from "../utils/requestsUtils";
 
 export const getCategories = async () => {
-  const res = await getRequest("/api/admin/itemCategory/getCategoryWithItemCounts");
-  return await res;
+  const response = await postRequest(
+    "/api/public/itemCategory/search",
+    {
+      page: 0,
+      size: 100,
+    },
+    ""
+  );
+  return await response;
 };
 export const getSliderImage = async () => {
-  const res = await getRequest("/api/admin/sliderImages");
-  return await res;
+  const response = await getRequest("/api/public/sliderImages");
+  return await response;
+};
+export const getFeatuerProducts = async () => {
+  const response = await postRequest(
+    "/api/public/items/search",
+    {
+      page: 0,
+      size: 100,
+      isFavorite: true,
+    },
+    ""
+  );
+  return await response;
+};
+
+export const getProductDetails = async (productId) => {
+  const response = await getRequest(`/api/public/items/${productId}`);
+  return await response;
 };
 //  export const getAllUsers = async () => {
 //       try {

@@ -1,31 +1,40 @@
 "use client";
 import { useLanguage } from "../../../../context/LanguageContext.js";
 import { MdEditNote } from "react-icons/md";
+import { getRequest } from "../../../../utils/requestsUtils.js";
+import { useEffect, useState } from "react";
+import { useOrderDetailsContext } from "../../../../context/orderDetailsContext.jsx";
 
-export default function Orders_Details() {
+export default function Orders_Details({orderId}) {
   const { t } = useLanguage();
+  const [orderCode, setOrderCode] = useState('');
+  const {selectedOrderState} = useOrderDetailsContext()
+    const {selectedOrderCode} = useOrderDetailsContext()
+    const {selectedOrderDate} = useOrderDetailsContext()
+  const [state, setState] = useState('');
 
+  const date = new Date(selectedOrderDate);
+const fullDateTime = date.toLocaleString('en-US');
+
+//  const orderItem = async () => {
+//     const res = await getRequest(`/api/orders/${orderId}`);
+//     setOrderCode(res.code)
+//   };
+  // useEffect(() => {
+  //   orderItem();
+  // }, []);
   return (
-    <div className="w-full flex md:flex-row xs:flex-col md:items-center md:justify-between xs:gap-3 mt-4">
-      <div className="">
-        <div className="flex items-center gap-3">
-          <h1 className="md:text-3xl  xs:text-2xl font-semibold">Order #ORD-7782</h1>
-          <h1 className="text-xs bg-blue-100 w-[100px] text-blue-700 font-semibold py-2 px-4 text-center rounded-3xl">
-            Processing
+    <div className="w-full  mt-4">
+        <div className="flex items-center justify-between w-full gap-3">
+          <h1 className="md:text-3xl  xs:text-2xl font-semibold"> {selectedOrderCode} #</h1>
+          <h1 className={`text-sm h-10 flex items-center justify-center w-[120px] ${selectedOrderState==='PROCESSING'?'text-blue-700 bg-blue-100':'text-red-700 bg-red-100'} font-semibold py-2 px-4 text-center rounded-3xl`}>
+            {t(selectedOrderState)}
           </h1>
         </div>
         <h1 className="text-xs text-gray-600 mt-3">
-          Placed on Oct 24, 2023 at 10:34 AM
+          Placed on {fullDateTime}
         </h1>
       </div>
-      <div>
-        <button className="flex gap-2 items-center bg-blue-700 hover:bg-blue-800 px-3 py-1 rounded-md text-white">
-          <span className="text-lg">
-            <MdEditNote />
-          </span>
-          Update Status
-        </button>
-      </div>
-    </div>
+       
   );
 }

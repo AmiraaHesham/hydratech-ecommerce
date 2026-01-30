@@ -7,7 +7,7 @@ import { FaPlus } from "react-icons/fa";
 import { useIdContext } from "../../../../context/idContext";
 import { useRefresh } from "../../../../context/refreshContext";
 import { useLanguage } from "../../../../context/LanguageContext.js";
-import { deleteRequest } from "../../../../utils/requestsUtils.js";
+import { deleteRequest, getRequest } from "../../../../utils/requestsUtils.js";
 import { useEffect, useState, useCallback } from "react";
 import { getCategories } from "../../../../utils/functions";
 
@@ -21,7 +21,7 @@ export default function CategorysTable() {
   let [itemCategory, setItemCategory] = useState([]);
 
   const getAllCategories = async () => {
-    const resData = await getCategories();
+    const resData = await getRequest('/api/admin/itemCategory/getCategoryWithItemCounts');
     setItemCategory(resData);
     console.log(process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL)
   };
@@ -32,16 +32,16 @@ export default function CategorysTable() {
     let nameFormCatogery = document.querySelector("#nameFormCategory");
     let btn_saveCategory = document.querySelector("#btn-saveCategory");
     let btn_editCategory = document.querySelector("#btn-editCategory");
-    btn_editCategory.classList.toggle("hidden");
-    btn_saveCategory.classList.toggle("hidden");
+    btn_editCategory.classList.remove("hidden");
+    btn_saveCategory.classList.add("hidden");
     nameFormCatogery.innerHTML = 'Edit Category ';
     form.classList.toggle("hidden");
     form.classList.add("flex");
   };
 
-  const deleteCategory = async (category) => {
+  const deleteCategory = async (categoryId) => {
     try {
-      await deleteRequest(`/api/admin/itemCategory/${category.itemCategoryId}`,t('message_DeleteText'));
+      await deleteRequest(`/api/admin/itemCategory/${categoryId}`,t('message_DeleteText'));
       triggerRefresh()
     } catch (error) {
       console.log(error);
@@ -58,7 +58,7 @@ export default function CategorysTable() {
     <div>
       <div className="bg-white h-[50px] border rounded-lg border-1  w-full mt-2 flex justify-end p-5 items-center">
         <button
-          className="p-2  text-white xs:text-xs md:text-sm rounded-md bg-blue-500 text-center flex items-center justify-center gap-2"
+          className="p-2  text-white xs:text-xs md:text-sm rounded-md bg-red-500 text-center flex items-center justify-center gap-2"
           onClick={() => {
             let form = document.querySelector("#add-category-form");
             let btn_saveCategory = document.querySelector("#btn-saveCategory");
@@ -83,7 +83,7 @@ export default function CategorysTable() {
         </button>
       </div>
       <div className=" rounded-xl w-full h-screen border  mt-3 overflow-hidden overflow-y-scroll ">
-        <table className=" w-full rounded-lg  ">
+        <table className=" w-full  rounded-lg  ">
           <thead className="bg-[#F9FAFB]  text-justify">
             <tr className=" text-gray-500 h-12 md:text-xs  xs:text-[10px]">
               <th className="w-[5%]"></th>
@@ -125,7 +125,7 @@ export default function CategorysTable() {
                     </div>
                   </td>
                   <td onClick={() => itemCategoryId(category)}>
-                    <div className="bg-blue-100 md:w-[80px]  xs:w-[60px] text-center rounded-full text-blue-600  px-2 font-semibold md:text-xs xs:text-[10px]">
+                    <div className="bg-red-100 md:w-[80px]  xs:w-[60px] text-center rounded-full text-red-600  px-2 font-semibold md:text-xs xs:text-[10px]">
                       <h1>{category.itemsCount}</h1>
                       <h2>{t("products_category")}</h2>
                     </div>
@@ -133,8 +133,7 @@ export default function CategorysTable() {
                   <td>
                     <button
                       className="text-red-800 text-sm flex items-center gap-1 bg-red-300 px-2 py-1 font-semibold rounded-md hover:bg-red-400"
-                      onClick={() => deleteCategory(category)}
-                    >
+                      onClick={() => deleteCategory(category.itemCategoryId)}>
                       <MdDelete />
                       <h1 className="md:block xs:hidden">{t("delete")}</h1>
                     </button>

@@ -1,40 +1,18 @@
-// pages/index.jsx
 "use client"
-import { useEffect, useState } from 'react';
-import Header from './user/components/Header';
-import ImageSlider from './user/components/home/ImageSlider'; // أو المسار الصحيح
-import { getSliderImage } from '../utils/functions';
+import { useRouter } from "next/navigation";
+// import Header from "./user/components/Header";
+// import Homepage from "./user/pages/home/page";
+// import Searchpage from "./user/pages/search/page";
+import { useEffect } from "react";
 
 export default function Home() {
-  const [sliderImages, setSliderImages] = useState([]);
-
-  const getSliderImages = async () => {
-    try {
-      const data = await getSliderImage();
-    
-        setSliderImages(data);
-    
-    } catch (error) {
-      console.error('Failed to fetch slider images:', error);
-      setSliderImages([]);
-    }
-  };
+   const router = useRouter();
 
   useEffect(() => {
-    getSliderImages();
+    // غيّر '/ar' إلى الرابط اللي عايزه
+    router.replace('/user/home'); // استخدم replace عشان ما يبقاش في التاريخ
   }, []);
 
-  return (
-    <div className="bg-[#F3F4F6] h-screen  justify-center items-center ">
-      <div className=' justify-center '>
-<Header />
-      <main className="my-10 mx-16">
-        <div className=" mb-10">
-          <ImageSlider sliderImages={sliderImages} />
-        </div>
-      </main>
-      </div>
-      
-    </div>
-  );
+  return null; 
+
 }

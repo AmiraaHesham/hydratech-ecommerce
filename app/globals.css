@@ -15,7 +15,7 @@
 } */
 
 body {
-  font-family: "Inter", sans-serif;
+  font-family: 'cairo', sans-serif;
   cursor: default;
   /* height: 100%;
   overflow: hidden;
@@ -28,4 +28,21 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+
+/* إخفاء الأيقونة الافتراضية */
+.swiper-button-prev,
+.swiper-button-next {
+  color: rgb(201, 2, 2) !important;
+  font-size: 50px !important;
+  
+}
+
+/* إضافة سهم مخصص كنص */
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  font-family: inherit;
+  font-weight: bold;
+  left: 10px;
 }

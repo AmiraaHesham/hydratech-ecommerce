@@ -33,7 +33,7 @@ export const postRequest = async (endpoint, dataBody, message) => {
           title: "text-xl font-bold text-gray-800 mb-2",
           content: "text-sm text-gray-600 mb-4",
           confirmButton:
-            "bg-blue-600 hover:bg-blue-500 text-white font-medium px-6 py-2 rounded-lg",
+            "bg-red-600 hover:bg-red-500 text-white font-medium px-6 py-2 rounded-lg",
           cancelButton:
             "bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium px-6 py-2 rounded-lg ml-2",
         },
@@ -55,9 +55,12 @@ export const postRequest = async (endpoint, dataBody, message) => {
     }
   } catch (error) {
     toast.error(
-      localStorage.lang === "ar"
-        ? "حدث خظأ قم بالتواصل مع المسؤول"
-        : "An error occurred. Please contact the administrator."
+      // localStorage.lang === "ar"
+      //   ? "حدث خظأ قم بالتواصل مع المسؤول"
+      //   : "An error occurred. Please contact the administrator."
+
+
+      error.message
     );
     throw error;
   }
@@ -73,7 +76,6 @@ export const getRequest = async (endpoint) => {
 
       {
         headers: {
-          "Content-Type": "application/json",
           Authorization: token ? `Bearer ${token}` : undefined,
           "Accept-Language": localStorage.getItem("lang"),
         },
@@ -83,9 +85,11 @@ export const getRequest = async (endpoint) => {
     return await response.data.data;
   } catch (error) {
     toast.error(
-      localStorage.lang === "ar"
-        ? "حدث خظأ قم بالتواصل مع المسؤول"
-        : "An error occurred. Please contact the administrator."
+      // localStorage.lang === "ar"
+      //   ? "حدث خظأ قم بالتواصل مع المسؤول"
+      //   : "An error occurred. Please contact the administrator."
+            error
+
     );
 
     throw error;
@@ -108,7 +112,7 @@ export const putRequest = async (endpoint, dataBody, message) => {
         title: "text-xl font-bold text-gray-800 mb-2",
         content: "text-sm text-gray-600 mb-4",
         confirmButton:
-          "bg-blue-600 hover:bg-blue-500 text-white font-medium px-6 py-2 rounded-lg",
+          "bg-red-600 hover:bg-red-500 text-white font-medium px-6 py-2 rounded-lg",
         cancelButton:
           "bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium px-6 py-2 rounded-lg ml-2",
       },
@@ -127,13 +131,15 @@ export const putRequest = async (endpoint, dataBody, message) => {
         }
       );
       toast.success(response.data.message);
+
       return await response.data;
     }
   } catch (error) {
     toast.error(
-      localStorage.lang === "ar"
-        ? "حدث خظأ قم بالتواصل مع المسؤول"
-        : "An error occurred. Please contact the administrator."
+      // localStorage.lang === "ar"
+      //   ? "حدث خظأ قم بالتواصل مع المسؤول"
+      //   : "An error occurred. Please contact the administrator."
+            error
     );
     throw error;
   }
@@ -156,7 +162,7 @@ export const deleteRequest = async (endpoint, message) => {
         title: "text-xl font-bold text-gray-800 mb-2",
         content: "text-sm text-gray-600 mb-4",
         confirmButton:
-          "bg-blue-600 hover:bg-blue-500 text-white font-medium px-6 py-2 rounded-lg",
+          "bg-red-600 hover:bg-red-500 text-white font-medium px-6 py-2 rounded-lg",
         cancelButton:
           "bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium px-6 py-2 rounded-lg ml-2",
       },
@@ -179,9 +185,10 @@ export const deleteRequest = async (endpoint, message) => {
     }
   } catch (error) {
     toast.error(
-      localStorage.lang === "ar"
-        ? "حدث خظأ قم بالتواصل مع المسؤول"
-        : "An error occurred. Please contact the administrator."
+      // localStorage.lang === "ar"
+      //   ? "حدث خظأ قم بالتواصل مع المسؤول"
+      //   : "An error occurred. Please contact the administrator."
+
     );
 
     throw error;
