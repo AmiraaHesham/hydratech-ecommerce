@@ -22,7 +22,6 @@ export default function FeatuerProducts({ FeatuerProducts }) {
           <AiFillStar className="" />
         </span>
         <h1 className="flex items-center gap-2 text-gray-600">
-          {" "}
           {t("featured_products")}{" "}
         </h1>
       </div>

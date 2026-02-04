@@ -7,6 +7,7 @@ import { useLanguage } from "../../../context/LanguageContext";
 import { useRouter } from "next/navigation";
 import { useRefresh } from "../../../context/refreshContext";
 import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 export default function ProductCard({ productInfo, favorite }) {
   const { setSelectedProductId } = useIdContext();
@@ -22,8 +23,28 @@ export default function ProductCard({ productInfo, favorite }) {
         itemId: productId,
         quantity: 1,
       },
-      "",
+      ""
     );
+     const result = await Swal.fire({
+              icon: "success",
+              title: t('تم إضافة المنتج الى سلة التسوق'),
+              showCancelButton: true,
+              confirmButtonText: localStorage.lang === "ar" ? " إتمام  الشراء " : "Yes",
+              cancelButtonText: t('continueShopping'),
+              customClass: {
+                popup: "rounded-xl shadow-lg border border-gray-200 p-6",
+                title: "text-xl font-bold text-gray-800 mb-2",
+                content: "text-sm text-gray-600 mb-4",
+                confirmButton:
+                  "bg-red-600 hover:bg-red-500 text-white font-medium px-6 py-2 rounded-lg",
+                cancelButton:
+                  "bg-gray-500 hover:bg-gray-400 text-w  font-medium px-6 py-2 rounded-lg ml-2",
+              },
+            });
+            if (result.isConfirmed) {
+              navigate.push('/user/cart')
+            }
+      
   };
   const addFavoriteItems = async (productId) => {
    const res =  await postRequest(
@@ -64,7 +85,7 @@ if(res.success === true){
 
   return (
     // <div className="h-full w-full border rounded-md bg-white flex justify-center py-2  cursor-pointer duration-300 hover:scale-105 ">
-    <div id={`div_${productInfo.itemId}`} className="h-[320px] bg-white border rounded-md" >
+    <div id={`div_${productInfo.itemId}`} className="h-[320px] bg-white border rounded-md cursor-pointer" >
       <div className="">
         <Image
           src={`${process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL}${
@@ -106,7 +127,7 @@ if(res.success === true){
 </div>
             <span
               id={`btn_fov_${productInfo.itemId}`}
-              className={`${productInfo.favorite === true ? "text-gray-400 " : "text-red-600 "}rounded-full`}
+              className={`hover:text-red-600 hover:scale-110 duration-200 ${productInfo.favorite === true ? "text-gray-400 " : "text-red-600 "}rounded-full`}
               onClick={() => {
                 const btn_fov = document.querySelector(
                   `#btn_fov_${productInfo.itemId}`,

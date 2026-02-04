@@ -33,7 +33,7 @@ export default function Homepage() {
   const [ImagesSliders, setImagesSliders] = useState([]);
   const [categories, setCategories] = useState([]);
   const [featuerProducts, setFeatuerProducts] = useState([]);
-
+  const [loading, setLoading] = useState(true);
   const { t } = useLanguage();
   const getImages = async () => {
     try {
@@ -41,6 +41,8 @@ export default function Homepage() {
       setImagesSliders(res);
     } catch (error) {
       console.error("Failed to fetch slider images:", error);
+    } finally {
+      setLoading(false);
     }
   };
   const showCategories = async () => {
@@ -49,12 +51,20 @@ export default function Homepage() {
       setCategories(res.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
   const getFeatuersProducts = async () => {
-    const response = await getFeatuerProducts();
+    try {
+      const response = await getFeatuerProducts();
 
-    setFeatuerProducts(response.data);
+      setFeatuerProducts(response.data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -88,22 +98,72 @@ export default function Homepage() {
           </span>
           {t("featured_products")}
         </a>
-        <a href="#footer" className="flex justify-center items-center  border-b-2 border-r gap-2 w-full  font-bold hover:bg-white  hover:border-b-2 hover:border-b-red-600 cursor-pointer">
-         <span className="bg-red-700 text-white rounded-full text-lg p-1">
-          <MdContactSupport />
-
+        <a
+          href="#footer"
+          className="flex justify-center items-center  border-b-2 border-r gap-2 w-full  font-bold hover:bg-white  hover:border-b-2 hover:border-b-red-600 cursor-pointer"
+        >
+          <span className="bg-red-700 text-white rounded-full text-lg p-1">
+            <MdContactSupport />
           </span>
           {t("contact_us")}
         </a>
       </div>
       <section id="ImageSlider" data-aos="fade-up">
-        <ImageSlider sliderImages={ImagesSliders} />
+        {loading ? (
+          <div className="w-full h-[500px] my-10  flex justify-center items-center">
+            <div className="w-[80%] h-full bg-gray-200 rounded animate-pulse"></div>
+          </div>
+        ) : (
+          <ImageSlider sliderImages={ImagesSliders} />
+        )}
       </section>
       <section id="CategoriesSection" className="h-[300px]" data-aos="fade-up">
-        <CategoriesSection categories={categories} />
+        {loading ? (
+          <div className="w-full h-full">
+            <div className="w-full flex justify-center items-center text-center px-10 text-2xl font-semibold h-12 shadow-md shadow-gray-300 bg-gray-100">
+              <h1 className="flex items-center gap-2 text-gray-600">
+                <BiCategory className="text-red-600" />
+                {t("categories")}
+              </h1>
+            </div>
+            <div className="w-full h-[200px]  grid grid-cols-6 gap-5 my-10">
+              <div className="bg-gray-200 rounded animate-pulse w-full"></div>
+              <div className="bg-gray-200 rounded animate-pulse w-full"></div>
+              <div className="bg-gray-200 rounded animate-pulse w-full"></div>
+              <div className=" bg-gray-200 rounded animate-pulse w-full"></div>
+              <div className=" bg-gray-200 rounded animate-pulse w-full"></div>
+              <div className=" bg-gray-200 rounded animate-pulse w-full"></div>
+
+            </div>
+          </div>
+        ) : (
+          <CategoriesSection categories={categories} />
+        )}
       </section>
       <section id="FeatuerProducts" className="h-[500px]" data-aos="fade-up">
+         {loading ? (
+          <div className="w-full h-full my-10">
+            <div className="w-full flex justify-center items-center gap-2 text-center px-10 text-2xl shadow-md shadow-gray-300 font-semibold bg-gray-100  h-12 ">
+        <span className=" text-red-600 rounded-full  p-1">
+          <AiFillStar className="" />
+        </span>
+        <h1 className="flex items-center gap-2 text-gray-600">
+          {t("featured_products")}{" "}
+        </h1>
+      </div>
+            <div className="w-full h-[320px] grid grid-cols-6 gap-5 my-10">
+              <div className="bg-gray-200 rounded animate-pulse w-full"></div>
+              <div className="bg-gray-200 rounded animate-pulse w-full"></div>
+              <div className="bg-gray-200 rounded animate-pulse w-full"></div>
+              <div className=" bg-gray-200 rounded animate-pulse w-full"></div>
+              <div className=" bg-gray-200 rounded animate-pulse w-full"></div>
+              <div className=" bg-gray-200 rounded animate-pulse w-full"></div>
+
+            </div>
+          </div>
+        ) : (
         <FeatuerProducts FeatuerProducts={featuerProducts} />
+        )}
       </section>
     </div>
   );

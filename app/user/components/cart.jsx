@@ -25,15 +25,24 @@ export default function Cart() {
   const userId = localStorage.id;
   const shappingCost = 50;
   const [isFirstAction, setIsFirstAction] = useState(true);
-  const [loading, setLoding] = useState(false);
+  const [loading, setLoding] = useState(true);
   const navigate = useRouter();
 
   const getProductInCart = async () => {
-    const res = await getRequest(`/api/shopCarts/${userId}`);
+    try{
+       const res = await getRequest(`/api/shopCarts/${userId}`);
     setItems(res.itemLines);
     setTotalOrder(res.total);
     setItemNum(res.itemLines.length);
     setTotalDiscount(res.totalDiscount);
+    }
+    catch(error){
+      console.log(error)
+    }
+    finally{
+      setLoding(false)
+    }
+   
   };
   const changeQuantity = async (itemId, newQuantity) => {
     await postRequest(
@@ -109,7 +118,27 @@ export default function Cart() {
               </tr>
             </thead>
             <tbody className="bg-white text-md w-full  ">
-              {items.length != 0 ? (
+               {loading ? (
+              // Skeleton rows
+              [...Array(5)].map((_, index) => (
+                <tr key={`skeleton-${index}`} className="border-b">
+                  <td className="px-4 py-2 flex items-center gap-2">
+                    <div className="h-14 bg-gray-200 rounded-full animate-pulse w-14"></div>
+                    <div className="flex flex-col gap-2">
+                    <div  className="h-4 bg-gray-200 rounded-lg animate-pulse w-28"></div>
+                    <div  className="h-2 bg-gray-200 rounded-md animate-pulse w-20"></div>
+                    </div>
+                  </td>
+                  <td className=" py-2"><div className="h-4 bg-gray-200 rounded animate-pulse w-24"></div></td>
+                  <td className=" py-2"><div className="h-4 bg-gray-200 rounded animate-pulse w-24"></div></td>
+                  <td className=" py-2"><div className="h-4 bg-gray-200 rounded animate-pulse w-24"></div></td>
+                  <td className="py-2"><div className="h-4 bg-gray-200 rounded animate-pulse w-16"></div></td>
+                   <td className=" py-2"><div className="h-4 bg-gray-200 rounded animate-pulse w-16"></div></td>
+
+                </tr>
+              ))
+            ):( 
+              items.length != 0 ? (
                 items.map((product, index) => {
                   return (
                     <tr key={index} className=" text-blue-950 border w-full">
@@ -137,11 +166,11 @@ export default function Cart() {
                       </td>
                       <td className="font-semibold text-red-500">
                         <div>
-                          <span> {product.unitPrice} {t("currency")} </span>
+                          <span> {product.unitPrice.toLocaleString('en-US')} {t("currency")} </span>
 
                           {product.oldUnitPrice ? (
                             <span className="text-gray-400 line-through text-sm mx-2 opacity-90">
-                              {product.oldUnitPrice} {t("currency")}
+                              {product.oldUnitPrice.toLocaleString('en-US')} {t("currency")}
                             </span>
                           ) : (
                             ""
@@ -201,7 +230,7 @@ export default function Cart() {
                         </div>
                       </td>
                       <td className="text-sm font-semibold">
-                        {product.totalPrice} {t("currency")}
+                        {product.totalPrice.toLocaleString('en-US')} {t("currency")}
                       </td>
                       <td className=" font-semibold text-lg text-gray-600 px-5 cursor-pointer">
                         <button
@@ -222,20 +251,66 @@ export default function Cart() {
                    {t('noProductsInCart')}
                   </td>
                 </tr>
-              )}
+              ))}
             </tbody>
           </table>
         </div>
         <div className=" h-screen md:w-[40%]  xs:w-full">
-          <div className=" h-[500px] p-7  w-full bg-white rounded-lg border">
+           {loading ? (
+              // Skeleton rows
+<div  className=" h-[500px] p-7  w-full bg-white rounded-lg border">
             <h1 className="mb-10 text-2xl font-bold">{t('orderSummary')} </h1>
             <div className="flex justify-between items-center mb-5">
-              <span className="text-gray-600"> { t('totalProducts') +' '+(itemNum)}</span>
-              <span className="font-semibold">{totalOrder + ' ' + t('currency')} </span>
+              <span className="text-gray-600"> {t('totalProducts')}  </span>
+              <span className="h-4 bg-gray-200 rounded animate-pulse w-20"> </span>
             </div>
             <div className="flex justify-between items-center mb-5">
               <span className="text-gray-600">{t('totalDiscount')} </span>
-              <span className="font-semibold">{totalDiscount+ ' ' + t('currency')} </span>
+              <span className="h-4 bg-gray-200 rounded animate-pulse w-20"> </span>
+            </div>
+
+            <div className="flex justify-between items-center">
+              <span className="text-gray-600">{t('shippingCost')} </span>
+              <span className="h-4 bg-gray-200 rounded animate-pulse w-20"> </span>
+            </div>
+            <hr className="my-6" />
+            <div className="flex justify-between items-center text-2xl font-semibold">
+              <span>{t('grandTotal')} </span>
+             <span className="h-4 bg-gray-200 rounded animate-pulse w-20"></span>
+            </div>
+            <button
+                 className={`flex justify-center items-center w-full  py-2 rounded-md mt-10 text-white text-lg  ${
+                items.length === 0
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-red-600 hover:bg-red-700"
+              }`}
+            >
+              {t("proceedToCheckout")}
+            </button>
+            <div className="flex gap-4 p-2 w-full bg-red-50 mt-5 rounded-md">
+              <span className="text-2xl text-red-600 mt-1">
+                <AiFillSafetyCertificate />
+              </span>
+              <div>
+                <h1 className="text-red-600  font-semibold">
+                  {t('secureShopping')}
+                </h1>
+                <h2 className="text-gray-600 text-xs">
+                 {t('protectedData')}
+                </h2>
+              </div>
+            </div>
+          </div>
+              ):(
+                <div className=" h-[500px] p-7  w-full bg-white rounded-lg border">
+            <h1 className="mb-10 text-2xl font-bold">{t('orderSummary')} </h1>
+            <div className="flex justify-between items-center mb-5">
+              <span className="text-gray-600"> { t('totalProducts') +' '+(itemNum)}</span>
+              <span className="font-semibold">{totalOrder.toLocaleString('en-US') + ' ' + t('currency')} </span>
+            </div>
+            <div className="flex justify-between items-center mb-5">
+              <span className="text-gray-600">{t('totalDiscount')} </span>
+              <span className="font-semibold">{totalDiscount.toLocaleString('en-US')+ ' ' + t('currency')} </span>
             </div>
 
             <div className="flex justify-between items-center">
@@ -246,7 +321,7 @@ export default function Cart() {
             <div className="flex justify-between items-center text-2xl font-semibold">
               <span>{t('grandTotal')} </span>
               <span className="text-red-500">
-                {totalOrder === 0 ? 0 : totalOrder + shappingCost+ ' ' + t('currency')}
+                {totalOrder === 0 ? 0 :( totalOrder + shappingCost).toLocaleString('en-US')+ ' ' + t('currency')}
               </span>
             </div>
             <button
@@ -273,6 +348,8 @@ export default function Cart() {
               </div>
             </div>
           </div>
+              )}
+          
         </div>
       </div>
     </div>
