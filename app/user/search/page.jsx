@@ -72,7 +72,7 @@ export default function Searchpage() {
         {
           products.length!=0? <div className="grid grid-cols-5 gap-5">
           {products.map((product ,index) => (
-            <div key={index}  className="bg-white py-2 rounded-md border h-[310px]">
+            <div key={index}>
             <ProductCard productInfo={product}/>
               </div>
           ))

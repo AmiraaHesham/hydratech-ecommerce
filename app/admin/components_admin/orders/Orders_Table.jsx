@@ -1,37 +1,44 @@
 "use client";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdOutlineDownloading } from "react-icons/md";
 import Image from "next/image";
 import { FaPlus } from "react-icons/fa";
 import { useLanguage } from "../../../../context/LanguageContext.js";
 import Link from "next/link.js";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { postRequest } from "../../../../utils/requestsUtils.js";
 import { FaUserLarge } from "react-icons/fa6";
 export default function Orders_Table() {
   const { t } = useLanguage();
   const navigate = useRouter();
   const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const pageNum = useRef(0); // العنصر المراقب في الأسفل
 
   const getAllOrders = useCallback(async () => {
+    setLoading(true);
+
     try {
       const response = await postRequest(
         "/api/orders/search",
         {
-          page: 0,
-          size: 20,
+          page: pageNum.current,
+          size: 15,
         },
         "",
       );
-      setOrders(response.data);
-      // pagination()
-      //       console.log("Categories after set:", resProducts);
+      const resProducts = response.data || [];
+
+      if (pageNum.current === 0) {
+        setOrders(resProducts);
+      } else setOrders((prev) => [...prev, ...resProducts]);
     } catch (error) {
       console.log(error);
     }
   }, []);
+
   useEffect(() => {
-    getAllOrders();
+    getAllOrders(0);
   }, []);
   return (
     <div className=" rounded-xl w-full  h-screen my-5 border  overflow-hidden overflow-x-scroll overflow-y-scroll ">
@@ -54,7 +61,9 @@ export default function Orders_Table() {
                 key={index}
                 className=" text-blue-950 border w-full hover:bg-gray-50"
                 onClick={() =>
-                  navigate.push(`/admin/pages/orders_page/OrderDetailsPage/${order.orderId}`)
+                  navigate.push(
+                    `/admin/pages/orders_page/OrderDetailsPage/${order.orderId}`,
+                  )
                 }
               >
                 <td></td>
@@ -77,13 +86,38 @@ export default function Orders_Table() {
                 </td>
 
                 <td className="text-sm ">
-                <span className="py-2 px-5 font-semibold rounded-full   bg-red-100 text-red-600">{order.orderItemLines.length}</span>  
+                  <span className="py-2 px-5 font-semibold rounded-full   bg-red-100 text-red-600">
+                    {order.orderItemLines.length}
+                  </span>
                 </td>
-                <td className="text-sm font-bold">{order.total.toLocaleString('en-US')} {t("currency")}</td>
-                <td className={`text-xs font-semibold ${order.state === 'PROCESSING' ?"text-blue-500":"text-red-500"}`}>{t(order.state)}</td>
+                <td className="text-sm font-bold">
+                  {order.total.toLocaleString("en-US")} {t("currency")}
+                </td>
+                <td
+                  className={`text-xs font-semibold ${order.state === "PROCESSING" ? "text-blue-500" : "text-red-500"}`}
+                >
+                  {t(order.state)}
+                </td>
               </tr>
-            )
+            );
           })}
+          {orders.length <= 13 ? (
+            " "
+          ) : (
+            <tr className="h-5 text-center">
+              <td colSpan="6">
+                <button
+                  className="bg-red-600 text-white px-5 py-1 flex  my-3 rounded-lg"
+                  onClick={() => {
+                    pageNum.current += 1;
+                    getAllProducts();
+                  }}
+                >
+                  <MdOutlineDownloading className="text-3xl" /> المزيد
+                </button>
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>

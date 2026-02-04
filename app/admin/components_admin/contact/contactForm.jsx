@@ -38,7 +38,7 @@ export default function ContactForm() {
   };
 
   const getcontactInfo = async () => {
-    const res = await getRequest("/api/admin/contact");
+    const res = await getRequest("/api/public/contact");
     setContactInfo((prev) => ({
       ...prev,
       phone: res.phone,

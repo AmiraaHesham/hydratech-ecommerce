@@ -1,5 +1,5 @@
 "use client";
-import { MdDelete, MdStar } from "react-icons/md";
+import { MdDelete, MdOutlineDownloading, MdStar } from "react-icons/md";
 import { FaCircle } from "react-icons/fa";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useLanguage } from "../../../../context/LanguageContext.js";
@@ -16,28 +16,41 @@ export default function ProductsTable() {
   const { t } = useLanguage();
   const [products, setProducts] = useState([]);
   const productTableRef = useRef();
-
+    const pageNum = useRef(0);
   const { refreshKey } = useRefresh();
   const { triggerRefresh } = useRefresh();
-  const [searchInput, setsearchInput] = useState();
   const { setSelectedProductId } = useIdContext();
   const searchInputRef = useRef();
+     const [loading, setLoading] = useState(true);
+
+
   const getAllProducts = async () => {
+
     try {
       console.log(searchInputRef.current.value);
       const response = await postRequest("/api/public/items/search", {
-        page: 0,
-        size: 10,
+        page: pageNum.current,
+        size: 15,
         searchText: searchInputRef.current.value,
       },'');
       const resProducts = response.data || [];
-      setProducts(resProducts);
-      // pagination()
-      //       console.log("Categories after set:", resProducts);
+      if(pageNum.current === 0){
+        setProducts(resProducts)
+      }
+      else(
+                  setProducts((prev) => [...prev, ...resProducts])
+      )
+    
     } catch (error) {
       console.log(error);
-    }
+    }finally {
+        setLoading(false);
+      }
+ 
   };
+ useEffect(() => {
+    getAllProducts();
+  }, [refreshKey]);
 
   const productFavorite = async (productId) => {
     await postRequest(`/api/admin/items/${productId}/favorite`, "", t("message_AddText"));
@@ -58,9 +71,6 @@ export default function ProductsTable() {
     triggerRefresh();
   };
 
-  const pagination = () => {
-    // console.log(productTableRef.current)
-  };
 
   const itemProductId = (product) => {
     let form = document.querySelector("#add-product-form");
@@ -82,9 +92,32 @@ export default function ProductsTable() {
       console.log(error);
     }
   };
-  useEffect(() => {
-    getAllProducts();
-  }, [refreshKey]);
+// const SkeletonRow = () => (
+//     <tr className="border-b">
+//       <td className="px-4 py-3">
+//         <div className="h-6 bg-gray-200 rounded animate-pulse w-24"></div>
+//       </td>
+//       <td className="px-4 py-3">
+//         <div className="h-6 bg-gray-200 rounded animate-pulse w-20"></div>
+//       </td>
+//       <td className="px-4 py-3">
+//         <div className="h-6 bg-gray-200 rounded animate-pulse w-12"></div>
+//       </td>
+//       <td className="px-4 py-3">
+//         <div className="h-6 bg-gray-200 rounded animate-pulse w-32"></div>
+//       </td>
+//       <td className="px-4 py-3">
+//         <div className="h-6 bg-gray-200 rounded animate-pulse w-28"></div>
+//       </td>
+//       <td className="px-4 py-3">
+//         <div className="h-6 bg-gray-200 rounded animate-pulse w-36"></div>
+//       </td>
+//     </tr>
+//   );
+//   const SkeletonInputSearch = () => (
+//         <div className="h-6 bg-gray-200 rounded animate-pulse w-24"></div>
+     
+//   );
   return (
     <div className="w-full">
       <div className="bg-white  border rounded-lg border-1  w-full mt-5 flex flex-row justify-between  p-3 items-center  xs:gap-4">
@@ -133,7 +166,7 @@ export default function ProductsTable() {
 
       <div
         ref={productTableRef}
-        className=" rounded-xl w-full border  h-screen mt-3 overflow-hidden xs:overflow-x-scroll lg:overflow-x-auto overflow-y-scroll "
+        className=" rounded-xl w-full border h-screen  mt-3 overflow-hidden xs:overflow-x-scroll lg:overflow-x-auto overflow-y-scroll "
       >
         <table className=" xs:w-[200%] lg:w-full">
           <thead className="bg-[#F9FAFB] text-xs text-justify">
@@ -149,8 +182,25 @@ export default function ProductsTable() {
             </tr>
           </thead>
           <tbody className="bg-white text-black text-lg w-full ">
-            {products.map((product, index) => {
-              return (
+             {loading ? (
+              // Skeleton rows
+              [...Array(9)].map((_, index) => (
+                <tr key={`skeleton-${index}`} className="border-b">
+                  <td className="px-4 py-2"><div className="h-4 bg-gray-200 rounded animate-pulse w-20"></div></td>
+                  <td className="px-4 py-2 flex items-center gap-2">
+                    <div className="h-12 bg-gray-200 rounded-lg animate-pulse w-16"></div>
+                    <div className="flex flex-col gap-2">
+                    <div  className="h-4 bg-gray-200 rounded-lg animate-pulse w-28"></div>
+                    <div  className="h-2 bg-gray-200 rounded-md animate-pulse w-20"></div>
+                    </div>
+                  </td>
+                  <td className="px-4 py-2"><div className="h-4 bg-gray-200 rounded animate-pulse w-24"></div></td>
+                  <td className="px-4 py-2"><div className="h-4 bg-gray-200 rounded animate-pulse w-24"></div></td>
+                  <td className="px-4 py-2"><div className="h-4 bg-gray-200 rounded animate-pulse w-24"></div></td>
+                  <td className="px-4 py-2"><div className="h-4 bg-gray-200 rounded animate-pulse w-16"></div></td>
+                </tr>
+              ))
+            ):(  products.map((product, index) => (
                 <tr key={index} className=" border hover:bg-gray-100  ">
                   <td>
                     <div className="flex items-center justify-center gap-3">
@@ -234,7 +284,7 @@ export default function ProductsTable() {
                     className="text-sm font-bold text-gray-600"
                     onClick={() => itemProductId(product)}
                   >
-                    {product.oldPrice?product.oldPrice.toLocaleString('en-US')+' '+'{t("currency")}':'--'} 
+                    {product.oldPrice?product.oldPrice.toLocaleString('en-US')+' '+t("currency"):'--'} 
                   </td>
                   <td>
                     <button
@@ -248,8 +298,22 @@ export default function ProductsTable() {
                     </button>
                   </td>
                 </tr>
-              );
-            })}
+              )
+            )
+         
+          )
+        }
+           
+
+          {products.length <=15 ?' ': <tr className="h-5 text-center">
+            <td colSpan="6" >
+
+              <button className="bg-red-600 text-white px-5 py-1 flex  my-3 rounded-lg" onClick={()=> {pageNum.current += 1
+                getAllProducts()
+              }}><MdOutlineDownloading className="text-3xl" /> المزيد</button>
+            </td>
+          </tr>
+            }
           </tbody>
         </table>
       </div>

@@ -4,6 +4,9 @@ import { MdDelete } from "react-icons/md";
 import { getRequest } from "../../../utils/requestsUtils";
 import { useEffect, useState } from "react";
 import { useLanguage } from "../../../context/LanguageContext";
+import { useIdContext } from "../../../context/idContext";
+import { useRouter } from "next/navigation";
+import { FaBox, FaCheck, FaShoppingBag, FaTruck } from "react-icons/fa";
 
 export default function OrderDetails({ orderId }) {
   const [order, setOrder] = useState([]);
@@ -11,9 +14,23 @@ export default function OrderDetails({ orderId }) {
   const [totalDiscount, setTotalDiscount] = useState();
   const [itemsNum, setItemsNum] = useState();
   const [createdDate, setCreatedDate] = useState();
-  const [state, setState] = useState();
+  const [state, setState] = useState(); 
+   const { setSelectedProductId } = useIdContext();
+  const navigate = useRouter();
+    const { t } = useLanguage();
+
+   const lang =
+    typeof window !== "undefined" ? localStorage.getItem("lang") : null;
+  const steps = [
+    { icon: <FaShoppingBag size={20} />, label: t("PENDING") },
+    { icon: <FaBox size={20} />, label: t("PROCESSING") },
+    { icon: <FaTruck size={20} />, label: t("SHIPPED") },
+    { icon: <FaCheck size={20} />, label: t("DELIVERED") },
+  ];
+    const [orderStepPath, setOrderStepPath] = useState();
+    const [activeStep, setActiveStep] = useState();
+
   const shappingCost = 50;
-  const { t } = useLanguage();
   const getOrder = async () => {
     const res = await getRequest(`/api/orders/${orderId}`);
     setOrder(res.orderItemLines);
@@ -27,10 +44,79 @@ export default function OrderDetails({ orderId }) {
   useEffect(() => {
     getOrder();
   }, []);
+   useEffect(() => {
+    if (state === "PENDING") {
+      setActiveStep(1);
+      setOrderStepPath(6);
+    } else if (state === "PROCESSING") {
+      setActiveStep(2);
+      setOrderStepPath(19);
+    } else if (state === "SHIPPED") {
+      setActiveStep(3);
+      setOrderStepPath(23);
+    } 
+    
+    else if(state ==='DELIVERED') {
+      setActiveStep(4);
+      setOrderStepPath(30);
+    }
+else{
+   setActiveStep(0);
+      setOrderStepPath(1);
+}
+  }, [state]);
   const date = new Date(createdDate);
   const dateOnly = date.toLocaleDateString("en-US");
   return (
     <div className="w-full h-full p-10">
+      <div className="relative flex items-center h-16 px-4 my-5">
+      <div
+        className="absolute top-1/2 left-0 right-0 h-0.5"
+        style={{
+          background: `linear-gradient(${lang === "en" ? "to right" : "to left"}, red ${activeStep * orderStepPath}%, #e0e0e0 ${activeStep * orderStepPath}%)`,
+        }}
+      ></div>
+      <div className="flex justify-between w-full relative z-10">
+        {steps.map((step, index) => (
+          <div
+            key={index}
+            className="flex flex-col items-center"
+            onClick={() => {
+              // console.log(step.l);
+              changeState(step.label);
+            }}
+          >
+            {/* الدائرة المحيطة بالأيقونة */}
+            <div
+              className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
+                index + 1 <= activeStep
+                  ? "bg-red-100 border-2 border-red-300"
+                  : "bg-gray-100 border-2 border-gray-300"
+              }`}
+            >
+              {/* الأيقونة (ملونة حسب المرحلة النشطة) */}
+              <div
+                className={
+                  index + 1 <= activeStep ? "text-red-600" : "text-gray-400"
+                }
+              >
+                {step.icon}
+              </div>
+            </div>
+            {/* العنوان تحت الأيقونة */}
+            <span
+              className={`text-xs mt-1 font-medium transition-opacity ${
+                index + 1 <= activeStep
+                  ? "text-red-600 opacity-100"
+                  : "text-gray-500 opacity-70"
+              }`}
+            >
+              {step.label}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
       <div className="flex md:flex-row xs:flex-col h-[500px] gap-7 ">
         <div className=" rounded-xl w-full  border overflow-hidden overflow-x-auto md:overflow-x-hidden overflow-y-scroll ">
           <table className="  xs:w-[200%] lg:w-full   ">
@@ -47,15 +133,21 @@ export default function OrderDetails({ orderId }) {
               {/* {order.length != 0 ? ( */}
               {order.map((product, index) => {
                 return (
-                  <tr key={index} className=" text-blue-950 border w-full">
+                  <tr key={index} className=" text-blue-950 border h-14 w-full cursor-pointer hover:bg-gray-100"
+                  onClick={()=>{
+                   setSelectedProductId(product.item.itemId);
+              navigate.push(`/user/pages/productdetails/${product.item.itemId}`);
+                  }}
+                   
+                  >
                     <td className="px-5">
                       <div className="flex orderss-center gap-3">
                         <Image
                           alt=""
                           src={`${process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL}${product.item.mainImageURL}`}
-                          width={45}
-                          height={45}
-                          className="rounded-full border my-1 p-1"
+                          width={100}
+                          height={100}
+                          className="rounded-full border w-[45px] h-[45px]  "
                         />
 
                         <div>
@@ -73,8 +165,7 @@ export default function OrderDetails({ orderId }) {
                     <td className="font-semibold text-red-500">
                       <div>
                         <span>
-                          {" "}
-                          {product.unitPrice} {t("currency")}{" "}
+                          {product.unitPrice} {t("currency")}
                         </span>
 
                         {product.oldUnitPrice ? (
@@ -126,10 +217,7 @@ export default function OrderDetails({ orderId }) {
               <span className="text-gray-600"> {t('createdDate')}</span>
               <span className="font-semibold">{dateOnly}</span>
             </div>
-            <div className="flex justify-between orderss-center mb-5">
-              <span className="text-gray-600"> {t("state")} </span>
-              <span className="font-semibold">{state} </span>
-            </div>
+          
             <div className="flex justify-between orderss-center mb-5">
               <span className="text-gray-600">
                 {t("totalProducts") + " " + itemsNum}

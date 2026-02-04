@@ -20,10 +20,16 @@ export default function UpdateStatus({ orderId }) {
     } else if (selectedOrderState === "SHIPPED") {
       setActiveStep(3);
       setOrderStepPath(23);
-    } else {
+    } 
+    
+    else if(selectedOrderState ==='DELIVERED') {
       setActiveStep(4);
       setOrderStepPath(30);
     }
+else{
+   setActiveStep(0);
+      setOrderStepPath(1);
+}
   }, [selectedOrderState]);
 
   const lang =

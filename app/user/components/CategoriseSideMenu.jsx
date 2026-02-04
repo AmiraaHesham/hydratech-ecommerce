@@ -8,7 +8,7 @@ import { BsList } from "react-icons/bs";
 
 export default function CategoriesSideMenu() {
   const { t } = useLanguage();
-  const { setSelectedCategoryId } = useIdContext();
+  const {selectedCategoryId, setSelectedCategoryId } = useIdContext();
 
   const [categoriesList, setCategoriesList] = useState([]);
   const categories = async () => {
@@ -34,7 +34,7 @@ export default function CategoriesSideMenu() {
             return (
               <div
                 key={category.itemCategoryId}
-                className={`flex gap-4 mx-3 xs:justify-center md:justify-start  items-center p-3 rounded-md cursor-pointer hover:bg-red-100 hover:text-red-500 `}
+                className={`flex gap-4 mx-3 xs:justify-center md:justify-start  items-center p-3 rounded-md cursor-pointer hover:bg-red-100 hover:text-red-500 ${selectedCategoryId === category.itemCategoryId ? 'bg-red-100 text-red-500':''}`}
                 onClick={() => {
                   setSelectedCategoryId(category.itemCategoryId);
                 }}

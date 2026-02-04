@@ -1,29 +1,25 @@
 "use client";
-import { MdAddBox, MdDelete } from "react-icons/md";
-import { BiSolidEdit } from "react-icons/bi";
-
 import Image from "next/image";
 import { FaPlus } from "react-icons/fa";
 import { useIdContext } from "../../../../context/idContext";
 import { useRefresh } from "../../../../context/refreshContext";
 import { useLanguage } from "../../../../context/LanguageContext.js";
 import { deleteRequest, getRequest } from "../../../../utils/requestsUtils.js";
-import { useEffect, useState, useCallback } from "react";
-import { getCategories } from "../../../../utils/functions";
+import { useEffect, useState } from "react";
+import { MdDelete } from "react-icons/md";
 
 export default function CategorysTable() {
   const { t } = useLanguage();
   const { triggerRefresh } = useRefresh();
-
   const { setSelectedCategoryId } = useIdContext();
   const { refreshKey } = useRefresh();
-
   let [itemCategory, setItemCategory] = useState([]);
 
   const getAllCategories = async () => {
     const resData = await getRequest('/api/admin/itemCategory/getCategoryWithItemCounts');
     setItemCategory(resData);
     console.log(process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL)
+
   };
 
   const itemCategoryId = (category) => {

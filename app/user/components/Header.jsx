@@ -11,6 +11,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaHeart } from "react-icons/fa";
 import { RiShoppingBag4Fill } from "react-icons/ri";
+import { postRequest } from "../../../utils/requestsUtils";
 
 export default function Header() {
   const { t } = useLanguage();
@@ -23,7 +24,9 @@ export default function Header() {
   const { locale, setLocale } = useLanguage();
   const [ username, setUsername ] = useState();
 
-  
+  const changeLanguage=async()=>{
+    const response = await postRequest()
+  }
   useEffect(() => {
 const username =
    typeof window !== 'undefined'? localStorage.getItem("firstName") + " " + localStorage.getItem("lastName"):'';

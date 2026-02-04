@@ -149,6 +149,8 @@ export default function Profile() {
                     type="text"
                     value={firstName}
                     className="bg-slate-50 outline-none  p-2 rounded-lg border "
+                                        onChange={(e)=>setFirstName(e.target.value)}
+
                   />
                 </div>
                 <div className="flex flex-col gap-3">
@@ -159,6 +161,7 @@ export default function Profile() {
                     type="text"
                     value={lastName}
                     className="bg-slate-50 outline-none  p-2 rounded-lg border "
+                    onChange={(e)=>setLastName(e.target.value)}
                   />
                 </div>
                 {/* <div className="flex flex-col gap-3">
@@ -179,6 +182,8 @@ export default function Profile() {
                     type="text"
                     value={phone}
                     className="bg-slate-50 p- outline-none p-2 rounded-lg border "
+                                        onChange={(e)=>setPhone(e.target.value)}
+
                   />
                 </div>
                 <div className="flex flex-col gap-3">
@@ -189,6 +194,8 @@ export default function Profile() {
                     type="text"
                     value={address}
                     className="bg-slate-50  outline-none p-2 rounded-lg border "
+                                        onChange={(e)=>setAddress(e.target.value)}
+
                   />
                 </div>
               </div>

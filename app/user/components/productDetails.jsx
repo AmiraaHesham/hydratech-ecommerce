@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { postRequest } from "../../../utils/requestsUtils";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { useLanguage } from "@/context/LanguageContext";
+import { useLanguage } from "../../../context/LanguageContext";
 export default function ProductDetails({itemId}) {
   const [count, setCount] = useState(1);
   const { setSelectedCategoryId } = useIdContext();
@@ -18,6 +18,7 @@ export default function ProductDetails({itemId}) {
     nameEn: "",
     nameAr: "",
     price: 0,
+    oldPrice: 0,
     descriptionAr: "",
     descriptionEn: "",
     category: {
@@ -41,6 +42,7 @@ export default function ProductDetails({itemId}) {
       nameAr: res.nameAr,
       code: res.code,
       price: res.price,
+      oldPrice: res.oldPrice,
       descriptionAr: res.descriptionAr,
       descriptionEn: res.descriptionEn,
       mainImage: process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL + res.mainImageURL,
@@ -63,7 +65,7 @@ export default function ProductDetails({itemId}) {
         itemId: itemId,
         quantity: count,
       },
-      "",
+      
     );
   };
   //  const changeQuantity = async () => {
@@ -129,7 +131,7 @@ export default function ProductDetails({itemId}) {
           <div>
             <div className="flex justify-between items-start">
               <span>
-                <h1 className="text-4xl font-Cairo font-bold">
+                <h1 className="text-xl font-semibold">
                   {localStorage.lang === "ar" ? product.nameAr : product.nameEn}
                 </h1>
                 <h1 className=" text-gray-500 mt-2  text-sm">
@@ -140,7 +142,7 @@ export default function ProductDetails({itemId}) {
                 className="text-red-600 cursor-pointer hover:shadow-sm hover:shadow-red-700 px-4 rounded-md  "
                 onClick={() => {
                   setSelectedCategoryId(product.category.id);
-                  navigate.push("/user/pages/search");
+                  navigate.push("/user/search");
                 }}
               >
                 {localStorage.lang === "ar" ?product.category.nameAr:product.category.nameEn}
@@ -154,13 +156,26 @@ export default function ProductDetails({itemId}) {
               ? product.descriptionAr
               : product.descriptionEn}
           </span>
-          <div className="flex items-center gap-3">
-            <span className="text-gray-400 text-xl line-through">
-              {product.price +' ' +t("currency")}
+          <div className="flex flex-col  gap-3">
+           
+<div className="flex items-center gap-2"> 
+  
+  <span className="text-3xl text-red-600 font-semibold  ">   
+              {product.price.toLocaleString('en-US') +' '+ t("currency")}
             </span>
-
-            <span className="text-3xl text-red-600 font-semibold">
-              {product.price +' ' + t("currency")}
+   {product.oldPrice ? (
+              <span className=" font-semibold mt-3  bg-green-600 px-1 text-white rounded-md">
+                {(
+                  ((product.oldPrice - product.price) /product.oldPrice) * 100 ).toFixed(0)}%
+              </span>
+            ) : (
+              ""
+            )}
+    
+</div>
+          
+             <span className="text-gray-400 text-xl line-through">
+              {product.oldPrice ? product.oldPrice.toLocaleString('en-US') +' '+t("currency"):''}
             </span>
           </div>
           <div className="flex  items-center gap-4 h-10 ">

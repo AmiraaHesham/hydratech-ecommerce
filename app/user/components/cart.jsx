@@ -63,7 +63,7 @@ export default function Cart() {
         getProductInCart();
       } else {
         const res = await postRequest(`/api/orders/${userId}/placeOrder`);
-        navigate.push("/user/pages/ordershistory");
+        navigate.push("/user/ordershistory");
         console.log(res);
       }
       setIsFirstAction(!isFirstAction);

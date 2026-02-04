@@ -57,9 +57,14 @@ if(res.success === true){
     localStorage.lang === "ar"
       ? productInfo.descriptionAr
       : productInfo.descriptionEn;
+
+      const productName =  localStorage.lang === "ar"
+                ? productInfo.nameAr
+                : productInfo.nameEn
+
   return (
     // <div className="h-full w-full border rounded-md bg-white flex justify-center py-2  cursor-pointer duration-300 hover:scale-105 ">
-    <div id={`div_${productInfo.itemId}`} className="h-[310px] bg-white border rounded-md" >
+    <div id={`div_${productInfo.itemId}`} className="h-[320px] bg-white border rounded-md" >
       <div className="">
         <Image
           src={`${process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL}${
@@ -77,6 +82,7 @@ if(res.success === true){
         />
         <div className="px-3">
           <div className="flex justify-between items-center">
+            <div>
             <h1
               className="my-3 text-sm font-semibold"
               onClick={() => {
@@ -86,10 +92,18 @@ if(res.success === true){
                 );
               }}
             >
-              {localStorage.lang === "ar"
-                ? productInfo.nameAr
-                : productInfo.nameEn}
+              {productName.length <= 20
+              ? productName
+              : productName.slice(0, 20) + " ..."}
             </h1>
+                {/* <div className="absolute bottom-full left-0  
+                  hidden group-hover:block 
+                  bg-white text-gray-800 text-sm rounded-lg 
+                  shadow-lg border border-gray-200
+                  p-3 w-64
+                  z-50">
+{describtion}  </div> */}
+</div>
             <span
               id={`btn_fov_${productInfo.itemId}`}
               className={`${productInfo.favorite === true ? "text-gray-400 " : "text-red-600 "}rounded-full`}
@@ -112,28 +126,39 @@ if(res.success === true){
               <FaHeart />
             </span>
           </div>
+          <div className="group relative inline-block">
+
           <h1
-            className="text-sm text-gray-400 "
+            className="text-sm text-gray-400 truncat"
             onClick={() => {
               setSelectedProductId(productInfo.itemId);
               navigate.push(`/user/pages/productdetails/${productInfo.itemId}`);
             }}
+            // title={describtion}
           >
             {describtion.length <= 50
               ? describtion
               : describtion.slice(0, 50) + " ..."}
           </h1>
+         {/* <div className="absolute bottom-full left-0  
+                  hidden group-hover:block 
+                  bg-white text-gray-800 text-sm rounded-lg 
+                  shadow-lg border border-gray-200
+                  p-3 w-64
+                  z-50">
+{describtion}  </div> */}
         </div>
       </div>
+      </div>
 
-      <div className="flex justify-between items-center mt-2 px-3"
-       onClick={() => {
+      <div className="flex justify-between items-center mt-2 px-3">
+        <div className="flex flex-col my-2"
+         onClick={() => {
                 setSelectedProductId(productInfo.itemId);
                 navigate.push(
                   `/user/pages/productdetails/${productInfo.itemId}`,
                 );
               }}>
-        <div className="flex flex-col my-2">
           {productInfo.oldPrice ? (
             <div className="flex gap-2">
               <span className=" font-semibold line-through text-sm flex text-gray-400">
@@ -148,7 +173,7 @@ if(res.success === true){
               {productInfo.price} {t("currency")}
             </span>
             {productInfo.oldPrice ? (
-              <span className=" font-semibold flex bg-green-600 text-sm px-1 text-white rounded-md">
+              <span className=" font-semibold  text-center bg-green-600 text-sm px-1 text-white rounded-md">
                 {(
                   ((productInfo.oldPrice - productInfo.price) /
                     productInfo.oldPrice) *

@@ -9,46 +9,61 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { useLanguage } from "../../../context/LanguageContext";
 import { useRouter } from "next/navigation";
+import { useIdContext } from "../../../context/idContext";
 export default function OrdersHistory() {
-  const {t} = useLanguage()
+  const { t } = useLanguage();
   const [orders, setOrders] = useState([]);
   const [inputSearch, setInputSearch] = useState(null);
-  const [state, setState] = useState(null);
-  const [length, setLength] = useState();
-    const navigate = useRouter();
-
+  const [state, setState] = useState("");
+  const [loading, setLoading] = useState(true);
+  const navigate = useRouter();
+  const { setSelectedProductId } = useIdContext();
+   useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: false,
+    });
+    getOrders();
+  }, [state, inputSearch]);
   const getOrders = async () => {
-    const res = await postRequest(
+    try{
+       const res = await postRequest(
       "/api/orders/search",
       {
         page: 0,
         size: 100,
         searchText: inputSearch,
-        orderState:state
+        orderState: state,
       },
       "",
     );
     console.log(res.data);
     setOrders(res.data);
     // setLength(res.data.length)
-
+    }
+    catch(error){
+      console.log(error)
+    }
+    finally{
+      setLoading(false)
+    }
+   
   };
 
   useEffect(() => {
-
     AOS.init({
       duration: 1000,
       once: false,
     });
     getOrders();
-  }, []);
+  }, [state, inputSearch]);
   return (
-    <div data-aos="fade-up" >
+    <div data-aos="fade-up">
       <div className="flex justify-between items-center  mb-16">
         <div className="flex flex-col gap-2">
-          <span className="text-3xl font-bold">{t('orderHistory')} </span>
+          <span className="text-3xl font-bold">{t("orderHistory")} </span>
           <span className=" text-gray-500 opacity-90">
-            {t('trackAndManage')}
+            {t("trackAndManage")}
           </span>
         </div>
         <div className="flex justify-start items-center bg-white border rounded-md">
@@ -57,12 +72,11 @@ export default function OrdersHistory() {
           </span>
           <input
             type="text"
-            placeholder= {t("searchByOrderNumber")}
-            onChange={(e) => setInputSearch(e.target.value)}
+            placeholder={t("searchByOrderNumber")}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 e.preventDefault();
-                getOrders();
+                setInputSearch(e.target.value);
               }
             }}
             className="w-[300px] bg-none p-2 outline-none rounded-lg"
@@ -70,128 +84,180 @@ export default function OrdersHistory() {
         </div>
       </div>
       <div className="relative">
-        <div className="flex gap-10 text-lg items-center  text-gray-500">
+        <div className="flex gap-10 text-lg items-center  ">
           <span
-            className="text-red-600 border-b hover:text-red-600 hover:border-red-600 border-red-600 py-4 cursor-pointer "
-            onClick={() => {
-              setState(null);
-              getOrders();
-            }}
-          >
-           {t('allOrders')}
-          </span>
-          <span
-            className=" border-b hover:text-red-600 hover:border-red-600 py-4 cursor-pointer"
-            onClick={() => {
-              setState("PENDING");
-              getOrders();
-            }}
-          >
-           {t('pending')}
-          </span>
-          <span
-            className=" border-b hover:text-red-600 hover:border-red-600 py-4 cursor-pointer"
-            onClick={() => {
-              setState("PROCESSING");
-              getOrders();
-            }}
-          >
-         {t('processing')}
-                   </span>
-          <span
-            className="border-b hover:text-red-600 hover:border-red-600 py-4 cursor-pointer"
-            onClick={() => {
-              setState("SHIPPED");
-              getOrders();
-            }}
-          >
-           {t('shipped')}
-          </span>
-          <span
-            className=" border-b hover:text-red-600 hover:border-red-600 py-4 cursor-pointer "
+            className={` border-b hover:text-red-600 hover:border-red-600 py-4 cursor-pointer 
+               ${state === "" ? "text-red-600 border-red-600" : "text-gray-500"}
+              `}
             onClick={() => {
               setState("");
-              getOrders();
             }}
           >
-           {t('delivered')}
+            {t("allOrders")}
+          </span>
+          <span
+            className={`border-b hover:text-red-600 hover:border-red-600 py-4 cursor-pointer
+               ${state === "PENDING" ? "text-red-600 border-red-600" : "text-gray-500"}
+              `}
+            onClick={() => {
+              setState("PENDING");
+            }}
+          >
+            {t("PENDING")}
+          </span>
+          <span
+            className={`border-b hover:text-red-600 hover:border-red-600 py-4 cursor-pointer 
+               ${state === "PROCESSING" ? "text-red-600 border-red-600" : "text-gray-500"}
+              `}
+            onClick={() => {
+              setState("PROCESSING");
+            }}
+          >
+            {t("PROCESSING")}
+          </span>
+          <span
+            className={`border-b hover:text-red-600 hover:border-red-600 py-4 cursor-pointer
+            ${state === "SHIPPED" ? "text-red-600 hover border-red-600" : "text-gray-500"}  
+            `}
+            onClick={() => {
+              setState("SHIPPED");
+            }}
+          >
+            {t("SHIPPED")}
+          </span>
+          <span
+            className={` border-b hover:text-red-600 hover:border-red-600 py-4 cursor-pointer 
+              ${state === "DELIVERED" ? "text-red-600 border-red-600" : "text-gray-500"}
+              `}
+            onClick={() => {
+              setState("DELIVERED");
+            }}
+          >
+            {t("DELIVERED")}
           </span>
         </div>
         <hr className=""></hr>
       </div>
-      <div className="py-5 flex flex-col gap-5">
-        {orders.map((order, index) => {
-          return (
-            <div
-              key={index}
-              className="w-full bg-white   rounded-md shadow-sm p-5"
-              onClick={()=>{
- navigate.push(`/user/orderdetails/${order.orderId}`);              }}
-            >
-              <div className="flex justify-between">
-                <div className="flex items-center gap-5">
-                  <span className="p-1 text-sm text-gray-700 rounded-md font-semibold bg-gray-100">
-                    {order.code}
-                  </span>
-                  <span className="p-1 text-sm text-gray-700 rounded-md font-semibold flex  items-center gap-2">
-                    <FaRegCalendar /> 12-1-2023
-                  </span>
-                  <span className={`flex items-center ${order.state === "PROCESSING" ? 'text-blue-600':' text-red-600 '} `}>
-                    <VscCircleFilled />
-                    {t(order.state)}
-                  </span>
+      {loading ? (
+        // Skeleton rows
+        [...Array(2)].map((_, index) => (
+          <div key={`skeleton-${index}`} className="py-5 flex flex-col gap-5">
+            <div className="w-full bg-white   rounded-md shadow-sm p-5">
+ <div className="flex justify-between">
+                  <div className="flex items-center gap-5">
+                    <span className="h-4 bg-gray-200 rounded animate-pulse w-24">
+                    </span>
+                    <span className="h-4 bg-gray-200 rounded animate-pulse w-24">
+                    </span>
+                    <span className="h-4 bg-gray-200 rounded animate-pulse w-24"></span>
+                  </div>
+                  <div className="h-4 bg-gray-200 rounded animate-pulse w-24">
+                    
+                  </div>
                 </div>
-                <div className="flex items-center gap-1 mx-5">
-                  <span className=" text-gray-600">الإجمالي: </span>
-                  <span className="text-xl font-semibold">
-                    {order.total} {t("currency")}
-                  </span>
+ <div className="flex justify-between ">
+                  <div className="mt-10 grid grid-cols-3 gap-x-10 gap-y-5 w-[80%]">
+                     <div className="h-16 bg-gray-200 rounded animate-pulse "></div>
+                     <div className=" h-16 bg-gray-200 rounded animate-pulse "></div>
+                     <div className="h-16 bg-gray-200 rounded animate-pulse "></div>
+                  </div>
+                  <div className="h-10 bg-gray-200 rounded animate-pulse w-full"></div>
+                  </div>
+            </div>
+          </div>
+        ))
+      ) : (
+        <div className="py-5 flex flex-col gap-5">
+          {orders.map((order, index) => {
+            const date = new Date(order.createdDate);
+            const dateOnly = date.toLocaleDateString("en-US");
+            return (
+              <div
+                key={index}
+                className="w-full bg-white   rounded-md shadow-sm p-5"
+              >
+                <div className="flex justify-between">
+                  <div className="flex items-center gap-5">
+                    <span className="p-1 text-sm text-gray-700 rounded-md font-semibold bg-gray-100">
+                      {order.code}
+                    </span>
+                    <span className="p-1 text-sm text-gray-700 rounded-md font-semibold flex  items-center gap-2">
+                      <FaRegCalendar /> {dateOnly}
+                    </span>
+                    <span
+                      className={`flex items-center ${order.state === "PROCESSING" ? "text-blue-600" : order.state === "PENDING" ? " text-red-600" : order.state === "SHIPPED" ? "text-yellow-600" : "text-green-600"} `}
+                    >
+                      <VscCircleFilled />
+                      {t(order.state)}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1 mx-5">
+                    <span className=" text-gray-600">{t("Total")}: </span>
+                    <span className="text-xl font-semibold">
+                      {order.total} {t("currency")}
+                    </span>
+                  </div>
                 </div>
-              </div>
-              <div className="flex justify-between items-center">
-                <div className="mt-10 grid grid-cols-3 gap-x-10 gap-y-5 w-[80%]">
-                  {order.orderItemLines.map((itemLine, index) => {
-                    return (
-                      <div
-                        className="bg-gray-50 p-2 rounded-md flex items-center gap-5"
-                        key={index}
-                      >
-                        <Image
-                          src={
-                            process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL +
-                            itemLine.item.mainImageURL
-                          }
-                          alt=""
-                          width={50}
-                          height={50}
-                          className="rounded-md"
-                        />
-                        <div className="flex flex-col">
-                          <span className="">{localStorage.lang == 'ar'?itemLine.item.nameAr:itemLine.item.nameEn}</span>
-                          <div className="flex gap-5 mt-2">
-                            <span className="text-gray-500 text-sm ">
-                             {t('code')} : {itemLine.item.code}
+                <div className="flex justify-between ">
+                  <div className="mt-10 grid grid-cols-3 gap-x-10 gap-y-5 w-[80%]">
+                    {order.orderItemLines.map((itemLine, index) => {
+                      return (
+                        <div
+                          className="bg-gray-50 p-2 rounded-md flex items-center gap-5 cursor-pointer"
+                          key={index}
+                          onClick={() => {
+                            setSelectedProductId(itemLine.item.itemId);
+                            navigate.push(
+                              `/user/pages/productdetails/${itemLine.item.itemId}`,
+                            );
+                          }}
+                        >
+                          <Image
+                            src={
+                              process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL +
+                              itemLine.item.mainImageURL
+                            }
+                            alt=""
+                            width={100}
+                            height={100}
+                            className="rounded-md w-[50px] h-[50px]"
+                          />
+                          <div className="flex flex-col">
+                            <span className="">
+                              {localStorage.lang == "ar"
+                                ? itemLine.item.nameAr
+                                : itemLine.item.nameEn}
                             </span>
-                            <span className="text-gray-500 text-sm ">
-                             {t('quantity')} : {itemLine.quantity}
-                            </span>
+                            <div className="flex gap-5 mt-2">
+                              <span className="text-gray-500 text-sm ">
+                                {t("code")} : {itemLine.item.code}
+                              </span>
+                              <span className="text-gray-500 text-sm ">
+                                {t("quantity")} : {itemLine.quantity}
+                              </span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    );
-                  })}
-                </div>
+                      );
+                    })}
+                  </div>
 
-                {/* <div className="w-[200px] mx-5 mt-10">
-                  <button className="p-2 bg-red-600 text-white rounded-md hover:bg-red-700 w-full">
-                    تتبع الشحنة
-                  </button>
-                </div> */}
+                  <div
+                    className="w-[200px] mx-5 mt-10"
+                    onClick={() => {
+                      navigate.push(`/user/orderdetails/${order.orderId}`);
+                    }}
+                  >
+                    <button className="p-2 bg-red-600 text-white rounded-md hover:bg-red-700 w-full">
+                      تفاصيل الطلب
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
