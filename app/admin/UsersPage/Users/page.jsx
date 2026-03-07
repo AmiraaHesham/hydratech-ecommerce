@@ -6,19 +6,13 @@ import Image from "next/image";
 export default function UsersPage() {
 
   return (
-    <div className="h-full bg-[#F9FAFB]">
-      <main className=" flex border  ">
-        <SideMenu users={"bg-red-100 text-red-500"} />
-        <div className="w-full bg-[#F9FAFB]  h-full">
-          <Header page_title={"Users Management"} />
-          <div className="flex w-full flex-col justify-center  items-center  relative">
-            <div className="w-[90%] mt-3 ">
+    <div className=" bg-[#F9FAFB]">
+      
+            <div className="w-full relative p-5 ">
               <Users_Table />
             </div>
           </div>
-        </div>
-      </main>
-    </div>
+
   );
 // }
 //    else{

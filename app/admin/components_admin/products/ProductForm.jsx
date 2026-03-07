@@ -92,6 +92,7 @@ export default function FormProduct() {
     formData.append("nameAr", product.nameAr);
     formData.append("code", product.code);
     formData.append("price", product.price);
+    formData.append("oldPrice", product.oldPrice);
     formData.append("descriptionAr", product.descriptionAr);
     formData.append("descriptionEn", product.descriptionEn);
     formData.append("favorite", enabledFavorite);
@@ -99,25 +100,27 @@ export default function FormProduct() {
     formData.append("itemCategoryId", product.category.id);
     formData.append("mainImage", product.mainImagefile);
     // formData.append("itemImages", [product.img2file, product.img3file]);
-    console.log(formData);
+    // console.log(formData);
 
     await postRequest("/api/admin/items", formData, t("message_AddText"));
     triggerRefresh();
-    setProduct({
-      nameEn: "",
-      nameAr: "",
-      price: 0,
-      oldPrice: 0,
-      descriptionAr: "",
-      descriptionEn: "",
-      category: { id: 0, nameAr: "", nameEn: "" },
-      code: "",
-      mainImage: "",
-      img2: "",
-      img3: "",
-    });
-    setProduct((prev) => ({ ...prev, enabledActive: false }));
-    setProduct((prev) => ({ ...prev, enabledActive: true }));
+    selectedProductId=== null
+
+    // setProduct({
+    //   nameEn: "",
+    //   nameAr: "",
+    //   price: 0,
+    //   oldPrice: 0,
+    //   descriptionAr: "",
+    //   descriptionEn: "",
+    //   category: { id: 0, nameAr: "", nameEn: "" },
+    //   code: "",
+    //   mainImage: "",
+    //   img2: "",
+    //   img3: "",
+    // });
+    // setProduct((prev) => ({ ...prev, enabledActive: false }));
+    // setProduct((prev) => ({ ...prev, enabledActive: true }));
   };
   const productData = useCallback(async () => {
     if (selectedProductId != null) {
@@ -165,17 +168,20 @@ export default function FormProduct() {
         img2: "",
         img3: "",
         category: { id: 0, nameAr: "", nameEn: "" },
-      }));
+      }
+      
+    ));
+       const labelUpload = document.querySelector(`#label-mainImage`);
+      labelUpload.classList.remove("hidden");
+    const labelImg = document.querySelector(`#mainImage`);
+      labelImg.classList.add("hidden");
+
+      const deleteImg = document.querySelector(`#delete-mainImage`);
+      deleteImg.classList.add("hidden");
+    
       setenabledFavorite(false);
       setenabledActive(true);
-      const labelsUpload = document.querySelectorAll(
-        "#label-mainImage",
-        "#label-img2",
-        "#label-img3",
-      );
-      // labelsUpload.forEach((e) => {
-      //   e.style.display = "flex";
-      // });
+   
     }
   }, [selectedProductId]);
 
@@ -203,23 +209,8 @@ export default function FormProduct() {
       t("message_EditText"),
     );
     triggerRefresh();
-
-    setProduct((prev) => ({
-      ...prev,
-      nameEn: "",
-      nameAr: "",
-      code: "",
-      price: 0,
-      oldPrice: 0,
-      descriptionAr: "",
-      descriptionEn: "",
-      mainImage: "",
-      img2: "",
-      img3: "",
-      category: { id: 0, nameAr: "", nameEn: "" },
-    }));
-    setenabledFavorite(false);
-    setenabledActive(true);
+selectedProductId=== null
+  
     const oldPrice = document.querySelector('#oldPrice')
       oldPrice.classList.remove('border-red-600')
     }

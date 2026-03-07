@@ -9,10 +9,13 @@ import { postRequest } from "../../../utils/requestsUtils";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useLanguage } from "../../../context/LanguageContext";
+import Swal from "sweetalert2";
 export default function ProductDetails({itemId}) {
   const [count, setCount] = useState(1);
   const { setSelectedCategoryId } = useIdContext();
   const navigate = useRouter();
+    const [loading, setLoading] = useState(true);
+
   const {t}= useLanguage()
   const [product, setProduct] = useState({
     nameEn: "",
@@ -35,7 +38,8 @@ export default function ProductDetails({itemId}) {
     img3file: "",
   });
   const productDetails = async () => {
-    const res = await getProductDetails(itemId);
+    try{
+       const res = await getProductDetails(itemId);
     setProduct((prev) => ({
       ...prev,
       nameEn: res.nameEn,
@@ -55,29 +59,49 @@ export default function ProductDetails({itemId}) {
         nameEn: res.itemCategory.nameEn,
       },
     }));
+          setLoading(false)
+
+    }
+    catch(error){
+      console.log(error)
+            setLoading(true)
+
+    }
+    finally{
+    }
+   
   };
-    const userId = localStorage.id;
+    const userId = typeof window !== "undefined" ?  localStorage.id:'';
 
   const addToCart = async () => {
-   const res =  await postRequest(
+     await postRequest(
       `/api/shopCarts/${userId}/addLine`,
       {
         itemId: itemId,
         quantity: count,
-      },
-      
+      },'' 
     );
+    const result = await Swal.fire({
+                  icon: "success",
+                  title: t('تم إضافة المنتج الى سلة التسوق'),
+                  showCancelButton: true,
+                  confirmButtonText: localStorage.lang === "ar" ? " إتمام  الشراء " : "Yes",
+                  cancelButtonText: t('continueShopping'),
+                  customClass: {
+                    popup: "rounded-xl shadow-lg border border-gray-200 p-6",
+                    title: "text-xl font-bold text-gray-800 mb-2",
+                    content: "text-sm text-gray-600 mb-4",
+                    confirmButton:
+                      "bg-red-600 hover:bg-red-500 text-white font-medium px-6 py-2 rounded-lg",
+                    cancelButton:
+                      "bg-gray-500 hover:bg-gray-400 text-w  font-medium px-6 py-2 rounded-lg ml-2",
+                  },
+                });
+                if (result.isConfirmed) {
+                  navigate.push('/user/cart')
+                }
   };
-  //  const changeQuantity = async () => {
-  //   await postRequest(
-  //     `/api/shopCarts/${userId}/changeQuantity`,
-  //     {
-  //       itemLineId: itemLineId,
-  //       quantity: count,
-  //     },
-  //     "",
-  //   );
-  // };
+
   useEffect(() => {
     AOS.init({
       duration: 1000,
@@ -86,17 +110,38 @@ export default function ProductDetails({itemId}) {
     productDetails();
   }, []);
   return (
-    <div data-aos="fade-up" className=" h-full mb-28">
-      <div className="flex h-[500px] gap-10 py-10 mx-10 ">
-        <div className="w-full h-full">
-          <div className="w-full h-full flex justify-center items-center  rounded-md ">
+    <div data-aos="fade-up" className=" ">
+       {loading ? (
+        // Skeleton rows
+        [...Array(1)].map((_, index) => (
+       <div key={`skeleton-${index}`} className="flex  gap-10 py-10 mx-10 ">
+        <div className="w-full h-[600px]">
+          <div className="w-full h-[500px] flex justify-center items-center  bg-gray-200 rounded animate-pulse">
+          </div>
+          <div className="flex justify-stretch items-center gap-4 mt-5 ">
+           <div className="h-[100px] w-[100px] bg-gray-200 rounded animate-pulse "></div>
+                       <div className="h-[100px] w-[100px] bg-gray-200 rounded animate-pulse "></div>
+
+                      <div className="h-[100px] w-[100px] bg-gray-200 rounded animate-pulse "></div>
+
+          </div>
+        </div>
+
+        <div className="flex py-5 flex-col w-full justify-between h-[500px] items-center  bg-gray-200 rounded animate-pulse">
+            </div>
+      </div>
+        ))
+      ) : (
+      <div className="flex  gap-10 py-10 mx-10 ">
+        <div className="w-full h-[600px] ">
+          <div className="w-full h-[500px] flex justify-center   rounded-md ">
             <Image
               src={product.mainImage}
               alt="mainImage"
               width={500}
               height={500}
               priority
-              className="w-full border rounded-md h-full shadow-md"
+              className="w-full border rounded-md shadow-md"
             />
           </div>
           <div className="flex  items-center gap-4 mt-5 ">
@@ -127,7 +172,7 @@ export default function ProductDetails({itemId}) {
           </div>
         </div>
 
-        <div className="flex py-5 flex-col w-full justify-between bg-white  px-5 border rounded-md shadow-md">
+        <div className="flex py-5 flex-col w-full h-[500px] justify-between bg-white  px-5 border rounded-md shadow-md">
           <div>
             <div className="flex justify-between items-start">
               <span>
@@ -157,7 +202,9 @@ export default function ProductDetails({itemId}) {
               : product.descriptionEn}
           </span>
           <div className="flex flex-col  gap-3">
-           
+             <span className="text-gray-400 text-xl line-through">
+              {product.oldPrice ? product.oldPrice.toLocaleString('en-US') +' '+t("currency"):''}
+            </span>
 <div className="flex items-center gap-2"> 
   
   <span className="text-3xl text-red-600 font-semibold  ">   
@@ -174,13 +221,11 @@ export default function ProductDetails({itemId}) {
     
 </div>
           
-             <span className="text-gray-400 text-xl line-through">
-              {product.oldPrice ? product.oldPrice.toLocaleString('en-US') +' '+t("currency"):''}
-            </span>
+           
           </div>
           <div className="flex  items-center gap-4 h-10 ">
             <button
-              className=" w-[70%] h-full rounded-md text-white text-lg flex  justify-center items-center gap-3 bg-red-600"
+              className=" w-[70%] h-full rounded-md text-white text-lg flex  justify-center items-center gap-3 bg-red-600 hover:bg-red-700 hover:scale-105 duration-200 "
               onClick={addToCart}
             >
              {t('addToCart')}<MdOutlineAddShoppingCart />
@@ -213,7 +258,7 @@ export default function ProductDetails({itemId}) {
             </div>
           </div>
         </div>
-      </div>
+      </div>)}
     </div>
   );
 }

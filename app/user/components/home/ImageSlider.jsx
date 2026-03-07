@@ -7,7 +7,7 @@ import "swiper/css/pagination";
 import Image from "next/image";
 
 export default function ImageSlider({ sliderImages }) {
-  const lang = localStorage.getItem("lang") || "ar";
+  const lang =typeof window !== 'undefined'?  localStorage.getItem("lang") : "ar";
   return (
     <div className=" my-10 md:px-10 xs:px-0">
       <Swiper

@@ -40,13 +40,16 @@ export default function OrdersHistory() {
     console.log(res.data);
     setOrders(res.data);
     // setLength(res.data.length)
+          setLoading(false)
+
     }
     catch(error){
       console.log(error)
+            setLoading(true)
+
     }
-    finally{
-      setLoading(false)
-    }
+    // finally{
+    // }
    
   };
 
@@ -59,7 +62,7 @@ export default function OrdersHistory() {
   }, [state, inputSearch]);
   return (
     <div data-aos="fade-up">
-      <div className="flex justify-between items-center  mb-16">
+      <div className="md:flex xs:block justify-between  items-center  mb-16">
         <div className="flex flex-col gap-2">
           <span className="text-3xl font-bold">{t("orderHistory")} </span>
           <span className=" text-gray-500 opacity-90">
@@ -84,7 +87,7 @@ export default function OrdersHistory() {
         </div>
       </div>
       <div className="relative">
-        <div className="flex gap-10 text-lg items-center  ">
+        <div className="flex gap-8 md:text-lg xs:text-sm items-center  ">
           <span
             className={` border-b hover:text-red-600 hover:border-red-600 py-4 cursor-pointer 
                ${state === "" ? "text-red-600 border-red-600" : "text-gray-500"}
@@ -155,18 +158,19 @@ export default function OrdersHistory() {
                     
                   </div>
                 </div>
- <div className="flex justify-between ">
+ <div className="flex justify-between items-center ">
                   <div className="mt-10 grid grid-cols-3 gap-x-10 gap-y-5 w-[80%]">
                      <div className="h-16 bg-gray-200 rounded animate-pulse "></div>
                      <div className=" h-16 bg-gray-200 rounded animate-pulse "></div>
                      <div className="h-16 bg-gray-200 rounded animate-pulse "></div>
                   </div>
-                  <div className="h-10 bg-gray-200 rounded animate-pulse w-full"></div>
+                  <div className="h-10 bg-gray-200 rounded animate-pulse w-[200px] mx-5"></div>
                   </div>
             </div>
           </div>
         ))
-      ) : (
+      ) : (        orders.length === 0 ?<div className="w-full h-[400px]"></div>:
+
         <div className="py-5 flex flex-col gap-5">
           {orders.map((order, index) => {
             const date = new Date(order.createdDate);

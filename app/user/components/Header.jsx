@@ -23,13 +23,14 @@ export default function Header() {
   const [searchInput, setSearchInput] = useState();
   const { locale, setLocale } = useLanguage();
   const [ username, setUsername ] = useState();
-
+const userId =
+   typeof window !== 'undefined'? localStorage.getItem("id"):''
   const changeLanguage=async()=>{
-    const response = await postRequest()
+    await postRequest(`/api/users/${userId}/langauge/${locale}`,'','')
   }
   useEffect(() => {
 const username =
-   typeof window !== 'undefined'? localStorage.getItem("firstName") + " " + localStorage.getItem("lastName"):'';
+   typeof window !== 'undefined'? localStorage.getItem("firstName"):'';
     setUsername(username)
     const handleClickOutside = (event) => {
       if (divRef.current && !divRef.current.contains(event.target)) {
@@ -85,7 +86,7 @@ const username =
               if (e.key === "Enter") {
                 e.preventDefault();
                 setSelectedSearchInput(searchInput);
-                navigate.push("/user/pages/search");
+                navigate.push('/user/search/');
               }
             }}
             placeholder={t("search") + "..."}
@@ -95,17 +96,18 @@ const username =
       </div>
      
       <div className="flex items-center   md:gap-5 xs:gap-3 mx-2">
-        <div className="flex items-center gap-1  cursor-pointer ">
-          <span className="text-white text-2xl ">
+        <div className="flex items-center   cursor-pointer ">
+          <span className="text-white md:text-2xl xs:lg">
             <MdLanguage />
           </span>
 
           <select
-            className=" rounded text-white outline-none bg-red-700 px-1 py-0.5 text-center cursor-pointer"
+            className=" rounded text-white xs:text-sm md:text-base outline-none bg-red-700 px-1 py-0.5 text-center cursor-pointer"
             value={locale}
             onChange={(e) => {
               const newLang = e.target.value;
               setLocale(newLang);
+              changeLanguage()
             }}
           >
             <option value="ar" className="bg-white text-red-500 text-lg font-semibold ">
@@ -129,11 +131,12 @@ const username =
           </Link>
           <Link href="/user/pages/profile">
             <div className="flex items-center gap-1  ">
-              <span className="text-xs font-semibold text-center ">
-                {username === "" ? "" : username}
-              </span>
+             
               <span className="w-10 h-10">
                 <FaRegCircleUser className="w-full h-full" />
+              </span>
+               <span className="text-sm font-semibold text-center ">
+                {username === "" ? "" :'Hello, '+ username}
               </span>
             </div>
           </Link>
@@ -158,7 +161,7 @@ const username =
               if (e.key === "Enter") {
                 e.preventDefault();
                 setSelectedSearchInput(searchInput);
-                navigate.push("/user/pages/search");
+                navigate.push("/user/search");
               }
             }}
             placeholder={t("search") + "..."}

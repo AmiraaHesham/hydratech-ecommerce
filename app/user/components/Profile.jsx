@@ -12,6 +12,7 @@ import { PiSignOutBold } from "react-icons/pi";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useLanguage } from "../../../context/LanguageContext";
+import { RiShoppingBag4Fill } from "react-icons/ri";
 export default function Profile() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -44,6 +45,7 @@ export default function Profile() {
 
   return (
     <div data-aos="fade-up" className="p-10">
+      
       <div className="flex h-full gap-10 justify-between">
         <div className="bg-white w-[30%] h-[400px] flex flex-col gap-3   p-10 rounded-md shadow-md">
           <div className="flex items-center bg-red-600 p-2 rounded-md text-white gap-3 cursor-pointer">
@@ -54,8 +56,8 @@ export default function Profile() {
           </div>
           <Link href="/user/ordershistory">
             <div className="flex items-center hover:bg-red-600 p-2 rounded-md hover:text-white text-gray-600 gap-3 cursor-pointer">
-              <span className="text-xl">
-                <BsBoxSeamFill />
+              <span className="text-2xl">
+                <RiShoppingBag4Fill />
               </span>
               <span> {t('orderHistory')} </span>
             </div>

@@ -9,19 +9,15 @@ export default function Products() {
   //   typeof window !== "undefined" ? localStorage.getItem("role") : null;
   // if(role === "ADMIN"){
   return (
-    <div className="h-screen bg-[#F9FAFB]">
-      <main className=" flex border  ">
-        <SideMenu products={"bg-red-100 text-red-500"} />
-        <div className="w-full bg-[#F9FAFB]">
-          <Header page_title={"Products Management"} />
+    <div className=" p-5 bg-[#F9FAFB]">
+     
 
-          <div className="mx-5  mt-6 relative ">
+          <div className="  relative ">
             <FormProduct />
             <ProductsTable />
           </div>
         </div>
-      </main>
-    </div>
+   
   )
   // ;}
 //    else{

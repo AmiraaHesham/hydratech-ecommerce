@@ -1,29 +1,24 @@
 "use client";
-import Image from "next/image";
 import { useLanguage } from "../../../../context/LanguageContext.js";
-import { MdDelete } from "react-icons/md";
-import { FaCircle, FaPlus, FaTimes } from "react-icons/fa";
+import { FaCircle, FaPlus } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { postRequest } from "../../../../utils/requestsUtils.js";
 import { FaUserLarge } from "react-icons/fa6";
 import { ImBlocked } from "react-icons/im";
 import { IoMdSearch } from "react-icons/io";
-import { MdFilterList } from "react-icons/md";
-import { FaRegCalendar } from "react-icons/fa6";
+
 import { useIdContext } from "../../../../context/idContext.jsx";
 export default function AdminsTable() {
-  const navigate = useRouter();
   const { t } = useLanguage();
   const [users, setUsers] = useState([]);
+     const [loading, setLoading] = useState(true);
 
   const searchInput = useRef();
-  // const searchInputRef = useRef();
   const { setSelectedAdminId } = useIdContext();
 
   const getAllUsers = useCallback(async () => {
     try {
-      // console.log(searchInputRef.current.value);
       const response = await postRequest("/api/users/search", {
         page: 0,
         size: 100,
@@ -33,10 +28,12 @@ export default function AdminsTable() {
       },'');
       const resUsers = response.data || [];
       setUsers(resUsers);
-      // pagination()
-      //       console.log("Categories after set:", resProducts);
+     
     } catch (error) {
       console.log(error);
+    }
+    finally{
+      setLoading(false)
     }
   }, []);
 
@@ -67,7 +64,7 @@ export default function AdminsTable() {
     getAllUsers();
   }, [getAllUsers]);
   return (
-    <div className="w-full ">
+    <div className="w-full h-full bg-[#F9FAFB]">
       <div className="w-full  bg-white mt-3 rounded-lg border flex flex-row  gap-5 justify-between  items-start  p-4 ">
         <div className="flex items-center justify-center border px-3 rounded-md bg-gray-100 h-9">
           <span className="text-gray-400 text-lg ">
@@ -109,7 +106,7 @@ export default function AdminsTable() {
           </button>
         </div>
       </div>
-      <div className="rounded-xl w-full h-screen border  mt-3 overflow-hidden overflow-y-scroll ">
+      <div className="rounded-xl w-full h-[550px]  border  mt-3 overflow-hidden overflow-y-scroll ">
         <table className="xs:w-[220%] lg:w-full">
           <thead className="bg-[#F9FAFB] text-xs text-justify">
             <tr className=" text-gray-500 h-12  ">
@@ -121,7 +118,25 @@ export default function AdminsTable() {
             </tr>
           </thead>
           <tbody className="bg-white text-md ">
-            {users.map((user, index) => {
+           {loading ? (
+              // Skeleton rows
+              [...Array(7)].map((_, index) => (
+                <tr key={`skeleton-${index}`} className="border-b">
+                                    <td className="px-4 py-2"><div className="h-4 bg-gray-200 rounded animate-pulse w-24"></div></td>
+
+                  <td className="px-4 py-2 flex items-center gap-2">
+                    <div className="h-12 bg-gray-200 rounded-full animate-pulse w-12"></div>
+                    <div className="flex flex-col gap-2">
+                    <div  className="h-4 bg-gray-200 rounded-lg animate-pulse w-28"></div>
+                    <div  className="h-2 bg-gray-200 rounded-md animate-pulse w-20"></div>
+                    </div>
+                  </td>
+                  <td className="px-4 py-2"><div className="h-4 bg-gray-200 rounded animate-pulse w-24"></div></td>
+                  <td className="px-4 py-2"><div className="h-4 bg-gray-200 rounded animate-pulse w-16"></div></td>
+                  <td className="px-4 py-2"><div className="h-4 bg-gray-200 rounded animate-pulse w-16"></div></td>
+                </tr>
+              ))
+            ):( users.map((user, index) => {
               return (
                 <tr
                   key={index}
@@ -198,7 +213,7 @@ export default function AdminsTable() {
                  
                 </tr>
               );
-            })}
+            }))}
           </tbody>
         </table>
       </div>

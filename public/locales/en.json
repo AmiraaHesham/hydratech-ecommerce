@@ -160,8 +160,14 @@
   "loggingIn": "Logging in...",
   "createNewAccount": "Create New Account",
     "create_account": "Create Account",
+      "creating_account":"Creating Account...",
+
   "addToCart": "Add to Cart",
   "createdDate": "Created date order",
-    "signupWelcomeMessage": "Welcome to Alpha Group, please enter your information to create a new account."
-
+    "signupWelcomeMessage": "Welcome to Alpha Group, please enter your information to create a new account.",
+ "sortBy": "Sort by",
+  "all": "All",
+  "priceLowToHigh": "Price: Low to High",
+  "priceHighToLow": "Price: High to Low",
+  "no_data": "No products found"
 }

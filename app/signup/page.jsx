@@ -67,19 +67,21 @@ export default function SignUp() {
   // }
   return (
     <div className="h-screen">
-       <div className=" w-full h-full flex justify-center items-center ">
-    
-        <SignUpForm />
- <div className="h-screen w-full bg-black">
+       <div className=" w-full h-screen ">
+    <div className="h-full flex justify-center items-center ">
+          <SignUpForm />
+ <div className="h-full w-full ">
         <Image
           src="/Images/imageSignUp.png"
           alt="Background Image"
           width={500}
           height={500}
           priority
-          className="h-screen w-full"
+          className="h-full w-full"
         />
       </div>
+    </div>
+    
     </div>
     </div>
     

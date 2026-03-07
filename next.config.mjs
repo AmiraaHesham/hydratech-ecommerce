@@ -2,7 +2,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
    images: {
-    domains: [ '10.96.151.1'],
+    // hostname:['http://localhost:8787/'],
+    domains: ['localhost'],
   },
 experimental: {
     swcMinify: true,

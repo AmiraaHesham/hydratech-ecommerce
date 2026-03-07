@@ -9,16 +9,11 @@ export default function ContactPage() {
   // if (role === "ADMIN") {
     return (
       <div className="w-full h-full bg-[#F9FAFB]">
-        <main className=" flex border  ">
-          <SideMenu contact={"bg-red-100 text-red-500"} />
-          <div className="w-full  ">
-            <Header page_title={"Contact Management"} />
-
+       
             <div className=" px-7 mt-4   ">
               <Form_contact />
             </div>
-          </div>
-        </main>
+       
       </div>
     );
   // } else {

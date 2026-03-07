@@ -52,7 +52,6 @@ export default function ProductCard({ productInfo, favorite }) {
       "",
       "",
     );
-    toast.success(res.message)
 
   };
 
@@ -85,8 +84,8 @@ if(res.success === true){
 
   return (
     // <div className="h-full w-full border rounded-md bg-white flex justify-center py-2  cursor-pointer duration-300 hover:scale-105 ">
-    <div id={`div_${productInfo.itemId}`} className="h-[320px] bg-white border rounded-md cursor-pointer" >
-      <div className="">
+    <div id={`div_${productInfo.itemId}`} className="h-[350px] bg-white border rounded-md cursor-pointer  hover:border-b-[7px] hover:border-b-red-600  hover:scale-105 duration-200   hover:shadow-lg " >
+      <div className="flex flex-col justify-between items-baseline">
         <Image
           src={`${process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL}${
             productInfo.mainImageURL || ""
@@ -95,17 +94,17 @@ if(res.success === true){
           width={500}
           height={500}
           priority
-          className="h-[150px]  w-full rounded-t-lg"
+          className="h-[160px]  w-full rounded-t-lg"
           onClick={() => {
             setSelectedProductId(productInfo.itemId);
             navigate.push(`/user/pages/productdetails/${productInfo.itemId}`);
           }}
         />
-        <div className="px-3">
+        <div className="px-3 flex flex-col gap-3 my-2">
           <div className="flex justify-between items-center">
-            <div>
+            {/* <div> */}
             <h1
-              className="my-3 text-sm font-semibold"
+              className=" text-sm font-semibold"
               onClick={() => {
                 setSelectedProductId(productInfo.itemId);
                 navigate.push(
@@ -113,9 +112,9 @@ if(res.success === true){
                 );
               }}
             >
-              {productName.length <= 20
+              {productName.length <= 29
               ? productName
-              : productName.slice(0, 20) + " ..."}
+              : productName.slice(0, 29) + " ..."}
             </h1>
                 {/* <div className="absolute bottom-full left-0  
                   hidden group-hover:block 
@@ -124,10 +123,10 @@ if(res.success === true){
                   p-3 w-64
                   z-50">
 {describtion}  </div> */}
-</div>
+{/* </div> */}
             <span
               id={`btn_fov_${productInfo.itemId}`}
-              className={`hover:text-red-600 hover:scale-110 duration-200 ${productInfo.favorite === true ? "text-gray-400 " : "text-red-600 "}rounded-full`}
+              className={`hover:text-red-600 hover:scale-110 duration-200 ${favorite === true ? "text-red-600" : "text-gray-400"} rounded-full`}
               onClick={() => {
                 const btn_fov = document.querySelector(
                   `#btn_fov_${productInfo.itemId}`,
@@ -147,20 +146,22 @@ if(res.success === true){
               <FaHeart />
             </span>
           </div>
-          <div className="group relative inline-block">
+          {/* <div className="group relative inline-block"> */}
 
           <h1
-            className="text-sm text-gray-400 truncat"
+            className="text-sm text-gray-400 w-full h-16 overflow-hidden"
             onClick={() => {
               setSelectedProductId(productInfo.itemId);
               navigate.push(`/user/pages/productdetails/${productInfo.itemId}`);
             }}
             // title={describtion}
           >
-            {describtion.length <= 50
+            {describtion}
+            {/* {describtion.length <= 70
               ? describtion
-              : describtion.slice(0, 50) + " ..."}
+              : describtion.slice(0, 70) + " ..."} */}
           </h1>
+
          {/* <div className="absolute bottom-full left-0  
                   hidden group-hover:block 
                   bg-white text-gray-800 text-sm rounded-lg 
@@ -168,11 +169,11 @@ if(res.success === true){
                   p-3 w-64
                   z-50">
 {describtion}  </div> */}
-        </div>
-      </div>
+        {/* </div> */}
       </div>
 
-      <div className="flex justify-between items-center mt-2 px-3">
+
+      <div className="flex w-full justify-between items-center   px-3">
         <div className="flex flex-col my-2"
          onClick={() => {
                 setSelectedProductId(productInfo.itemId);
@@ -189,12 +190,12 @@ if(res.success === true){
           ) : (
             <span className="p-[11px]"></span>
           )}
-          <div className="flex gap-2">
-            <span className=" font-semibold text-base">
+          <div className="flex items-center gap-2">
+            <span className=" font-bold ">
               {productInfo.price} {t("currency")}
             </span>
             {productInfo.oldPrice ? (
-              <span className=" font-semibold  text-center bg-green-600 text-sm px-1 text-white rounded-md">
+              <span className=" font-semibold  text-center bg-green-600 text-sm p-1 text-white rounded-md">
                 {(
                   ((productInfo.oldPrice - productInfo.price) /
                     productInfo.oldPrice) *
@@ -209,7 +210,7 @@ if(res.success === true){
         </div>
 
         <button
-          className="text-xl text-red-700 bg-red-50 p-2 mt-1 hover:bg-red-300 duration-500 hover:scale-110 rounded-md"
+          className="text-xl text-red-700 bg-red-50 p-2 mt-2  hover:bg-red-300 duration-500 hover:scale-110 rounded-md"
           onClick={() => {
             addToCart(productInfo.itemId);
           }}
@@ -218,6 +219,8 @@ if(res.success === true){
         </button>
       </div>
     </div>
+          </div>
     // </div>
+    
   );
 }

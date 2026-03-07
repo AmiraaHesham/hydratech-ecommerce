@@ -11,66 +11,80 @@ import { useIdContext } from "../../../../context/idContext";
 import { IoMdSearch } from "react-icons/io";
 import { deleteRequest } from "../../../../utils/requestsUtils.js";
 import { useRefresh } from "../../../../context/refreshContext.jsx";
+import { IoReloadCircle } from "react-icons/io5";
 
 export default function ProductsTable() {
   const { t } = useLanguage();
   const [products, setProducts] = useState([]);
   const productTableRef = useRef();
-    const pageNum = useRef(0);
+  const pageNum = useRef(0);
   const { refreshKey } = useRefresh();
   const { triggerRefresh } = useRefresh();
   const { setSelectedProductId } = useIdContext();
   const searchInputRef = useRef();
-     const [loading, setLoading] = useState(true);
-
+  // const [loading, setLoading] = useState(true);
 
   const getAllProducts = async () => {
-
     try {
       console.log(searchInputRef.current.value);
-      const response = await postRequest("/api/public/items/search", {
-        page: pageNum.current,
-        size: 15,
-        searchText: searchInputRef.current.value,
-      },'');
+      const response = await postRequest(
+        "/api/public/items/search",
+        {
+          page: pageNum.current,
+          size: 15,
+          searchText: searchInputRef.current.value,
+        },
+        "",
+      );
       const resProducts = response.data || [];
-      if(pageNum.current === 0){
-        setProducts(resProducts)
-      }
-      else(
-                  setProducts((prev) => [...prev, ...resProducts])
-      )
-    
+      if (pageNum.current === 0) {
+        setProducts(resProducts);
+      } else setProducts((prev) => [...prev, ...resProducts]);
     } catch (error) {
       console.log(error);
-    }finally {
-        setLoading(false);
-      }
- 
+    } 
+    // finally {
+    //   setLoading(false);
+    // }
   };
- useEffect(() => {
+  useEffect(() => {
     getAllProducts();
   }, [refreshKey]);
 
   const productFavorite = async (productId) => {
-    await postRequest(`/api/admin/items/${productId}/favorite`, "", t("message_AddText"));
+    await postRequest(
+      `/api/admin/items/${productId}/favorite`,
+      "",
+      t("message_AddText"),
+    );
     triggerRefresh();
   };
 
   const productUnfavorite = async (productId) => {
-    await postRequest(`/api/admin/items/${productId}/unfavorite`, "", t("message_AddText"));
+    await postRequest(
+      `/api/admin/items/${productId}/unfavorite`,
+      "",
+      t("message_AddText"),
+    );
     triggerRefresh();
   };
   const productActive = async (productId) => {
-    await postRequest(`/api/admin/items/${productId}/activate`, "", t("message_AddText"));
+    await postRequest(
+      `/api/admin/items/${productId}/activate`,
+      "",
+      t("message_AddText"),
+    );
     triggerRefresh();
   };
 
   const productDeaactive = async (productId) => {
-    await postRequest(`/api/admin/items/${productId}/deactivate`, "", t("message_AddText"));
+    await postRequest(
+      `/api/admin/items/${productId}/deactivate`,
+      "",
+      t("message_AddText"),
+    );
     triggerRefresh();
   };
-
 
   const itemProductId = (product) => {
     let form = document.querySelector("#add-product-form");
@@ -92,39 +106,39 @@ export default function ProductsTable() {
       console.log(error);
     }
   };
-// const SkeletonRow = () => (
-//     <tr className="border-b">
-//       <td className="px-4 py-3">
-//         <div className="h-6 bg-gray-200 rounded animate-pulse w-24"></div>
-//       </td>
-//       <td className="px-4 py-3">
-//         <div className="h-6 bg-gray-200 rounded animate-pulse w-20"></div>
-//       </td>
-//       <td className="px-4 py-3">
-//         <div className="h-6 bg-gray-200 rounded animate-pulse w-12"></div>
-//       </td>
-//       <td className="px-4 py-3">
-//         <div className="h-6 bg-gray-200 rounded animate-pulse w-32"></div>
-//       </td>
-//       <td className="px-4 py-3">
-//         <div className="h-6 bg-gray-200 rounded animate-pulse w-28"></div>
-//       </td>
-//       <td className="px-4 py-3">
-//         <div className="h-6 bg-gray-200 rounded animate-pulse w-36"></div>
-//       </td>
-//     </tr>
-//   );
-//   const SkeletonInputSearch = () => (
-//         <div className="h-6 bg-gray-200 rounded animate-pulse w-24"></div>
-     
-//   );
+  // const SkeletonRow = () => (
+  //     <tr className="border-b">
+  //       <td className="px-4 py-3">
+  //         <div className="h-6 bg-gray-200 rounded animate-pulse w-24"></div>
+  //       </td>
+  //       <td className="px-4 py-3">
+  //         <div className="h-6 bg-gray-200 rounded animate-pulse w-20"></div>
+  //       </td>
+  //       <td className="px-4 py-3">
+  //         <div className="h-6 bg-gray-200 rounded animate-pulse w-12"></div>
+  //       </td>
+  //       <td className="px-4 py-3">
+  //         <div className="h-6 bg-gray-200 rounded animate-pulse w-32"></div>
+  //       </td>
+  //       <td className="px-4 py-3">
+  //         <div className="h-6 bg-gray-200 rounded animate-pulse w-28"></div>
+  //       </td>
+  //       <td className="px-4 py-3">
+  //         <div className="h-6 bg-gray-200 rounded animate-pulse w-36"></div>
+  //       </td>
+  //     </tr>
+  //   );
+  //   const SkeletonInputSearch = () => (
+  //         <div className="h-6 bg-gray-200 rounded animate-pulse w-24"></div>
+
+  //   );
   return (
-    <div className="w-full">
+    <div className="w-full h-screen">
       <div className="bg-white  border rounded-lg border-1  w-full mt-5 flex flex-row justify-between  p-3 items-center  xs:gap-4">
         <div className="flex items-center justify-between border px-1 rounded-md w-[300px] bg-gray-100">
           <input
             type="text"
-            placeholder={t('search')}
+            placeholder={t("search")}
             className="bg-none outline-none placeholder:text-sm   bg-gray-100 p-1 rounded-lg"
             // value={searchInput}
             ref={searchInputRef}
@@ -154,7 +168,7 @@ export default function ProductsTable() {
             btn_editProduct.classList.add("hidden");
             btn_saveProduct.classList.remove("hidden");
             nameFormProduct.innerHTML = t("add_product");
-            setSelectedProductId(null)
+            setSelectedProductId(null);
           }}
         >
           <span className="text-base">
@@ -166,7 +180,7 @@ export default function ProductsTable() {
 
       <div
         ref={productTableRef}
-        className=" rounded-xl w-full border h-screen  mt-3 overflow-hidden xs:overflow-x-scroll lg:overflow-x-auto overflow-y-scroll "
+        className=" rounded-xl w-full border h-[600px] mt-3 overflow-hidden xs:overflow-x-scroll lg:overflow-x-auto overflow-y-scroll "
       >
         <table className=" xs:w-[200%] lg:w-full">
           <thead className="bg-[#F9FAFB] text-xs text-justify">
@@ -182,138 +196,159 @@ export default function ProductsTable() {
             </tr>
           </thead>
           <tbody className="bg-white text-black text-lg w-full ">
-             {loading ? (
-              // Skeleton rows
-              [...Array(9)].map((_, index) => (
-                <tr key={`skeleton-${index}`} className="border-b">
-                  <td className="px-4 py-2"><div className="h-4 bg-gray-200 rounded animate-pulse w-20"></div></td>
-                  <td className="px-4 py-2 flex items-center gap-2">
-                    <div className="h-12 bg-gray-200 rounded-lg animate-pulse w-16"></div>
-                    <div className="flex flex-col gap-2">
-                    <div  className="h-4 bg-gray-200 rounded-lg animate-pulse w-28"></div>
-                    <div  className="h-2 bg-gray-200 rounded-md animate-pulse w-20"></div>
-                    </div>
-                  </td>
-                  <td className="px-4 py-2"><div className="h-4 bg-gray-200 rounded animate-pulse w-24"></div></td>
-                  <td className="px-4 py-2"><div className="h-4 bg-gray-200 rounded animate-pulse w-24"></div></td>
-                  <td className="px-4 py-2"><div className="h-4 bg-gray-200 rounded animate-pulse w-24"></div></td>
-                  <td className="px-4 py-2"><div className="h-4 bg-gray-200 rounded animate-pulse w-16"></div></td>
-                </tr>
-              ))
-            ):(  products.map((product, index) => (
-                <tr key={index} className=" border hover:bg-gray-100  ">
-                  <td>
-                    <div className="flex items-center justify-center gap-3">
-                      <button
-                        className={
-                          "flex items-center justify-center gap-3 text-sm " +
-                          (product.active ? "text-green-600" : "text-gray-600")
-                        }
-                        onClick={() => {
-                          if (product.active === false) {
-                            productActive(product.itemId);
-                          } else {
-                            productDeaactive(product.itemId);
+            {/* {loading
+              ? // Skeleton rows
+                [...Array(9)].map((_, index) => (
+                  <tr key={`skeleton-${index}`} className="border-b">
+                    <td className="px-4 py-2">
+                      <div className="h-4 bg-gray-200 rounded animate-pulse w-20"></div>
+                    </td>
+                    <td className="px-4 py-2 flex items-center gap-2">
+                      <div className="h-12 bg-gray-200 rounded-lg animate-pulse w-16"></div>
+                      <div className="flex flex-col gap-2">
+                        <div className="h-4 bg-gray-200 rounded-lg animate-pulse w-28"></div>
+                        <div className="h-2 bg-gray-200 rounded-md animate-pulse w-20"></div>
+                      </div>
+                    </td>
+                    <td className="px-4 py-2">
+                      <div className="h-4 bg-gray-200 rounded animate-pulse w-24"></div>
+                    </td>
+                    <td className="px-4 py-2">
+                      <div className="h-4 bg-gray-200 rounded animate-pulse w-24"></div>
+                    </td>
+                    <td className="px-4 py-2">
+                      <div className="h-4 bg-gray-200 rounded animate-pulse w-24"></div>
+                    </td>
+                    <td className="px-4 py-2">
+                      <div className="h-4 bg-gray-200 rounded animate-pulse w-16"></div>
+                    </td>
+                  </tr>
+                )) */}
+              {/* :  */}
+             {products.map((product, index) => (
+                  <tr key={index} className=" border hover:bg-gray-100  ">
+                    <td>
+                      <div className="flex items-center justify-center gap-3">
+                        <button
+                          className={
+                            "flex items-center justify-center gap-3 text-sm " +
+                            (product.active
+                              ? "text-green-600"
+                              : "text-gray-600")
                           }
-                        }}
-                      >
-                        <FaCircle />
-                      </button>
-                      <button
-                        className={
-                          "flex items-center justify-center " +
-                          (product.favorite
-                            ? " text-yellow-500"
-                            : " text-gray-500")
-                        }
-                        onClick={async () => {
-                          console.log(product.favorite);
-                          if (product.favorite === false) {
-                            await productFavorite(product.itemId);
-                          } else {
-                            await productUnfavorite(product.itemId);
+                          onClick={() => {
+                            if (product.active === false) {
+                              productActive(product.itemId);
+                            } else {
+                              productDeaactive(product.itemId);
+                            }
+                          }}
+                        >
+                          <FaCircle />
+                        </button>
+                        <button
+                          className={
+                            "flex items-center justify-center " +
+                            (product.favorite
+                              ? " text-yellow-500"
+                              : " text-gray-500")
                           }
-                        }}
-                      >
-                        <GoStarFill />
-                      </button>
-                    </div>
-                  </td>
-                  <td
-                    className="flex items-center gap-4"
-                    onClick={() => itemProductId(product)}
-                  >
-                    <Image
-                      alt=""
-                      src={`${
-                        process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL +
-                          product.mainImageURL || ""
-                      }`}
-                      width={40}
-                      height={40}
-                      className="rounded-xl xs:w-10 xs:h-10 md:w-14 md:h-12  border my-1 p-1"
-                    />
-                    <div>
-                      <h1 className="text-sm font-semibold">
-                        {localStorage.lang === "ar"
-                          ? product.nameAr
-                          : product.nameEn}
-                      </h1>
-                      <h1 className="text-xs text-gray-500">
-                        {t("code")} : {product.code}
-                      </h1>
-                    </div>
-                  </td>
-
-                  <td onClick={() => itemProductId(product)}>
-                    <div className="  text-sm text-gray-500 font-semibold mx-1">
-                      <h1>
-                        {localStorage.lang === "ar"
-                          ? product.itemCategory.nameAr
-                          : product.itemCategory.nameEn}
-                      </h1>
-                    </div>
-                  </td>
-                  <td
-                    className="text-sm font-bold"
-                    onClick={() => itemProductId(product)}>
-                    {product.price.toLocaleString('en-US')}
-                  </td>
-                  {/* <td></td> */}
-                   <td
-                    className="text-sm font-bold text-gray-600"
-                    onClick={() => itemProductId(product)}
-                  >
-                    {product.oldPrice?product.oldPrice.toLocaleString('en-US')+' '+t("currency"):'--'} 
-                  </td>
-                  <td>
-                    <button
-                      className="text-red-800 text-sm flex items-center gap-1 bg-red-300 px-2 py-1 font-semibold rounded-md hover:bg-red-400"
-                      onClick={() => {
-                        deleteProduct(product);
-                      }}
+                          onClick={async () => {
+                            console.log(product.favorite);
+                            if (product.favorite === false) {
+                              await productFavorite(product.itemId);
+                            } else {
+                              await productUnfavorite(product.itemId);
+                            }
+                          }}
+                        >
+                          <GoStarFill />
+                        </button>
+                      </div>
+                    </td>
+                    <td
+                      className="flex items-center gap-4"
+                      onClick={() => itemProductId(product)}
                     >
-                      <MdDelete />
-                      {t("delete")}
-                    </button>
-                  </td>
-                </tr>
-              )
-            )
-         
-          )
-        }
-           
+                      <Image
+                        alt=""
+                        src={`${
+                          process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL +
+                            product.mainImageURL || ""
+                        }`}
+                        width={40}
+                        height={40}
+                        className="rounded-xl xs:w-10 xs:h-10 md:w-14 md:h-12  border my-1 p-1"
+                      />
+                      <div>
+                        <h1 className="text-sm font-semibold">
+                          {localStorage.lang === "ar"
+                            ? product.nameAr
+                            : product.nameEn}
+                        </h1>
+                        <h1 className="text-xs text-gray-500">
+                          {t("code")} : {product.code}
+                        </h1>
+                      </div>
+                    </td>
 
-          {products.length <=15 ?' ': <tr className="h-5 text-center">
-            <td colSpan="6" >
+                    <td onClick={() => itemProductId(product)}>
+                      <div className="  text-sm text-gray-500 font-semibold mx-1">
+                        <h1>
+                          {localStorage.lang === "ar"
+                            ? product.itemCategory.nameAr
+                            : product.itemCategory.nameEn}
+                        </h1>
+                      </div>
+                    </td>
+                    <td
+                      className="text-sm font-bold"
+                      onClick={() => itemProductId(product)}
+                    >
+                      {product.price.toLocaleString("en-US")}
+                    </td>
+                    {/* <td></td> */}
+                    <td
+                      className="text-sm font-bold text-gray-600"
+                      onClick={() => itemProductId(product)}
+                    >
+                      {product.oldPrice
+                        ? product.oldPrice.toLocaleString("en-US") +
+                          " " +
+                          t("currency")
+                        : "--"}
+                    </td>
+                    <td>
+                      <button
+                        className="text-red-800 text-sm flex items-center gap-1 bg-red-300 px-2 py-1 font-semibold rounded-md hover:bg-red-400"
+                        onClick={() => {
+                          deleteProduct(product);
+                        }}
+                      >
+                        <MdDelete />
+                        {t("delete")}
+                      </button>
+                    </td>
+                  </tr>
+                ))}
 
-              <button className="bg-red-600 text-white px-5 py-1 flex  my-3 rounded-lg" onClick={()=> {pageNum.current += 1
-                getAllProducts()
-              }}><MdOutlineDownloading className="text-3xl" /> المزيد</button>
-            </td>
-          </tr>
-            }
+            {/* {products.length <= 15 ? (
+              " "
+            ) : (
+              <tr className="h-5 text-center">
+                <td colSpan="6">
+                  <button
+                    className=" text-red-600 px-5 py-1   my-3 rounded-lg"
+                    onClick={() => {
+                      pageNum.current += 1;
+                      getAllProducts();
+                    }}
+                  >
+                  <IoReloadCircle className="text-4xl"  /> 
+                  </button>
+                </td>
+              </tr>
+            )} */}
           </tbody>
         </table>
       </div>

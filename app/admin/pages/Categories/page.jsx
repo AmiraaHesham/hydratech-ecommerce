@@ -15,12 +15,9 @@ export default function Categorys() {
 //   if(role === "ADMIN"){
   return (
     <div className="h-screen bg-[#F9FAFB]">
-          <main className=" flex border  ">
-            <SideMenu categoryies={"bg-red-100 text-red-500"} />
-        <div className="w-full bg-[#F9FAFB]">
-          <Header page_title= {"Categories Management"} />
+         
 <div className=" w-full bg-[#F9FAFB]">
- <div className=" mt-5 mx-5 relative h-full  ">
+ <div className=" pt-5 mx-5 relative h-full  ">
           <div className="flex justify-center md:w-[80%] xs:w-full absolute items-center ">
             <FormCategory />
           </div>
@@ -30,8 +27,7 @@ export default function Categorys() {
         </div>
 </div>
          
-      </main>
-    </div>
+   
   )
   // ;}
   //  else{

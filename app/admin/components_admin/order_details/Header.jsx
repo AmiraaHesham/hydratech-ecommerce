@@ -11,7 +11,6 @@ export default function Orders_Details({orderId}) {
   const {selectedOrderState} = useOrderDetailsContext()
     const {selectedOrderCode} = useOrderDetailsContext()
     const {selectedOrderDate} = useOrderDetailsContext()
-  const [state, setState] = useState('');
 
   const date = new Date(selectedOrderDate);
 const fullDateTime = date.toLocaleString('en-US');
@@ -24,7 +23,7 @@ const fullDateTime = date.toLocaleString('en-US');
   //   orderItem();
   // }, []);
   return (
-    <div className="w-full  mt-4">
+    <div className="w-full">
         <div className="flex items-center justify-between w-full gap-3">
           <h1 className="md:text-3xl  xs:text-2xl font-semibold"> {selectedOrderCode} #</h1>
           <h1 className={`text-sm h-10 flex items-center justify-center w-[120px] ${selectedOrderState==='PROCESSING'?'text-blue-700 bg-blue-100':'text-red-700 bg-red-100'} font-semibold py-2 px-4 text-center rounded-3xl`}>

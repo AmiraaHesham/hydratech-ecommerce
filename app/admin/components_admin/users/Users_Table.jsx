@@ -49,7 +49,7 @@ const addBlock = async (userId) => {
     getAllUsers();
   }, [getAllUsers]);
   return (<div>
- <div className="w-full  bg-white mt-3 rounded-lg border flex md:flex-row xs:flex-col gap-5  items-start  p-4 ">
+ <div className="w-full h-full bg-white mt-3 rounded-lg border flex md:flex-row xs:flex-col gap-5  items-start  p-4 ">
       <div className="flex items-center justify-center border px-3 rounded-md bg-gray-100 h-9">
         <span className="text-gray-400 text-lg "><IoMdSearch /></span>
         <input ref={searchInput} 
@@ -76,7 +76,7 @@ const addBlock = async (userId) => {
       </div>
    
       </div>
-    <div className=" rounded-xl w-full   h-screen border  mt-3 overflow-hidden overflow-x-scroll overflow-y-scroll ">
+    <div className=" rounded-xl w-full h-screen   border  mt-3 overflow-hidden overflow-x-scroll overflow-y-scroll ">
       <table className="  xs:w-[220%] lg:w-full   ">
         <thead className="bg-[#F9FAFB] text-xs text-justify">
           <tr className=" text-gray-500 h-12  ">
@@ -115,8 +115,8 @@ const addBlock = async (userId) => {
                   </div>
                 </td>
                 <td   onClick={() => {
-                  setSelectedUserId(user.userId)
-                  navigate.push("/admin/UsersPage/UserInfo")}}>
+                  setSelectedUserId()
+                  navigate.push(`/admin/UsersPage/UserInfo/${user.userId}`)}}>
                   <div className="flex items-center gap-3 px-10">
                     <span className="w-[40px] text-gray-600 my-2 h-[40px] bg-gray-50 flex justify-center items-center p-2 rounded-full border ">
                       <FaUserLarge />
@@ -131,13 +131,12 @@ const addBlock = async (userId) => {
                 </td>
 
                 <td   onClick={() => {
-                  setSelectedUserId(user.userId)
-                  navigate.push("/admin/UsersPage/UserInfo")}}>
+                  navigate.push(`/admin/UsersPage/UserInfo/${user.userId}`)}}>
                   <h1 className=" text-gray-500">{user.email}</h1>
                 </td>
                 <td   onClick={() => {
                   setSelectedUserId(user.userId)
-                  navigate.push("/admin/UsersPage/UserInfo")}}>
+                  navigate.push(`/admin/UsersPage/UserInfo/${user.userId}`)}}>
                   <div className="text-gray-500 text-sm">
                     <h1>{user.birthDate}</h1>
                     {/* <h2>2023</h2> */}
@@ -145,8 +144,8 @@ const addBlock = async (userId) => {
                 </td>
                 <td   onClick={() => {
                   setSelectedUserId(user.userId)
-                  navigate.push("/admin/UsersPage/UserInfo")}}>
-                  <div className="bg-red-100 w-[80px] text-center rounded-full text-blue-700  px-2 font-semibold text-xs">
+                  navigate.push(`/admin/UsersPage/UserInfo/${user.userId}`)}}>
+                  <div className="bg-red-100 w-[80px] text-center rounded-full text-red-700  px-2 font-semibold text-xs">
                     <h1>10 </h1>
                     <h2>{t("orders")}</h2>
                   </div>

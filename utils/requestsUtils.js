@@ -3,10 +3,10 @@ import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 
 export const postRequest = async (endpoint, dataBody, message) => {
-  const token =
-    typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
-  // const lang =
-  //   typeof window !== "undefined" ? localStorage.getItem("lang") : null;
+ const token =
+  typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+const lang =
+  typeof window !== "undefined" ? localStorage.getItem("lang") : null;
   try {
     if (message === "") {
       const response = await axios.post(
@@ -15,19 +15,21 @@ export const postRequest = async (endpoint, dataBody, message) => {
         {
           headers: {
             Authorization: token ? `Bearer ${token}` : undefined,
-            "Accept-Language": localStorage.getItem("lang"),
+            "Accept-Language": lang,
           },
-        }
+        },
       );
       console.log(response);
+      toast.success(response.data.message);
+
       return await response.data;
     } else {
       const result = await Swal.fire({
         icon: "question",
         title: message,
         showCancelButton: true,
-        confirmButtonText: localStorage.lang === "ar" ? "نعم     " : "Yes",
-        cancelButtonText: localStorage.lang === "ar" ? "إلغاء" : "Cancel",
+        confirmButtonText: lang === "ar" ? "نعم     " : "Yes",
+        cancelButtonText: lang === "ar" ? "إلغاء" : "Cancel",
         customClass: {
           popup: "rounded-xl shadow-lg border border-gray-200 p-6",
           title: "text-xl font-bold text-gray-800 mb-2",
@@ -45,9 +47,9 @@ export const postRequest = async (endpoint, dataBody, message) => {
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : undefined,
-              "Accept-Language": localStorage.getItem("lang"),
+              "Accept-Language": lang,
             },
-          }
+          },
         );
         toast.success(response.data.message);
         return await response.data;
@@ -59,17 +61,17 @@ export const postRequest = async (endpoint, dataBody, message) => {
       //   ? "حدث خظأ قم بالتواصل مع المسؤول"
       //   : "An error occurred. Please contact the administrator."
 
-
-      error.message
+      error.message,
     );
     throw error;
   }
 };
 
 export const getRequest = async (endpoint) => {
-  const token =
-    typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
-
+ const token =
+  typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+const lang =
+  typeof window !== "undefined" ? localStorage.getItem("lang") : null;
   try {
     const response = await axios.get(
       process.env.NEXT_PUBLIC_API_BASE_URL + endpoint,
@@ -77,36 +79,32 @@ export const getRequest = async (endpoint) => {
       {
         headers: {
           Authorization: token ? `Bearer ${token}` : undefined,
-          "Accept-Language": localStorage.getItem("lang"),
+          "Accept-Language": lang,
         },
-      }
+      },
     );
-    console.log(response.data.data);
+    // console.log(response.data.data);
     return await response.data.data;
   } catch (error) {
-    toast.error(
-      // localStorage.lang === "ar"
-      //   ? "حدث خظأ قم بالتواصل مع المسؤول"
-      //   : "An error occurred. Please contact the administrator."
-            error
-
-    );
+    toast.error(error);
 
     throw error;
   }
 };
 
 export const putRequest = async (endpoint, dataBody, message) => {
-  const token =
-    typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+ const token =
+  typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+const lang =
+  typeof window !== "undefined" ? localStorage.getItem("lang") : null;
 
   try {
     const result = await Swal.fire({
       icon: "info",
       title: message,
       showCancelButton: true,
-      confirmButtonText: localStorage.lang === "ar" ? "موافق" : "OK",
-      cancelButtonText: localStorage.lang === "ar" ? "إلغاء" : "Cancel",
+      confirmButtonText: lang === "ar" ? "موافق" : "OK",
+      cancelButtonText: lang === "ar" ? "إلغاء" : "Cancel",
       customClass: {
         popup: "rounded-xl shadow-lg border border-gray-200 p-6",
         title: "text-xl font-bold text-gray-800 mb-2",
@@ -116,7 +114,7 @@ export const putRequest = async (endpoint, dataBody, message) => {
         cancelButton:
           "bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium px-6 py-2 rounded-lg ml-2",
       },
-      reverseButtons: localStorage.lang === "ar",
+      reverseButtons: lang === "ar",
     });
 
     if (result.isConfirmed) {
@@ -126,9 +124,9 @@ export const putRequest = async (endpoint, dataBody, message) => {
         {
           headers: {
             Authorization: token ? `Bearer ${token}` : undefined,
-            "Accept-Language": localStorage.getItem("lang"),
+            "Accept-Language": lang,
           },
-        }
+        },
       );
       toast.success(response.data.message);
 
@@ -139,7 +137,7 @@ export const putRequest = async (endpoint, dataBody, message) => {
       // localStorage.lang === "ar"
       //   ? "حدث خظأ قم بالتواصل مع المسؤول"
       //   : "An error occurred. Please contact the administrator."
-            error
+      error,
     );
     throw error;
   }
@@ -147,7 +145,9 @@ export const putRequest = async (endpoint, dataBody, message) => {
 
 export const deleteRequest = async (endpoint, message) => {
   const token =
-    typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+  typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+const lang =
+  typeof window !== "undefined" ? localStorage.getItem("lang") : null;
 
   try {
     // 🟡 نستخدم Swal.fire مع icon: 'warning' (مش error)
@@ -155,8 +155,8 @@ export const deleteRequest = async (endpoint, message) => {
       icon: "warning",
       title: message,
       showCancelButton: true,
-      confirmButtonText: localStorage.lang === "ar" ? "موافق" : "OK",
-      cancelButtonText: localStorage.lang === "ar" ? "إلغاء" : "Cancel",
+      confirmButtonText: lang === "ar" ? "موافق" : "OK",
+      cancelButtonText: lang === "ar" ? "إلغاء" : "Cancel",
       customClass: {
         popup: "rounded-xl shadow-lg border border-gray-200 p-6",
         title: "text-xl font-bold text-gray-800 mb-2",
@@ -166,30 +166,27 @@ export const deleteRequest = async (endpoint, message) => {
         cancelButton:
           "bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium px-6 py-2 rounded-lg ml-2",
       },
-      reverseButtons: localStorage.lang === "ar",
+      reverseButtons: lang === "ar",
     });
 
     if (result.isConfirmed) {
-      const response = await axios.delete(
-        process.env.NEXT_PUBLIC_API_BASE_URL + endpoint,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: token ? `Bearer ${token}` : undefined,
-            "Accept-Language": localStorage.getItem("lang"),
-          },
-        }
-      );
+      const response = await axios.delete(endpoint, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token ? `Bearer ${token}` : undefined,
+          "Accept-Language": lang,
+        },
+      });
       toast.success(response.data.message);
       return await response.data;
     }
   } catch (error) {
-    toast.error(
+    toast
+      .error
       // localStorage.lang === "ar"
       //   ? "حدث خظأ قم بالتواصل مع المسؤول"
       //   : "An error occurred. Please contact the administrator."
-
-    );
+      ();
 
     throw error;
   }

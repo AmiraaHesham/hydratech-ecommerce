@@ -6,25 +6,23 @@ import AdminForm from "../../components_admin/admins/AdminForm";
 import Image from "next/image";
 
 
-export default function AdminsPage() {
+export default function AdminsPage({params}) {
+    const { id } = params; 
+
 //  const role =
 //     typeof window !== "undefined" ? localStorage.getItem("role") : null;
 //   if(role === "ADMIN"){
   return (
-    <div className="w-full h-full bg-[#F9FAFB]">
-      <main className=" flex border  ">
-        <SideMenu admins={"bg-red-100 text-red-500"} />
-        <div className="w-full  ">
-          <Header page_title={"Admins Management"} />
+    <div className="w-full h-full p-5 bg-[#F9FAFB] ">
+      
 
-          <div className=" mx-5 relative">
+          <div className=" h-full relative">
             <AdminForm />
 
             <Admins_Table />
           </div>
         </div>
-      </main>
-    </div>
+     
   )
 // }
 //   else{

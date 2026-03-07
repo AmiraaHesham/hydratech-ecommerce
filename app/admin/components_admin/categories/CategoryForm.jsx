@@ -58,13 +58,14 @@ export default function CategoryForm() {
         t("message_AddText")
       );
       triggerRefresh();
-      let upload = document.querySelector("#label-uplod");
-      let img = document.querySelector("#lable-img");
-      img.classList.add("hidden");
-      upload.classList.remove("hidden");
-      setNameAr("");
-      setNameEn("");
-      setPhoto((prev)=>({...prev, image:''}))
+      selectedCategoryId === null
+      // let upload = document.querySelector("#label-uplod");
+      // let img = document.querySelector("#lable-img");
+      // img.classList.add("hidden");
+      // upload.classList.remove("hidden");
+      // setNameAr("");
+      // setNameEn("");
+      // setPhoto((prev)=>({...prev, image:''}))
     } catch (error) {
       console.log(error);
     }
@@ -82,7 +83,7 @@ export default function CategoryForm() {
         setNameAr(res.nameAr), setNameEn(res.nameEn);
         setPhoto((prev) => ({
           ...prev,
-          image: process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL + res.imageURL,
+          image: process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL+'/images' + res.imageURL,
         }));
       } catch (error) {
         console.log(error);
@@ -91,16 +92,20 @@ export default function CategoryForm() {
     else{
       setNameAr(''), setNameEn('');
         setPhoto('');
+         let upload = document.querySelector("#label-uplod");
+    let img = document.querySelector("#lable-img");
+    img.classList.add("hidden");
+    upload.classList.remove("hidden");
     }
   }, [selectedCategoryId]);
 
   const updateCategory = async () => {
     let form = document.querySelector("#add-category-form");
     form.classList.add("hidden");
-    let upload = document.querySelector("#label-uplod");
-    let img = document.querySelector("#lable-img");
-    img.classList.add("hidden");
-    upload.classList.remove("hidden");
+    // let upload = document.querySelector("#label-uplod");
+    // let img = document.querySelector("#lable-img");
+    // img.classList.add("hidden");
+    // upload.classList.remove("hidden");
 
     try {
       const formData = new FormData();
@@ -115,12 +120,13 @@ export default function CategoryForm() {
         t("message_EditText")
       );
       triggerRefresh();
-      let upload = document.querySelector("#label-uplod");
-      let img = document.querySelector("#lable-img");
-      img.classList.add("hidden");
-      upload.classList.remove("hidden");
-      setNameAr("");
-      setNameEn("");
+      selectedCategoryId === null
+      // let upload = document.querySelector("#label-uplod");
+      // let img = document.querySelector("#lable-img");
+      // img.classList.add("hidden");
+      // upload.classList.remove("hidden");
+      // setNameAr("");
+      // setNameEn("");
     } catch (error) {
       console.log(error);
     }

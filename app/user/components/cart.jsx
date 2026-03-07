@@ -10,6 +10,8 @@ import {
   getRequest,
   postRequest,
 } from "../../../utils/requestsUtils";
+import { LuLoader } from "react-icons/lu";
+
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useRouter } from "next/navigation";
@@ -22,10 +24,10 @@ export default function Cart() {
   const [totalOrder, setTotalOrder] = useState(0);
   const [totalDiscount, setTotalDiscount] = useState(0);
   const [itemNum, setItemNum] = useState(0);
-  const userId = localStorage.id;
+  const userId =typeof window !== 'undefined'?  localStorage.id:null;
   const shappingCost = 50;
   const [isFirstAction, setIsFirstAction] = useState(true);
-  const [loading, setLoding] = useState(true);
+  const [loading, setLoading] = useState(true);
   const navigate = useRouter();
 
   const getProductInCart = async () => {
@@ -35,13 +37,15 @@ export default function Cart() {
     setTotalOrder(res.total);
     setItemNum(res.itemLines.length);
     setTotalDiscount(res.totalDiscount);
+          setLoading(false)
+
     }
     catch(error){
       console.log(error)
+            setLoading(true)
+
     }
-    finally{
-      setLoding(false)
-    }
+   
    
   };
   const changeQuantity = async (itemId, newQuantity) => {
@@ -67,11 +71,9 @@ export default function Cart() {
   const placeOrder = async () => {
     if (items.length != 0) {
       if (isFirstAction) {
-        setLoding(true);
-
         getProductInCart();
       } else {
-        const res = await postRequest(`/api/orders/${userId}/placeOrder`);
+        const res = await postRequest(`/api/orders/${userId}/placeOrder`,'','');
         navigate.push("/user/ordershistory");
         console.log(res);
       }
@@ -89,7 +91,7 @@ export default function Cart() {
     getProductInCart();
   }, []);
   return (
-    <div data-aos="fade-up" className="p-10 h-full ">
+    <div data-aos="fade-up" className="xl:p-10 xs:p-7  ">
       <div className="flex justify-between py-5">
         <div className="">
           <h1 className="text-4xl font-bold mb-2"> {t('shoppingCart')} </h1>
@@ -97,15 +99,15 @@ export default function Cart() {
          {t('inYourCart') +' '+itemNum+' '+t('products')}
           </span>
         </div>
-        <Link href='/user/home' className="text-sm font-semibold text-red-600 flex items-center gap-2">
+        <Link href='/user/home' className="md:text-sm xs:text-xs font-semibold text-red-600 flex items-center gap-2">
           <h1>{t('continueShopping')} </h1>
                 <span className="mt-2">
            {localStorage.lang === 'ar'? <FaArrowLeft /> : <FaArrowRight />} 
           </span>
         </Link>
       </div>
-      <div className="flex md:flex-row xs:flex-col h-[500px] gap-7 ">
-        <div className=" rounded-xl w-full  border overflow-hidden overflow-x-auto md:overflow-x-hidden overflow-y-scroll ">
+      <div className="flex lg:flex-row xs:flex-col gap-5 ">
+        <div className=" rounded-xl w-full  border overflow-hidden overflow-x-auto  overflow-y-auto ">
           <table className="  xs:w-[200%] lg:w-full   ">
             <thead className="bg-[#F9FAFB] text-xs text-gray-500  text-justify">
               <tr className=" text-gray-500 h-12">
@@ -332,7 +334,7 @@ export default function Cart() {
               }`}
               onClick={placeOrder}
             >
-              {isFirstAction ?t("proceedToCheckout") : t("confirmOrder")}
+              {isFirstAction ?t("proceedToCheckout") : loading? <LuLoader className="animate-spin" />: t("confirmOrder")}
             </button>
             <div className="flex gap-4 p-2 w-full bg-red-50 mt-5 rounded-md">
               <span className="text-2xl text-red-600 mt-1">

@@ -16,7 +16,7 @@ export default function FeatuerProducts({ FeatuerProducts }) {
   const { t } = useLanguage();
 
   return (
-    <div className="flex flex-col justify-center items-center  relative mt-28">
+    <div className="flex flex-col justify-center items-center  relative mt-40">
       <div className="w-full flex justify-center items-center gap-2 text-center px-10 text-2xl shadow-md shadow-gray-300 font-semibold bg-gray-100  h-12 ">
         <span className=" text-red-600 rounded-full  p-1">
           <AiFillStar className="" />
@@ -25,7 +25,7 @@ export default function FeatuerProducts({ FeatuerProducts }) {
           {t("featured_products")}{" "}
         </h1>
       </div>
-      <div className=" w-full mt-5">
+      <div className=" w-full mt-28">
         <Swiper
           key={lang}
           breakpoints={{
@@ -42,7 +42,7 @@ export default function FeatuerProducts({ FeatuerProducts }) {
               slidesPerView: 5,
             },
             1487: {
-              slidesPerView: 6,
+              slidesPerView: 5,
             },
           }}
           modules={[Navigation, Autoplay]}
@@ -51,13 +51,13 @@ export default function FeatuerProducts({ FeatuerProducts }) {
             prevEl: ".prev-btn",
           }}
           dir={lang === "ar" ? "rtl" : "ltr"}
-          spaceBetween={7}
-          className="w-full rounded-xl   "
+          spaceBetween={15}
+          className="w-full h-full rounded-xl   "
         >
           {FeatuerProducts.map((product) => {
             return (
               <SwiperSlide key={product.itemId} className=" mt-5   rounded-lg ">
-                <div className="rounded-lg  flex justify-center mx-2 cursor-pointer duration-300 hover:scale-105  hover:border-b-[7px] hover:border-b-red-600  hover:shadow-lg border ">
+                <div className="rounded-lg h-[350px]  flex justify-center  cursor-pointer  ">
                   <ProductCard productInfo={product} favorite={false} />
                 </div>
               </SwiperSlide>
@@ -65,7 +65,7 @@ export default function FeatuerProducts({ FeatuerProducts }) {
           })}
           <div className=" flex flex-col justify-center items-center relative my-20 ">
             <div className=" p-1 rounded-full absolute flex gap-2 justify-center items-center  ">
-              <button className="prev-btn p-1 rounded-full  border-2 border-red-600  hover:text-white text-red-600 text-3xl   font-bold ">
+              <button className="next-btn p-1 rounded-full border-2 hover:bg-red-600 border-red-600   hover:text-white text-red-600 text-3xl   font-bold">
                 {lang === "ar" ? (
                   <IoIosArrowRoundForward className="text-3xl font-bold" />
                 ) : (

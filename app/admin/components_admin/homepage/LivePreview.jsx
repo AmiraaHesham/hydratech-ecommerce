@@ -18,7 +18,7 @@ export default function ProductPreview({ sliderImages }) {
       <div className="bg-white h-[350px] rounded-xl  w-full p-3">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <span className="text-blue-600">
+            <span className="text-red-600">
               <LuEye />
             </span>
             <h1 className="font-semibold md:text-sm xs:text-xs text-gray-600">

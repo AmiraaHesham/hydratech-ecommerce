@@ -10,11 +10,8 @@ export default function Orders() {
   //   typeof window !== "undefined" ? localStorage.getItem("role") : null;
   // if(role === "ADMIN"){
   return (
-     <div className="h-full bg-[#F9FAFB]">
-         <main className=" flex border  ">
-           <SideMenu orders={"bg-red-100 text-red-500"} />
-           <div className="w-full">
-             <Header page_title={"Orders Management"} />
+     <div className="bg-[#F9FAFB]">
+        
              {/* <div className="flex w-full flex-col justify-center items-center mt-6 relative"> */}
           <div className="flex w-full  flex-col justify-center items-center  relative">
              <div className="w-[90%] mt-3 ">
@@ -24,8 +21,7 @@ export default function Orders() {
         </div>
              </div>
            </div>
-         </main>
-       </div>
+     
   )
 // }
 //    else{

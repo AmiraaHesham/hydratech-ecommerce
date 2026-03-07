@@ -8,11 +8,8 @@ export default function Dashboard() {
 
   return (
     <div className="bg-[#F9FAFB]">
-      <div className="flex">
-        <SideMenu dashbord={"bg-red-100 text-red-500"} />
-        <div className="w-full">
-          <Header page_title={"Dashboard Overview"} />
-          <div className="flex w-full flex-col justify-center items-center mt-6 relative">
+   
+          <div className="flex w-full flex-col justify-center items-center pt-6 relative">
             <div className="w-[90%] ">
               <Dashboard_Details />
               <QuicksAction />
@@ -20,8 +17,7 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+   
   );
 // }
 //    else{

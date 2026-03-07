@@ -39,31 +39,37 @@ export default function Homepage() {
     try {
       const res = await getSliderImage();
       setImagesSliders(res);
+            setLoading(false)
+
     } catch (error) {
       console.error("Failed to fetch slider images:", error);
-    } finally {
-      setLoading(false);
+            setLoading(true)
+
     }
   };
   const showCategories = async () => {
     try {
       const res = await getCategories();
       setCategories(res.data);
+            setLoading(false)
+
     } catch (error) {
       console.log(error);
-    } finally {
-      setLoading(false);
-    }
+            setLoading(true)
+
+    } 
   };
   const getFeatuersProducts = async () => {
     try {
       const response = await getFeatuerProducts();
 
       setFeatuerProducts(response.data);
+            setLoading(false)
+
     } catch (error) {
       console.log(error);
-    } finally {
-      setLoading(false);
+            setLoading(true)
+
     }
   };
 
@@ -111,13 +117,13 @@ export default function Homepage() {
       <section id="ImageSlider" data-aos="fade-up">
         {loading ? (
           <div className="w-full h-[500px] my-10  flex justify-center items-center">
-            <div className="w-[80%] h-full bg-gray-200 rounded animate-pulse"></div>
+            <div className="xl:w-[80%] xs:w-full xs:mx-2 h-full bg-gray-200 rounded animate-pulse"></div>
           </div>
         ) : (
           <ImageSlider sliderImages={ImagesSliders} />
         )}
       </section>
-      <section id="CategoriesSection" className="h-[300px]" data-aos="fade-up">
+      <section id="CategoriesSection" className="h-[500px]  justify-center items-center" data-aos="fade-up">
         {loading ? (
           <div className="w-full h-full">
             <div className="w-full flex justify-center items-center text-center px-10 text-2xl font-semibold h-12 shadow-md shadow-gray-300 bg-gray-100">
@@ -126,13 +132,13 @@ export default function Homepage() {
                 {t("categories")}
               </h1>
             </div>
-            <div className="w-full h-[200px]  grid grid-cols-6 gap-5 my-10">
+            <div className="w-full h-[320px] grid xl:grid-cols-6 lg:grid-cols-4 md:grid-cols-3 xs:grid-cols-2 gap-5 mt-32">
               <div className="bg-gray-200 rounded animate-pulse w-full"></div>
               <div className="bg-gray-200 rounded animate-pulse w-full"></div>
-              <div className="bg-gray-200 rounded animate-pulse w-full"></div>
-              <div className=" bg-gray-200 rounded animate-pulse w-full"></div>
-              <div className=" bg-gray-200 rounded animate-pulse w-full"></div>
-              <div className=" bg-gray-200 rounded animate-pulse w-full"></div>
+              <div className="bg-gray-200 xs:hidden lg:block rounded animate-pulse w-full"></div>
+              <div className=" bg-gray-200 xs:hidden md:block rounded animate-pulse w-full"></div>
+              <div className=" bg-gray-200  xs:hidden  xl:block  rounded animate-pulse w-full"></div>
+              <div className=" bg-gray-200  xs:hidden xl:block rounded animate-pulse w-full"></div>
 
             </div>
           </div>
@@ -140,7 +146,7 @@ export default function Homepage() {
           <CategoriesSection categories={categories} />
         )}
       </section>
-      <section id="FeatuerProducts" className="h-[500px]" data-aos="fade-up">
+      <section id="FeatuerProducts" className="h-[700px]" data-aos="fade-up">
          {loading ? (
           <div className="w-full h-full my-10">
             <div className="w-full flex justify-center items-center gap-2 text-center px-10 text-2xl shadow-md shadow-gray-300 font-semibold bg-gray-100  h-12 ">
@@ -151,13 +157,12 @@ export default function Homepage() {
           {t("featured_products")}{" "}
         </h1>
       </div>
-            <div className="w-full h-[320px] grid grid-cols-6 gap-5 my-10">
+            <div className="w-full h-[350px] grid xl:grid-cols-5 md:grid-cols-3 xs:grid-cols-2 gap-5 my-10">
               <div className="bg-gray-200 rounded animate-pulse w-full"></div>
               <div className="bg-gray-200 rounded animate-pulse w-full"></div>
-              <div className="bg-gray-200 rounded animate-pulse w-full"></div>
-              <div className=" bg-gray-200 rounded animate-pulse w-full"></div>
-              <div className=" bg-gray-200 rounded animate-pulse w-full"></div>
-              <div className=" bg-gray-200 rounded animate-pulse w-full"></div>
+              <div className="bg-gray-200 xs:hidden md:block rounded animate-pulse w-full"></div>
+              <div className=" bg-gray-200 xs:hidden xl:block rounded animate-pulse w-full"></div>
+              <div className=" bg-gray-200 xs:hidden xl:block rounded animate-pulse w-full"></div>
 
             </div>
           </div>

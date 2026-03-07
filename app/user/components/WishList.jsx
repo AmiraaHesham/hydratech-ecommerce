@@ -13,16 +13,18 @@ export default function WishList() {
   const [loading, setLoading] = useState(true);
 
   const { t } = useLanguage();
-  const userId = localStorage.id;
+  const userId =typeof window !== 'undefined'?  localStorage.id:null;
   const getWishList = async () => {
     try {
       const response = await getRequest(`/api/users/${userId}/favoriteItems`);
       setProducts(response);
+            setLoading(false)
+
     } catch (error) {
       console.log(error);
-    } finally {
-      setLoading(false);
-    }
+            setLoading(true)
+
+    } 
   };
 
   useEffect(() => {
@@ -61,6 +63,7 @@ export default function WishList() {
           ))}
         </div>
       ) : (
+        products.length === 0 ?<div className="w-full h-[400px]"></div>:
         <div className="grid xl:grid-cols-6 lg:grid-cols-4 sm:grid-cols-3 xs:grid-cols-2 gap-5 ">
           {products.map((product, index) => {
             return (

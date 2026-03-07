@@ -9,25 +9,29 @@ import { RiPagesFill } from "react-icons/ri";
 import { MdElectricBolt } from "react-icons/md";
 import { MdCategory } from "react-icons/md";
 import Link from "next/link";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import { useLanguage } from "../../../context/LanguageContext.js";
 import Image from "next/image.js";
-export default function SideMenu({
-  dashbord,
-  homepage,
-  categoryies,
-  products,
-  orders,
-  users,
-  admins,
-  contact,
-}) {
-  const [username , setUsername] = useState()
+import { PiSignOutBold } from "react-icons/pi";
+
+import { useNamePageInAdminContext } from "../../../context/namePageInAdmin.jsx";
+import { useRouter } from "next/navigation.js";
+export default function SideMenu() {
+    const navigate = useRouter();
+
+  const [username, setUsername] = useState();
+  const { selectedNamePage, setSelectedNamePage } = useNamePageInAdminContext();
   useEffect(() => {
     // جلب اسم المستخدم من localStorage
-    const savedUsername =  localStorage.getItem("firstName") + " " + localStorage.getItem("lastName") || '';
+    const savedUsername =
+     typeof window !== 'undefined'? localStorage.getItem("firstName") :null+
+        " " +
+       typeof window !== 'undefined'?  localStorage.getItem("lastName") : null;
     setUsername(savedUsername);
+    const lastPort = window.location.pathname.split('/').filter(Boolean).pop()
+    setSelectedNamePage( lastPort=== 'Dashboard'? lastPort + ' '+ 'Overview' : lastPort + " " + "Management")
   }, []);
+
   // const username =
   //  typeof window !== 'undefined'? localStorage.getItem("firstName") + " " + localStorage.getItem("lastName"):null;
   // const adminId = localStorage.getItem("id");
@@ -45,10 +49,10 @@ export default function SideMenu({
   //   checkAdmin()
   // },[checkAdmin])
   return (
-    <div className="  xs:w-[60px] md:w-[300px]  bg-[#ffffff]">
-      <div className=" h-screen   ">
+    <div className=" h-screen  xs:w-[60px] md:w-[300px]  bg-[#ffffff]">
+      <div className="   ">
         <div className="flex  items-center xs:justify-center md:justify-start md:mx-5 xs:mx-0 gap-1 xs:mt-2 md:mt-5">
- <span className="p-2 rounded-md  ">
+          <span className="p-2 rounded-md  ">
             <Image
               src="/Images/logo.png"
               alt="logo"
@@ -56,20 +60,25 @@ export default function SideMenu({
               height={35}
               priority
             />
-          </span>   
+          </span>
           <div className="cursor-default md:block xs:hidden">
             <h1 className="text-md  text-blue-950 font-semibold font-sans">
-              <span className="text-sm  font-bold">{username === "" ? "" : username}</span>
+              <span className="text-sm  font-bold">
+                {username === "" ? "" : username}
+              </span>
             </h1>
             <h1 className="text-xs text-blue-950">{t("super_admin")}</h1>
           </div>
         </div>
-{/* <hr></hr> */}
+        {/* <hr></hr> */}
         <div className="mt-9 flex flex-col gap-1 text-gray-600">
-          <Link href="/admin/pages/Dashboard">
+          <Link href="/admin/pages/Dashboard"
+                        onClick={()=>setSelectedNamePage("Dashboard Overview")}
+>
             <div
               id="dashboardTab"
-              className={`flex gap-4 mx-3 xs:justify-center md:justify-start  items-center p-3 rounded-md cursor-pointer hover:bg-red-100 hover:text-red-500 ${dashbord}`}
+              className={`flex gap-4 mx-3 xs:justify-center md:justify-start  items-center p-3 rounded-md cursor-pointer hover:bg-red-100 hover:text-red-500
+                 ${selectedNamePage === "dashboard_overview"?'bg-red-100 text-red-500':''}`}
             >
               <span className="text-2xl ">
                 <MdDashboard />
@@ -78,10 +87,12 @@ export default function SideMenu({
             </div>
           </Link>
 
-          <Link href="/admin/pages/HomePage">
+          <Link href="/admin/pages/Homepage"
+                        onClick={()=>setSelectedNamePage("Homepage Management")}
+>
             <div
               className={`flex gap-4 mx-3 xs:justify-center md:justify-start  items-center p-3 rounded-md  cursor-pointer hover:bg-red-100 hover:text-red-500
-        ${homepage}`}
+                 ${selectedNamePage === "homepage_management"?'bg-red-100 text-red-500':''}`}
             >
               <span className="text-2xl ">
                 <RiPagesFill />
@@ -90,10 +101,12 @@ export default function SideMenu({
             </div>
           </Link>
 
-          <Link href="/admin/pages/Categoryies">
+          <Link href="/admin/pages/Categories"
+                        onClick={()=>setSelectedNamePage("Categories Management")}
+>
             <div
               className={`flex gap-4 mx-3 xs:justify-center md:justify-start  items-center p-3 rounded-md cursor-pointer hover:bg-red-100 hover:text-red-500
-         ${categoryies} `}
+                 ${selectedNamePage === "categories_management"?'bg-red-100 text-red-500':''}`}
             >
               <span className="text-2xl ">
                 <MdCategory />
@@ -102,10 +115,12 @@ export default function SideMenu({
             </div>
           </Link>
 
-          <Link href="/admin/pages/Products">
+          <Link href="/admin/pages/Products"
+                        onClick={()=>setSelectedNamePage("Products Management")}
+>
             <div
               className={`flex gap-4 mx-3 xs:justify-center md:justify-start items-center p-3 rounded-md cursor-pointer  hover:bg-red-100 hover:text-red-500
-                 ${products}`}
+                 ${selectedNamePage === "products_management"?'bg-red-100 text-red-500':''}`}
             >
               <span className="text-2xl ">
                 <IoFileTray />
@@ -114,10 +129,12 @@ export default function SideMenu({
             </div>
           </Link>
 
-          <Link href="/admin/pages/orders_page/Orders">
+          <Link href="/admin/pages/orders_page/Orders"
+                        onClick={()=>setSelectedNamePage("Orders Management")}
+>
             <div
               className={`flex gap-4 mx-3 xs:justify-center md:justify-start items-center p-3 rounded-md  cursor-pointer hover:bg-red-100 hover:text-red-500
-                ${orders} `}
+                 ${selectedNamePage === "orders_management"?'bg-red-100 text-red-500':''}`}
             >
               <span className="text-2xl ">
                 <MdOutlineShoppingCart />
@@ -126,10 +143,12 @@ export default function SideMenu({
             </div>
           </Link>
 
-          <Link href="/admin/UsersPage/Users">
+          <Link href="/admin/UsersPage/Users"
+                        onClick={()=>setSelectedNamePage("Users Management")}
+>
             <div
               className={`flex gap-4 mx-3 xs:justify-center md:justify-start  items-center p-3 rounded-md cursor-pointer hover:bg-red-100 hover:text-red-500
-             ${users}`}
+                 ${selectedNamePage === "users_management"?'bg-red-100 text-red-500':''}`}
             >
               <span className="text-2xl ">
                 <ImUsers />
@@ -138,10 +157,12 @@ export default function SideMenu({
             </div>
           </Link>
 
-          <Link href="/admin/pages/Admins">
-            <div id="adminsTab"
+          <Link href="/admin/pages/Admins"          
+              onClick={()=>setSelectedNamePage("Admins Management")} >
+            <div
+              id="adminsTab"
               className={`flex gap-4 mx-3 xs:justify-center md:justify-start  items-center p-3 rounded-md cursor-pointer hover:bg-red-100 hover:text-red-500
-             ${admins}`}
+                 ${selectedNamePage === "admins_management"?'bg-red-100 text-red-500':''}`}
             >
               <span className="text-2xl">
                 <MdAdminPanelSettings />
@@ -150,9 +171,12 @@ export default function SideMenu({
             </div>
           </Link>
 
-          <Link href="/admin/pages/Contact">
+          <Link href="/admin/pages/Contact"
+                        onClick={()=>setSelectedNamePage("Contact Management")}
+>
             <div
-              className={`flex gap-4 mx-3 xs:justify-center md:justify-start items-center p-3 rounded-md cursor-pointer hover:bg-red-100 hover:text-red-500 ${contact}`}
+              className={`flex gap-4 mx-3 xs:justify-center md:justify-start items-center p-3 rounded-md cursor-pointer hover:bg-red-100 hover:text-red-500
+                 ${selectedNamePage === "contact_management"?'bg-red-100 text-red-500':''}`}
             >
               <span className="text-2xl">
                 <MdContactSupport />
@@ -160,6 +184,28 @@ export default function SideMenu({
               <h1 className="text-md xs:hidden md:block">{t("contact")}</h1>
             </div>
           </Link>
+          <hr className="my-10"></hr>
+            <div
+              className={`flex gap-4 mx-3 mt-5 xs:justify-center md:justify-start items-center p-3 rounded-md cursor-pointer text-red-500 `}
+                  onClick={() => {
+                localStorage.setItem("id", "");
+                localStorage.setItem("accessToken", "");
+                localStorage.setItem("address", "");
+                localStorage.setItem("email", "");
+                localStorage.setItem("firstName", "");
+                localStorage.setItem("lastName", "");
+                localStorage.setItem("phone", "");
+                localStorage.setItem("role", "");
+                localStorage.setItem("username", "");
+                navigate.push("/signin");
+              }}
+            >
+              <span className="text-2xl">
+              <PiSignOutBold />
+              </span>
+              <h1 className="text-md xs:hidden md:block">  {t('logout')}
+</h1>
+            </div>
         </div>
         {/* <div className="flex justify-center ">
         <button>Logout</button>

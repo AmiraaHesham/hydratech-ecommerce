@@ -10,9 +10,11 @@ import { getRequest } from "../../../../utils/requestsUtils.js";
 export default function Orders_Details({ orderId }) {
   const { t } = useLanguage();
   const [orderUser, setOrderUser] = useState([]);
+  const [orderAddress, setOrderAddress] = useState();
   const orderItem = async () => {
     const res = await getRequest(`/api/orders/${orderId}`);
     setOrderUser(res.user);
+    setOrderAddress(res.address);
   };
   useEffect(() => {
     orderItem();

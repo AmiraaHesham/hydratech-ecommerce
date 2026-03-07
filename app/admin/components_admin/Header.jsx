@@ -2,36 +2,38 @@
 import { use, useEffect } from "react";
 import { useLanguage } from "../../../context/LanguageContext.js";
 import { postRequest } from "../../../utils/requestsUtils.js";
+import { useNamePageInAdminContext } from "../../../context/namePageInAdmin.jsx";
 
 export default function Header({ page_title }) {
   const { locale, setLocale } = useLanguage();
+  const { selectedNamePage ,setSelectedNamePage } = useNamePageInAdminContext();
   const { t } = useLanguage();
   
-  switch (page_title) {
+  switch (selectedNamePage) {
     case "Categories Management":
-      page_title="categories_management";
+      setSelectedNamePage("categories_management");
       break;
     case "Products Management":
-           page_title="products_management";
+           setSelectedNamePage("products_management");
       
       break;
     case "Orders Management":
-            page_title= "orders_management";
+            setSelectedNamePage ("orders_management");
       break;
       case "Dashboard Overview":
-            page_title= "dashboard_overview";
+            setSelectedNamePage ("dashboard_overview");
       break;
       case "Homepage Management":
-            page_title= "homepage_management";
+            setSelectedNamePage ("homepage_management");
       break;
       case "Users Management":
-            page_title= "users_management";
+            setSelectedNamePage ("users_management");
       break;
       case "Admins Management":
-            page_title= "admins_management";
+            setSelectedNamePage ("admins_management");
       break;
       case "Contact Management":
-            page_title= "contact_management";
+            setSelectedNamePage ("contact_management");
       break;
   }
 
@@ -59,7 +61,7 @@ export default function Header({ page_title }) {
 
   return (
     <header className="md:h-[70px] xs:h-[50px] flex justify-between items-center px-5 font-semibold w-full bg-white  border-b-[1px]">
-      <h1 id="page-title" className="md:text-2xl xs:text-lg text-blue-950 ">{t(page_title)}</h1>
+      <h1 id="page-title" className="md:text-2xl xs:text-lg text-blue-950 ">{t(selectedNamePage)}</h1>
       <div className="gap-2 flex xs:text-[10px] md:text-sm ">
         <button
           id="en"

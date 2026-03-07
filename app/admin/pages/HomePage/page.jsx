@@ -10,21 +10,17 @@ export default function HomePage() {
     typeof window !== "undefined" ? localStorage.getItem("role") : null;
   // if(role === "ADMIN"){
   return (
-    <div className='bg-[#F9FAFB] '>
-      <main className="flex  ">
-        <SideMenu homepage={"bg-red-100 text-red-500"} />
-        <div className="w-full  ">
-          <Header page_title={"Homepage Management"} />
-          <div className=" mt-3 mx-5 relative   bg-[#F9FAFB]">
-
+ <div className="h-screen  w-full ">
+ 
+          <div className=" relative   ">
           <Sliders/>
           <hr className="h-1  my-10"></hr>
-          
+          <div className="bg-[#F9FAFB] w-full px-5 ">
           <FeatuersProducts/>
+
+          </div>
           </div>
         </div>
-      </main>
-    </div>
   ) 
 // }
 //   else{

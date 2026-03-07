@@ -11,12 +11,9 @@ export default function OrderDetailsPage({params}) {
     const { id } = params; 
 
   return (
-    <div className="h-full bg-[#F9FAFB]">
-         <main className=" flex border  ">
-        <SideMenu orders={"bg-red-100 text-red-500"} />
-        <div className="w-full">
-          <Header page_title={"Order Details"} />
-          <div className="mx-5 mt-2 h-screen relative">
+    <div className="h-full p-5 bg-[#F9FAFB]">
+        
+          <div className=" relative">
             <OrderDetailsHeader orderId={id} />
             <UpdateStatus orderId={id}/>
             <div className="flex md:flex-row xs:flex-col gap-5 md:justify-between items-start mt-7">
@@ -25,8 +22,7 @@ export default function OrderDetailsPage({params}) {
             </div>
           </div>
         </div>
-      </main>
-    </div>
+   
   )
 //   ;}
 //    else{

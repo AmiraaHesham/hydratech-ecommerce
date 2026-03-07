@@ -10,6 +10,7 @@ import { useIdContext } from "../../../../context/idContext";
 import { useRefresh } from "../../../../context/refreshContext.jsx";
 import { useLanguage } from "../../../../context/LanguageContext";
 import ProductCard from "../../../user/components/ProductCard";
+import { AiFillStar } from "react-icons/ai";
 
 export default function FeaturedProducts() {
   const [featuersProducts, setFeatuersProduct] = useState([]);
@@ -29,21 +30,21 @@ const {t} = useLanguage()
     getFeatuersProducts();
   }, [refreshKey]);
   return (
-    <div className="w-full relative h-full  ">
+    <div className="w-full h-auto relative bg-[#F9FAFB]  ">
       <ProductForm />
 
       <div className=" flex justify-between items-center">
         <div className="flex  items-center gap-3">
-          <span className="text-2xl text-yellow-400">
-            <BsStars />
-          </span>
+          <span className=" text-red-600 rounded-full text-xl  p-1">
+          <AiFillStar className="" />
+        </span>
           <h1 className="font-semibold md:text-xl xs:text-lg">
             {t("featured_products")}{" "}
           </h1>
         </div>
         <Link
           href="/admin/pages/Products"
-          className="md:text-4xl xs:text-3xl mx-10 text-blue-700 hover:text-blue-800"
+          className="md:text-4xl xs:text-3xl mx-10 text-red-700 hover:text-red-800"
         >
           <FaCirclePlus />
         </Link>
@@ -69,6 +70,7 @@ const {t} = useLanguage()
                 nameFormProduct.innerHTML = "Edit Product";
                 setSelectedProductId(product.itemId);
               }}
+              className="cursor-pointer hover:shadow-md hover:scale-105 duration-200"
             >
                                  <div  className="h-[320px] bg-white border rounded-md" >
                                       <div className="">

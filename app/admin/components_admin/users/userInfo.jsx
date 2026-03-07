@@ -18,9 +18,8 @@ import { useParams } from "next/navigation";
 import { ImBlocked } from "react-icons/im";
 import { VscCircleFilled } from "react-icons/vsc";
 
-export default function UserInfo() {
+export default function UserInfo({userId}) {
   const { t } = useLanguage();
-  const { selectedUserId } = useIdContext();
 
   const [userInfo, setUserInfo] = useState({
     username: "",
@@ -35,7 +34,7 @@ export default function UserInfo() {
   });
 
   const getUserInfo = async () => {
-    const res = await getRequest(`/api/users/${selectedUserId}`);
+    const res = await getRequest(`/api/users/${userId}`);
     setUserInfo((prev) => ({
       ...prev,
       username: res.username,
@@ -51,18 +50,18 @@ export default function UserInfo() {
   };
 
   const addBlock = async () => {
-    await postRequest(`/api/admin/users/${selectedUserId}/block`);
+    await postRequest(`/api/admin/users/${userId}/block`);
     getUserInfo();
   };
   const removeBlock = async () => {
-    await postRequest(`/api/admin/users/${selectedUserId}/unblock`);
+    await postRequest(`/api/admin/users/${userId}/unblock`);
     getUserInfo();
   };
   useEffect(() => {
     getUserInfo();
   }, []);
   return ( 
-            <div className="">
+            <div className="w-full h-full">
               <div className="flex items-center gap-4 bg-white rounded-lg border p-5">
                 <span className="w-[50px] h-[50px] text-gray-600 my-2  bg-gray-50 flex justify-center items-center p-2 rounded-full border ">
                   <FaUserLarge />
@@ -73,7 +72,7 @@ export default function UserInfo() {
                   </h1>
                   <div className="flex items-center text-sm gap-3 text-gray-600">
                     <h1 className="flex items-center gap-2">
-                      ID: #{selectedUserId}
+                      ID: #{userId}
                       <TbPointFilled className="text-xs text-gray-200" />
                     </h1>
                     <h1 className="flex items-center gap-2">
@@ -175,7 +174,7 @@ export default function UserInfo() {
                 </div>
               </div>
 
-              <div className="flex  bg-[#F9FAFB] justify-between my-7 gap-5">
+              <div className="flex items-start bg-[#F9FAFB] justify-between my-7  gap-5">
                 <div className="md:order-1 w-full   xs:order-2">
                   <Orders_Table />
                 </div>

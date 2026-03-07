@@ -1,5 +1,6 @@
 // import { useState, useRef, useEffect } from "react";
 // import axios from "axios";
+import Image from "next/image";
 import SignInForm from "../components/SignIn_Form";
 
 export default function SignIn() {
@@ -66,10 +67,21 @@ export default function SignIn() {
   // }
   return (
     
-      <div className=" w-full h-screen flex justify-center items-center  ">
-        <div className="h-screen w-full bg-gray-100">
+      <div className="h-screen">
+       <div className=" w-full h-screen ">
+    <div className=" h-full flex justify-center ">
         <SignInForm />
-
+  <div className="h-full w-full">
+        <Image
+          src="/Images/imageSignUp.png"
+          alt="Background Image"
+          width={500}
+          height={500}
+          priority
+          className="h-full w-full"
+        />
+      </div>
+        </div>
         </div>
     </div>
   );
