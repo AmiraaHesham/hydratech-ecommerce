@@ -14,12 +14,12 @@ export default function OrderDetails({ orderId }) {
   const [totalDiscount, setTotalDiscount] = useState();
   const [itemsNum, setItemsNum] = useState();
   const [createdDate, setCreatedDate] = useState();
-  const [state, setState] = useState(); 
-   const { setSelectedProductId } = useIdContext();
+  const [state, setState] = useState();
+  const { setSelectedProductId } = useIdContext();
   const navigate = useRouter();
-    const { t } = useLanguage();
+  const { t } = useLanguage();
 
-   const lang =
+  const lang =
     typeof window !== "undefined" ? localStorage.getItem("lang") : null;
   const steps = [
     { icon: <FaShoppingBag size={20} />, label: t("PENDING") },
@@ -27,8 +27,8 @@ export default function OrderDetails({ orderId }) {
     { icon: <FaTruck size={20} />, label: t("SHIPPED") },
     { icon: <FaCheck size={20} />, label: t("DELIVERED") },
   ];
-    const [orderStepPath, setOrderStepPath] = useState();
-    const [activeStep, setActiveStep] = useState();
+  const [orderStepPath, setOrderStepPath] = useState();
+  const [activeStep, setActiveStep] = useState();
 
   const shappingCost = 50;
   const getOrder = async () => {
@@ -44,7 +44,7 @@ export default function OrderDetails({ orderId }) {
   useEffect(() => {
     getOrder();
   }, []);
-   useEffect(() => {
+  useEffect(() => {
     if (state === "PENDING") {
       setActiveStep(1);
       setOrderStepPath(6);
@@ -54,72 +54,73 @@ export default function OrderDetails({ orderId }) {
     } else if (state === "SHIPPED") {
       setActiveStep(3);
       setOrderStepPath(23);
-    } 
-    
-    else if(state ==='DELIVERED') {
+    } else if (state === "DELIVERED") {
       setActiveStep(4);
       setOrderStepPath(30);
-    }
-else{
-   setActiveStep(0);
+    } else {
+      setActiveStep(0);
       setOrderStepPath(1);
-}
+    }
   }, [state]);
   const date = new Date(createdDate);
   const dateOnly = date.toLocaleDateString("en-US");
   return (
     <div className="w-full h-full p-10">
       <div className="relative flex items-center h-16 px-4 my-5">
-      <div
-        className="absolute top-1/2 left-0 right-0 h-0.5"
-        style={{
-          background: `linear-gradient(${lang === "en" ? "to right" : "to left"}, red ${activeStep * orderStepPath}%, #e0e0e0 ${activeStep * orderStepPath}%)`,
-        }}
-      ></div>
-      <div className="flex justify-between w-full relative z-10">
-        {steps.map((step, index) => (
-          <div
-            key={index}
-            className="flex flex-col items-center"
-            onClick={() => {
-              // console.log(step.l);
-              changeState(step.label);
-            }}
-          >
-            {/* الدائرة المحيطة بالأيقونة */}
+        <div
+          className="absolute top-1/2 left-0 right-0 h-0.5"
+          style={{
+            background: `linear-gradient(${
+              lang === "en" ? "to right" : "to left"
+            }, red ${activeStep * orderStepPath}%, #e0e0e0 ${
+              activeStep * orderStepPath
+            }%)`,
+          }}
+        ></div>
+        <div className="flex justify-between w-full relative z-10">
+          {steps.map((step, index) => (
             <div
-              className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
-                index + 1 <= activeStep
-                  ? "bg-red-100 border-2 border-red-300"
-                  : "bg-gray-100 border-2 border-gray-300"
-              }`}
+              key={index}
+              className="flex flex-col items-center"
+              onClick={() => {
+                // console.log(step.l);
+                changeState(step.label);
+              }}
             >
-              {/* الأيقونة (ملونة حسب المرحلة النشطة) */}
+              {/* الدائرة المحيطة بالأيقونة */}
               <div
-                className={
-                  index + 1 <= activeStep ? "text-red-600" : "text-gray-400"
-                }
+                className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
+                  index + 1 <= activeStep
+                    ? "bg-red-100 border-2 border-red-300"
+                    : "bg-gray-100 border-2 border-gray-300"
+                }`}
               >
-                {step.icon}
+                {/* الأيقونة (ملونة حسب المرحلة النشطة) */}
+                <div
+                  className={
+                    index + 1 <= activeStep ? "text-red-600" : "text-gray-400"
+                  }
+                >
+                  {step.icon}
+                </div>
               </div>
+              {/* العنوان تحت الأيقونة */}
+              <span
+                className={`text-xs mt-1 font-medium transition-opacity ${
+                  index + 1 <= activeStep
+                    ? "text-red-600 opacity-100"
+                    : "text-gray-500 opacity-70"
+                }`}
+              >
+                {step.label}
+              </span>
             </div>
-            {/* العنوان تحت الأيقونة */}
-            <span
-              className={`text-xs mt-1 font-medium transition-opacity ${
-                index + 1 <= activeStep
-                  ? "text-red-600 opacity-100"
-                  : "text-gray-500 opacity-70"
-              }`}
-            >
-              {step.label}
-            </span>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
-      <div className="flex md:flex-row xs:flex-col h-[500px] gap-7 ">
-        <div className=" rounded-xl w-full  border overflow-hidden overflow-x-auto md:overflow-x-hidden overflow-y-scroll ">
-          <table className="  xs:w-[200%] lg:w-full   ">
+      <div className="flex md:flex-row xs:flex-col gap-7 ">
+        <div className=" rounded-xl w-full h-[400px]  border overflow-hidden overflow-x-auto md:overflow-x-hidden overflow-y-scroll ">
+          <table className="  xs:w-[200%] lg:w-full  ">
             <thead className="bg-[#F9FAFB] text-xs text-gray-500  text-justify">
               <tr className=" text-gray-500 h-12">
                 <th className="w-[30%] px-5">{t("product")} </th>
@@ -133,12 +134,15 @@ else{
               {/* {order.length != 0 ? ( */}
               {order.map((product, index) => {
                 return (
-                  <tr key={index} className=" text-blue-950 border h-14 w-full cursor-pointer hover:bg-gray-100"
-                  onClick={()=>{
-                   setSelectedProductId(product.item.itemId);
-              navigate.push(`/user/pages/productdetails/${product.item.itemId}`);
-                  }}
-                   
+                  <tr
+                    key={index}
+                    className=" text-blue-950 border h-14 w-full cursor-pointer hover:bg-gray-100"
+                    onClick={() => {
+                      setSelectedProductId(product.item.itemId);
+                      navigate.push(
+                        `/user/pages/productdetails/${product.item.itemId}`
+                      );
+                    }}
                   >
                     <td className="px-5">
                       <div className="flex orderss-center gap-3">
@@ -209,39 +213,45 @@ else{
             </tbody>
           </table>
         </div>
-        <div className=" h-screen md:w-[40%]  xs:w-full">
+        <div className=" md:w-[40%]  xs:w-full">
           <div className=" h-[500px] p-7  w-full bg-white rounded-lg border">
             <h1 className="mb-10 text-2xl font-bold">{t("orderSummary")} </h1>
 
             <div className="flex justify-between orderss-center mb-5">
-              <span className="text-gray-600"> {t('createdDate')}</span>
+              <span className="text-gray-600"> {t("createdDate")}</span>
               <span className="font-semibold">{dateOnly}</span>
             </div>
-          
+
             <div className="flex justify-between orderss-center mb-5">
               <span className="text-gray-600">
                 {t("totalProducts") + " " + itemsNum}
               </span>
 
               <span className="font-semibold">
-                {totalOrder+ ' ' + t('currency')}
+                {totalOrder + " " + t("currency")}
               </span>
             </div>
-           <div className="flex justify-between items-center mb-5">
-              <span className="text-gray-600">{t('totalDiscount')} </span>
-              <span className="font-semibold">{totalDiscount+ ' ' + t('currency')} </span>
+            <div className="flex justify-between items-center mb-5">
+              <span className="text-gray-600">{t("totalDiscount")} </span>
+              <span className="font-semibold">
+                {totalDiscount + " " + t("currency")}{" "}
+              </span>
             </div>
 
-             <div className="flex justify-between items-center">
-              <span className="text-gray-600">{t('shippingCost')} </span>
-              <span className="font-semibold">{shappingCost+ ' ' + t('currency')}</span>
+            <div className="flex justify-between items-center">
+              <span className="text-gray-600">{t("shippingCost")} </span>
+              <span className="font-semibold">
+                {shappingCost + " " + t("currency")}
+              </span>
             </div>
-            
+
             <hr className="my-6" />
             <div className="flex justify-between orderss-center text-2xl font-semibold">
-                <span>{t('grandTotal')} </span>
+              <span>{t("grandTotal")} </span>
               <span className="text-red-500">
-                {totalOrder === 0 ? 0 : totalOrder + shappingCost+ ' ' + t('currency')}
+                {totalOrder === 0
+                  ? 0
+                  : totalOrder + shappingCost + " " + t("currency")}
               </span>
             </div>
           </div>

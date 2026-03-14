@@ -18,7 +18,7 @@ export default function OrdersHistory() {
   const [loading, setLoading] = useState(true);
   const navigate = useRouter();
   const { setSelectedProductId } = useIdContext();
-   useEffect(() => {
+  useEffect(() => {
     AOS.init({
       duration: 1000,
       once: false,
@@ -26,31 +26,27 @@ export default function OrdersHistory() {
     getOrders();
   }, [state, inputSearch]);
   const getOrders = async () => {
-    try{
-       const res = await postRequest(
-      "/api/orders/search",
-      {
-        page: 0,
-        size: 100,
-        searchText: inputSearch,
-        orderState: state,
-      },
-      "",
-    );
-    console.log(res.data);
-    setOrders(res.data);
-    // setLength(res.data.length)
-          setLoading(false)
-
-    }
-    catch(error){
-      console.log(error)
-            setLoading(true)
-
+    try {
+      const res = await postRequest(
+        "/api/orders/search",
+        {
+          page: 0,
+          size: 100,
+          searchText: inputSearch,
+          orderState: state,
+        },
+        ""
+      );
+      console.log(res.data);
+      setOrders(res.data);
+      // setLength(res.data.length)
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(true);
     }
     // finally{
     // }
-   
   };
 
   useEffect(() => {
@@ -100,7 +96,11 @@ export default function OrdersHistory() {
           </span>
           <span
             className={`border-b hover:text-red-600 hover:border-red-600 py-4 cursor-pointer
-               ${state === "PENDING" ? "text-red-600 border-red-600" : "text-gray-500"}
+               ${
+                 state === "PENDING"
+                   ? "text-red-600 border-red-600"
+                   : "text-gray-500"
+               }
               `}
             onClick={() => {
               setState("PENDING");
@@ -110,7 +110,11 @@ export default function OrdersHistory() {
           </span>
           <span
             className={`border-b hover:text-red-600 hover:border-red-600 py-4 cursor-pointer 
-               ${state === "PROCESSING" ? "text-red-600 border-red-600" : "text-gray-500"}
+               ${
+                 state === "PROCESSING"
+                   ? "text-red-600 border-red-600"
+                   : "text-gray-500"
+               }
               `}
             onClick={() => {
               setState("PROCESSING");
@@ -120,7 +124,11 @@ export default function OrdersHistory() {
           </span>
           <span
             className={`border-b hover:text-red-600 hover:border-red-600 py-4 cursor-pointer
-            ${state === "SHIPPED" ? "text-red-600 hover border-red-600" : "text-gray-500"}  
+            ${
+              state === "SHIPPED"
+                ? "text-red-600 hover border-red-600"
+                : "text-gray-500"
+            }  
             `}
             onClick={() => {
               setState("SHIPPED");
@@ -130,7 +138,11 @@ export default function OrdersHistory() {
           </span>
           <span
             className={` border-b hover:text-red-600 hover:border-red-600 py-4 cursor-pointer 
-              ${state === "DELIVERED" ? "text-red-600 border-red-600" : "text-gray-500"}
+              ${
+                state === "DELIVERED"
+                  ? "text-red-600 border-red-600"
+                  : "text-gray-500"
+              }
               `}
             onClick={() => {
               setState("DELIVERED");
@@ -146,31 +158,28 @@ export default function OrdersHistory() {
         [...Array(2)].map((_, index) => (
           <div key={`skeleton-${index}`} className="py-5 flex flex-col gap-5">
             <div className="w-full bg-white   rounded-md shadow-sm p-5">
- <div className="flex justify-between">
-                  <div className="flex items-center gap-5">
-                    <span className="h-4 bg-gray-200 rounded animate-pulse w-24">
-                    </span>
-                    <span className="h-4 bg-gray-200 rounded animate-pulse w-24">
-                    </span>
-                    <span className="h-4 bg-gray-200 rounded animate-pulse w-24"></span>
-                  </div>
-                  <div className="h-4 bg-gray-200 rounded animate-pulse w-24">
-                    
-                  </div>
+              <div className="flex justify-between">
+                <div className="flex items-center gap-5">
+                  <span className="h-4 bg-gray-200 rounded animate-pulse w-24"></span>
+                  <span className="h-4 bg-gray-200 rounded animate-pulse w-24"></span>
+                  <span className="h-4 bg-gray-200 rounded animate-pulse w-24"></span>
                 </div>
- <div className="flex justify-between items-center ">
-                  <div className="mt-10 grid grid-cols-3 gap-x-10 gap-y-5 w-[80%]">
-                     <div className="h-16 bg-gray-200 rounded animate-pulse "></div>
-                     <div className=" h-16 bg-gray-200 rounded animate-pulse "></div>
-                     <div className="h-16 bg-gray-200 rounded animate-pulse "></div>
-                  </div>
-                  <div className="h-10 bg-gray-200 rounded animate-pulse w-[200px] mx-5"></div>
-                  </div>
+                <div className="h-4 bg-gray-200 rounded animate-pulse w-24"></div>
+              </div>
+              <div className="flex justify-between items-center ">
+                <div className="mt-10 grid grid-cols-3 gap-x-10 gap-y-5 w-[80%]">
+                  <div className="h-16 bg-gray-200 rounded animate-pulse "></div>
+                  <div className=" h-16 bg-gray-200 rounded animate-pulse "></div>
+                  <div className="h-16 bg-gray-200 rounded animate-pulse "></div>
+                </div>
+                <div className="h-10 bg-gray-200 rounded animate-pulse w-[200px] mx-5"></div>
+              </div>
             </div>
           </div>
         ))
-      ) : (        orders.length === 0 ?<div className="w-full h-[400px]"></div>:
-
+      ) : orders.length === 0 ? (
+        <div className="w-full h-[400px]"></div>
+      ) : (
         <div className="py-5 flex flex-col gap-5">
           {orders.map((order, index) => {
             const date = new Date(order.createdDate);
@@ -189,7 +198,15 @@ export default function OrdersHistory() {
                       <FaRegCalendar /> {dateOnly}
                     </span>
                     <span
-                      className={`flex items-center ${order.state === "PROCESSING" ? "text-blue-600" : order.state === "PENDING" ? " text-red-600" : order.state === "SHIPPED" ? "text-yellow-600" : "text-green-600"} `}
+                      className={`flex items-center ${
+                        order.state === "PROCESSING"
+                          ? "text-blue-600"
+                          : order.state === "PENDING"
+                          ? " text-red-600"
+                          : order.state === "SHIPPED"
+                          ? "text-yellow-600"
+                          : "text-green-600"
+                      } `}
                     >
                       <VscCircleFilled />
                       {t(order.state)}
@@ -202,17 +219,17 @@ export default function OrdersHistory() {
                     </span>
                   </div>
                 </div>
-                <div className="flex justify-between ">
-                  <div className="mt-10 grid grid-cols-3 gap-x-10 gap-y-5 w-[80%]">
+                <div className="flex justify-between  ">
+                  <div className="mt-10 grid xl:grid-cols-3 md:grid-cols-2 gap-x-3 gap-y-3 lg:w-[80%] xs:w-full">
                     {order.orderItemLines.map((itemLine, index) => {
                       return (
                         <div
-                          className="bg-gray-50 p-2 rounded-md flex items-center gap-5 cursor-pointer"
+                          className="bg-gray-50 p-2 rounded-md flex items-center gap-3 cursor-pointer"
                           key={index}
                           onClick={() => {
                             setSelectedProductId(itemLine.item.itemId);
                             navigate.push(
-                              `/user/pages/productdetails/${itemLine.item.itemId}`,
+                              `/user/pages/productdetails/${itemLine.item.itemId}`
                             );
                           }}
                         >
@@ -226,17 +243,17 @@ export default function OrdersHistory() {
                             height={100}
                             className="rounded-md w-[50px] h-[50px]"
                           />
-                          <div className="flex flex-col">
+                          <div className="flex flex-col text-sm ">
                             <span className="">
                               {localStorage.lang == "ar"
                                 ? itemLine.item.nameAr
                                 : itemLine.item.nameEn}
                             </span>
-                            <div className="flex gap-5 mt-2">
-                              <span className="text-gray-500 text-sm ">
+                            <div className="flex gap-3 mt-2 lg:text-sm xs:text-xs">
+                              <span className="text-gray-500  ">
                                 {t("code")} : {itemLine.item.code}
                               </span>
-                              <span className="text-gray-500 text-sm ">
+                              <span className="text-gray-500 ">
                                 {t("quantity")} : {itemLine.quantity}
                               </span>
                             </div>
@@ -252,7 +269,7 @@ export default function OrdersHistory() {
                       navigate.push(`/user/orderdetails/${order.orderId}`);
                     }}
                   >
-                    <button className="p-2 bg-red-600 text-white rounded-md hover:bg-red-700 w-full">
+                    <button className="p-2 bg-red-600 text-white rounded-md hover:bg-red-700 lg:w-full">
                       تفاصيل الطلب
                     </button>
                   </div>

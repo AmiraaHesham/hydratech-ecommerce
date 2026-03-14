@@ -13,7 +13,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination } from "swiper/modules";
-import LivePreview from '../../components_admin/homepage/LivePreview.jsx'
+import LivePreview from "../../components_admin/homepage/LivePreview.jsx";
 
 import {
   deleteRequest,
@@ -23,14 +23,13 @@ import {
 import { getSliderImage } from "../../../../utils/functions.jsx";
 
 export default function Sliders() {
- const { t } = useLanguage();
+  const { t } = useLanguage();
   const [sliderImages, setSliderImages] = useState([]);
- 
+
   const [responsSuccess, setResponsSuccess] = useState();
 
-
   const getSliderImages = async () => {
-    const res = await getSliderImage()
+    const res = await getSliderImage();
     setSliderImages(res);
   };
 
@@ -44,14 +43,13 @@ export default function Sliders() {
 
   const deleteSlideImage = async (deletedSliderImageId) => {
     try {
-    const res = await deleteRequest(
-      `/api/admin/sliderImages/${deletedSliderImageId}`,
-      t('message')
-    );
-       getSliderImages();
-    }
-    catch(error){
-      console.log(error)
+      const res = await deleteRequest(
+        `/api/admin/sliderImages/${deletedSliderImageId}`,
+        t("message")
+      );
+      getSliderImages();
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -59,18 +57,17 @@ export default function Sliders() {
     getSliderImages();
   }, []);
 
-
   return (
     <div className="h-full w-full p-5">
       <div className=" w-[100%] ">
         <div className="flex items-center justify-between  gap-2 mb-3 ">
           <div className="flex items-center gap-3">
-             <span className="text-xl text-red-600">
-            <TfiLayoutSliderAlt />
-          </span>
-          <h1 className="md:text-xl xs:text-lg font-semibold ">Sliders</h1>
-            </div>
-         <button
+            <span className="text-xl text-red-600">
+              <TfiLayoutSliderAlt />
+            </span>
+            <h1 className="md:text-xl xs:text-lg font-semibold ">Sliders</h1>
+          </div>
+          <button
             id="btn-livePreview"
             className="p-2  bg-red-600 text-white hover:bg-red-300 text-sm rounded-md"
             onClick={() => {
@@ -103,14 +100,17 @@ export default function Sliders() {
             {t("hide")}
           </button>
         </div>
-        <div id="LivePreview" className=" hidden  justify-center items-center mb-10 w-full">
-         <LivePreview sliderImages={sliderImages} />
-        {/* <div className="grid lg:grid-cols-4 xs:grid-cols-1 w-full justify-between items-center gap-5"> */}
-       </div>
+        <div
+          id="LivePreview"
+          className=" hidden  justify-center items-center mb-10 w-full"
+        >
+          <LivePreview sliderImages={sliderImages} />
+          {/* <div className="grid lg:grid-cols-4 xs:grid-cols-1 w-full justify-between items-center gap-5"> */}
+        </div>
 
         {/* </div> */}
       </div>
-       <div className="w-full grid lg:grid-cols-5 md:grid-cols-3  xs:grid-cols-2 gap-3  ">
+      <div className="w-full grid lg:grid-cols-5 md:grid-cols-3  xs:grid-cols-2 gap-3  ">
         <div className="bg-white border rounded-md h-[170px] w-full flex flex-col gap-3 p-4 cursor-pointer">
           <div className=" border-dashed flex justify-center p-5 items-center border-2 rounded-md border-red-400 bg-gray-50  hover:bg-gray-100 w-full h-full ">
             <label htmlFor="fileInput">
@@ -127,7 +127,6 @@ export default function Sliders() {
                     <h2 className="text-[10px] text-gray-500">
                       PNG, JPG or GIF
                     </h2>
-                    
                   </div>
                 </span>
               </div>
@@ -144,22 +143,21 @@ export default function Sliders() {
         </div>
         {sliderImages.map((img, index) => {
           return (
-            <div key={index} className="bg-white  h-[170px] border p-1 rounded-md"
-
+            <div
+              key={index}
+              className="bg-white  h-[170px] border p-1 rounded-md"
             >
               <span className="flex justify-end mb-1">
                 <button
                   className="text-sm text-gray-500 hover:text-gray-600"
-                  onClick={()=>deleteSlideImage(img.sliderImageId)}
+                  onClick={() => deleteSlideImage(img.sliderImageId)}
                 >
                   <FaTimes />
                 </button>
               </span>
               <div className="flex justify-center items-center ">
                 <Image
-                  src={
-                    `${process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL}/images${img.imageUrl}`
-                  }
+                  src={`${process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL}${img.imageUrl}`}
                   alt=""
                   width={100}
                   height={100}

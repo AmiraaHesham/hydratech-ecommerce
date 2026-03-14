@@ -16,6 +16,7 @@ import { postRequest } from "../../../utils/requestsUtils";
 export default function Header() {
   const { t } = useLanguage();
   const navigate = useRouter();
+  const id = typeof window !== "undefined" ? localStorage.getItem("id") : "";
 
   const [isFocused, setIsFocused] = useState(false);
   const divRef = useRef(null);
@@ -63,7 +64,7 @@ export default function Header() {
               />
             </span>
             <div className="cursor-default">
-              <h1 className="lg:text-xl  xs:text-sm w-[100px] text-white font-bold font-sans">
+              <h1 className="lg:text-xl  xs:text-lg w-[100px] text-white font-bold font-sans">
                 {t("alfa_group")}
               </h1>
             </div>
@@ -134,13 +135,13 @@ export default function Header() {
             <Link href="/user/cart">
               <IoMdCart className="w-7 h-7" />
             </Link>
-            <Link href="/user/pages/profile">
+            <Link href={id ? "/user/pages/profile" : "/SignIn"}>
               <div className="flex items-center gap-1  ">
-                <span className="w-10 h-10">
+                <span className="w-9 h-9">
                   <FaRegCircleUser className="w-full h-full" />
                 </span>
                 <span className="text-sm font-semibold text-center ">
-                  {username === "" ? "" : "Hello, " + username}
+                  {username === "" ? t("login") : t("hello") + ", " + username}
                 </span>
               </div>
             </Link>

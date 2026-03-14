@@ -13,7 +13,7 @@ export default function Searchpage() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [ascending, setAscending] = useState();
-    const [sortBy, setSortBy] = useState();
+  const [sortBy, setSortBy] = useState();
 
   const { selectedSearchInput } = useSearshInputContext();
   const { selectedCategoryId } = useIdContext();
@@ -26,10 +26,10 @@ export default function Searchpage() {
           size: 10,
           searchText: selectedSearchInput,
           categoryId: selectedCategoryId,
-          sortBy: sortBy || null ,
-          ascending: ascending || true ,
+          sortBy: sortBy || null,
+          ascending: ascending || true,
         },
-        "",
+        ""
       );
       setProducts(response.data);
       // console.log(response.data);
@@ -39,30 +39,50 @@ export default function Searchpage() {
       console.log(error);
       setLoading(true);
     }
-  }, [selectedCategoryId, selectedSearchInput,sortBy,ascending]);
+  }, [selectedCategoryId, selectedSearchInput, sortBy, ascending]);
 
   useEffect(() => {
-    getAllProducts(ascending,sortBy);
-  }, [selectedCategoryId, selectedCategoryId,sortBy,ascending, getAllProducts]);
+    getAllProducts(ascending, sortBy);
+  }, [
+    selectedCategoryId,
+    selectedCategoryId,
+    sortBy,
+    ascending,
+    getAllProducts,
+  ]);
   return (
     <div className="pb-10 ">
       <div className="flex items-start justify-end gap-5 ">
         <CategoriesSideManu />
 
-        <div className="w-[80%] p-5  ">
+        <div className="md:w-[80%] xs:w-full p-5  ">
           <div className="bg-white flex  gap-4 items-center w-[330px] border rounded-md  px-3 h-10  mb-5">
             <h1 className="text-sm text-gray-500"> {t("sortBy")}: </h1>
-            <select className=" h-full w-[70%]   font-semibold  rounded-md outline-none "
-            onChange={(e)=>
-            {
-              setAscending(e.target.value.split(',')[0])
-              setSortBy(e.target.value.split(',')[1])
-            } 
-            }
+            <select
+              className=" h-full w-[70%]   font-semibold  rounded-md outline-none "
+              onChange={(e) => {
+                setAscending(e.target.value.split(",")[0]);
+                setSortBy(e.target.value.split(",")[1]);
+              }}
             >
-              <option value="" className="bg-red-700 rounded-md text-lg text-white font-semibold">{t("all")}</option>
-              <option value="true,price" className="bg-red-700 rounded-md text-lg text-white font-semibold">{t("priceLowToHigh")} </option>
-              <option value="false,price" className="bg-red-700 rounded-md text-lg text-white font-semibold">{t("priceHighToLow")} </option>
+              <option
+                value=""
+                className="bg-red-700 rounded-md text-lg text-white font-semibold"
+              >
+                {t("all")}
+              </option>
+              <option
+                value="true,price"
+                className="bg-red-700 rounded-md text-lg text-white font-semibold"
+              >
+                {t("priceLowToHigh")}{" "}
+              </option>
+              <option
+                value="false,price"
+                className="bg-red-700 rounded-md text-lg text-white font-semibold"
+              >
+                {t("priceHighToLow")}{" "}
+              </option>
             </select>
           </div>
           {loading ? (
@@ -75,7 +95,7 @@ export default function Searchpage() {
               ))}
             </div>
           ) : products.length != 0 ? (
-            <div className="grid grid-cols-4 gap-5">
+            <div className="grid xl:grid-cols-4 lg:grid-cols-3  xs:grid-cols-2 gap-5">
               {products.map((product, index) => (
                 <div key={index}>
                   <ProductCard productInfo={product} />
