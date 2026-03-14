@@ -37,7 +37,7 @@ export default function SignUp() {
 
     try {
       const response = await axios.post(
-        "http://mHesham-Lap:8787/api/auth/signup",
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/signup`,
         {
           username: username,
           password: password,
