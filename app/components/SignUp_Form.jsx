@@ -11,6 +11,7 @@ import { useLanguage } from "../../context/LanguageContext";
 import { IoLocationOutline } from "react-icons/io5";
 import { FaEye, FaPhone } from "react-icons/fa";
 import Link from "next/link";
+import { postRequest } from "../../utils/requestsUtils";
 
 export default function SignUp() {
   const navigate = useRouter();
@@ -27,7 +28,7 @@ export default function SignUp() {
   const [error, setError] = useState(null);
   const { locale, setLocale } = useLanguage("ar");
   const input_passwordRef = useRef();
-    const input_confirmPasswordRef = useRef();
+  const input_confirmPasswordRef = useRef();
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -36,7 +37,7 @@ export default function SignUp() {
 
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/signup`,
+        "http://mHesham-Lap:8787/api/auth/signup",
         {
           username: username,
           password: password,
@@ -48,6 +49,7 @@ export default function SignUp() {
           phone: phoneNumber,
           language: locale,
         },
+        ""
       );
       localStorage.setItem("accessToken", response.data.accessToken);
       console.log("accessToken", response.data.accessToken);
@@ -205,9 +207,7 @@ export default function SignUp() {
             </div>
             <div className=" flex items-center gap-5">
               <div className="flex flex-col gap-2 w-full">
-                <label className="text-gray-500 text-sm">
-                  {t("password")}
-                </label>
+                <label className="text-gray-500 text-sm">{t("password")}</label>
                 <div className=" flex w-full px-2 rounded-md  border h-10 items-center gap-3">
                   <input
                     ref={input_passwordRef}
@@ -232,7 +232,7 @@ export default function SignUp() {
                     />
                     <FaEye
                       id="eye"
-                      className='hidden'
+                      className="hidden"
                       //   input_passwordRef.current.type === "password"
                       //     ? "hidden"
                       //     : "block"
@@ -271,7 +271,8 @@ export default function SignUp() {
                       // }
                       onClick={() => {
                         input_confirmPasswordRef.current.type = "text";
-                        const eyeSlash = document.querySelector("#eyeSlash_confPass");
+                        const eyeSlash =
+                          document.querySelector("#eyeSlash_confPass");
                         eyeSlash.classList.add("hidden");
                         const eye = document.querySelector("#eye_confPass");
                         eye.classList.remove("hidden");
@@ -279,14 +280,15 @@ export default function SignUp() {
                     />
                     <FaEye
                       id="eye_confPass"
-                      className='hidden'
+                      className="hidden"
                       //   input_confirmPasswordRef.current.type === "password"
                       //     ? "hidden"
                       //     : "block"
                       // }
                       onClick={() => {
                         input_confirmPasswordRef.current.type = "password";
-                        const eyeSlash = document.querySelector("#eyeSlash_confPass");
+                        const eyeSlash =
+                          document.querySelector("#eyeSlash_confPass");
                         eyeSlash.classList.remove("hidden");
                         const eye = document.querySelector("#eye_confPass");
                         eye.classList.add("hidden");
@@ -301,7 +303,7 @@ export default function SignUp() {
               type="submit"
               className="bg-red-600 text-white rounded-md h-10 "
             >
-               {loading ? t("loggingIn") : t("create_account")}
+              {loading ? t("loggingIn") : t("create_account")}
             </button>
           </form>
           <Link href="/signin">

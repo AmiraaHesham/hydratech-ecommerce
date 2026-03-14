@@ -3,10 +3,10 @@ import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 
 export const postRequest = async (endpoint, dataBody, message) => {
- const token =
-  typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
-const lang =
-  typeof window !== "undefined" ? localStorage.getItem("lang") : null;
+  const token =
+    typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+  const lang =
+    typeof window !== "undefined" ? localStorage.getItem("lang") : null;
   try {
     if (message === "") {
       const response = await axios.post(
@@ -68,10 +68,10 @@ const lang =
 };
 
 export const getRequest = async (endpoint) => {
- const token =
-  typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
-const lang =
-  typeof window !== "undefined" ? localStorage.getItem("lang") : null;
+  const token =
+    typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+  const lang =
+    typeof window !== "undefined" ? localStorage.getItem("lang") : null;
   try {
     const response = await axios.get(
       process.env.NEXT_PUBLIC_API_BASE_URL + endpoint,
@@ -93,10 +93,10 @@ const lang =
 };
 
 export const putRequest = async (endpoint, dataBody, message) => {
- const token =
-  typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
-const lang =
-  typeof window !== "undefined" ? localStorage.getItem("lang") : null;
+  const token =
+    typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+  const lang =
+    typeof window !== "undefined" ? localStorage.getItem("lang") : null;
 
   try {
     const result = await Swal.fire({
@@ -145,9 +145,9 @@ const lang =
 
 export const deleteRequest = async (endpoint, message) => {
   const token =
-  typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
-const lang =
-  typeof window !== "undefined" ? localStorage.getItem("lang") : null;
+    typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+  const lang =
+    typeof window !== "undefined" ? localStorage.getItem("lang") : null;
 
   try {
     // 🟡 نستخدم Swal.fire مع icon: 'warning' (مش error)

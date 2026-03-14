@@ -7,7 +7,8 @@ import "swiper/css/pagination";
 import Image from "next/image";
 
 export default function ImageSlider({ sliderImages }) {
-  const lang =typeof window !== 'undefined'?  localStorage.getItem("lang") : "ar";
+  const lang =
+    typeof window !== "undefined" ? localStorage.getItem("lang") : "ar";
   return (
     <div className=" my-10 md:px-10 xs:px-0">
       <Swiper
@@ -24,7 +25,9 @@ export default function ImageSlider({ sliderImages }) {
           <SwiperSlide key={img.sliderImageId}>
             <div className="h-full w-full flex justify-center items-center  relative ">
               <Image
-                src={`${process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL}${img.imageUrl || ""}`}
+                src={`${process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL}${
+                  img.imageUrl || ""
+                }`}
                 alt={`Slide ${index + 1}`}
                 width={1000}
                 height={1000}

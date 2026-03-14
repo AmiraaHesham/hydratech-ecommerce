@@ -87,7 +87,7 @@ export default function Profile() {
                 localStorage.setItem("phone", "");
                 localStorage.setItem("role", "");
                 localStorage.setItem("username", "");
-                navigate.push("/signin");
+                navigate.push("/SignIn");
               }}
             >
              {t('logout')}

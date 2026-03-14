@@ -22,16 +22,16 @@ export default function Header() {
   const { setSelectedSearchInput } = useSearshInputContext();
   const [searchInput, setSearchInput] = useState();
   const { locale, setLocale } = useLanguage();
-  const [ username, setUsername ] = useState();
-const userId =
-   typeof window !== 'undefined'? localStorage.getItem("id"):''
-  const changeLanguage=async()=>{
-    await postRequest(`/api/users/${userId}/langauge/${locale}`,'','')
-  }
+  const [username, setUsername] = useState();
+  const userId =
+    typeof window !== "undefined" ? localStorage.getItem("id") : "";
+  const changeLanguage = async () => {
+    await postRequest(`/api/users/${userId}/langauge/${locale}`, "", "");
+  };
   useEffect(() => {
-const username =
-   typeof window !== 'undefined'? localStorage.getItem("firstName"):'';
-    setUsername(username)
+    const username =
+      typeof window !== "undefined" ? localStorage.getItem("firstName") : "";
+    setUsername(username);
     const handleClickOutside = (event) => {
       if (divRef.current && !divRef.current.contains(event.target)) {
         setIsFocused(false);
@@ -48,37 +48,37 @@ const username =
   }, []);
 
   return (
-    <header >
+    <header>
       <div className="w-full h-[60px] lg:px-10 xs:px-0 flex items-center border-b  justify-between bg-red-700">
-         <Link href="/">
-        <div className="flex  items-center  ">
-          <span className=" w-12 h-12 ">
-            <Image
-              src="/Images/logo.png"
-              alt="logo"
-              width={50}
-              height={50}
-              priority
-              className="w-full h-full"
+        <Link href="/">
+          <div className="flex  items-center  ">
+            <span className=" w-12 h-12 ">
+              <Image
+                src="/Images/logo.png"
+                alt="logo"
+                width={50}
+                height={50}
+                priority
+                className="w-full h-full"
               />
-          </span>
-          <div className="cursor-default">
-            <h1 className="lg:text-xl  xs:text-lg w-[100px] text-white font-bold font-sans">
-              {t("alfa_group")}
-            </h1>
+            </span>
+            <div className="cursor-default">
+              <h1 className="lg:text-xl  xs:text-sm w-[100px] text-white font-bold font-sans">
+                {t("alfa_group")}
+              </h1>
+            </div>
           </div>
-        </div>
-      </Link>
-<div
-        ref={divRef}
-        className={`md:flex xs:hidden items-center bg-white justify-start border w-[50%] bg-none h-10  rounded-md 
+        </Link>
+        <div
+          ref={divRef}
+          className={`md:flex xs:hidden items-center bg-white justify-start border w-[50%] bg-none h-10  rounded-md 
  ${isFocused ? "border-[3px] border-red-400 " : ""}`}
-        onClick={() => setIsFocused(true)}
-        tabIndex={0}
-      >
-        <span className="text-white h-full  rounded-s-md text-2xl bg-red-600 p-2 ">
-          <IoMdSearch />
-        </span>
+          onClick={() => setIsFocused(true)}
+          tabIndex={0}
+        >
+          <span className="text-white h-full  rounded-s-md text-2xl bg-red-600 p-2 ">
+            <IoMdSearch />
+          </span>
           <input
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
@@ -86,67 +86,71 @@ const username =
               if (e.key === "Enter") {
                 e.preventDefault();
                 setSelectedSearchInput(searchInput);
-                navigate.push('/user/search/');
+                navigate.push("/user/search/");
               }
             }}
             placeholder={t("search") + "..."}
             type="text"
             className="w-full h-full text-base bg-none font-semibold outline-none rounded-e-md placeholder:text-sm  flex items-center p-2 "
-        />
-      </div>
-     
-      <div className="flex items-center   md:gap-5 xs:gap-3 mx-2">
-        <div className="flex items-center   cursor-pointer ">
-          <span className="text-white md:text-2xl xs:lg">
-            <MdLanguage />
-          </span>
-
-          <select
-            className=" rounded text-white xs:text-sm md:text-base outline-none bg-red-700 px-1 py-0.5 text-center cursor-pointer"
-            value={locale}
-            onChange={(e) => {
-              const newLang = e.target.value;
-              setLocale(newLang);
-              changeLanguage()
-            }}
-          >
-            <option value="ar" className="bg-white text-red-500 text-lg font-semibold ">
-              العربية
-            </option>
-            <option value="en" className="bg-white text-red-500 text-lg font-semibold">
-              English
-            </option>
-          </select>
+          />
         </div>
 
-        <div className="flex items-center xs:gap-3 md:gap-5 text-white">
-          <Link href="/user/ordershistory">
-            <RiShoppingBag4Fill className="w-7 h-7" />
-          </Link>
-          <Link href="/user/wishlist">
-            <FaHeart className="w-6 h-6" />
-          </Link>
-          <Link href="/user/cart">
-            <IoMdCart className="w-7 h-7" />
-          </Link>
-          <Link href="/user/pages/profile">
-            <div className="flex items-center gap-1  ">
-             
-              <span className="w-10 h-10">
-                <FaRegCircleUser className="w-full h-full" />
-              </span>
-               <span className="text-sm font-semibold text-center ">
-                {username === "" ? "" :'Hello, '+ username}
-              </span>
-            </div>
-          </Link>
+        <div className="flex items-center   md:gap-5 xs:gap-3 mx-2">
+          {/* <div className="flex items-center   cursor-pointer ">
+            <select
+              className=" rounded text-white xs:text-sm md:text-base outline-none bg-red-700 px-1 py-0.5 text-center cursor-pointer"
+              value={locale}
+              onChange={(e) => {
+                const newLang = e.target.value;
+                setLocale(newLang);
+                changeLanguage();
+              }}
+            >
+              <option
+                value="ar"
+                className="bg-white text-red-500 text-lg font-semibold "
+              >
+                العربية{" "}
+                <span className="text-white md:text-2xl xs:text-lg">
+                  <MdLanguage />
+                </span>
+              </option>
+              <option
+                value="en"
+                className="bg-white text-red-500 text-lg font-semibold"
+              >
+                English
+              </option>
+            </select>
+          </div> */}
+
+          <div className="flex items-center xs:gap-3 md:gap-5 text-white">
+            <Link href="/user/ordershistory">
+              <RiShoppingBag4Fill className="w-7 h-7" />
+            </Link>
+            <Link href="/user/wishlist">
+              <FaHeart className="w-6 h-6" />
+            </Link>
+            <Link href="/user/cart">
+              <IoMdCart className="w-7 h-7" />
+            </Link>
+            <Link href="/user/pages/profile">
+              <div className="flex items-center gap-1  ">
+                <span className="w-10 h-10">
+                  <FaRegCircleUser className="w-full h-full" />
+                </span>
+                <span className="text-sm font-semibold text-center ">
+                  {username === "" ? "" : "Hello, " + username}
+                </span>
+              </div>
+            </Link>
+          </div>
         </div>
       </div>
-      </div>
-     
-       <div
+
+      <div
         ref={divRef}
-        className={`xs:flex md:hidden items-center justify-start border w-full bg-none h-10  rounded-md 
+        className={`xs:flex md:hidden items-center justify-start border w-full bg-none h-10 my-2  rounded-md 
  ${isFocused ? "border-[3px] border-red-400 " : ""}`}
         onClick={() => setIsFocused(true)}
         tabIndex={0}
@@ -154,19 +158,19 @@ const username =
         <span className="text-white h-full  rounded-s-md text-2xl bg-red-600 p-2 ">
           <IoMdSearch />
         </span>
-          <input
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                setSelectedSearchInput(searchInput);
-                navigate.push("/user/search");
-              }
-            }}
-            placeholder={t("search") + "..."}
-            type="text"
-            className="w-full h-full text-base bg-white font-semibold outline-none rounded-e-md placeholder:text-sm  flex items-center p-2 "
+        <input
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              setSelectedSearchInput(searchInput);
+              navigate.push("/user/search");
+            }
+          }}
+          placeholder={t("search") + "..."}
+          type="text"
+          className="w-full h-full text-base bg-white font-semibold outline-none rounded-e-md placeholder:text-sm  flex items-center p-2 "
         />
       </div>
     </header>
