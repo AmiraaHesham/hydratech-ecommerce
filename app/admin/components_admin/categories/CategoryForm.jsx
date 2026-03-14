@@ -58,7 +58,7 @@ export default function CategoryForm() {
         t("message_AddText")
       );
       triggerRefresh();
-      selectedCategoryId === null
+      selectedCategoryId === null;
       // let upload = document.querySelector("#label-uplod");
       // let img = document.querySelector("#lable-img");
       // img.classList.add("hidden");
@@ -72,30 +72,30 @@ export default function CategoryForm() {
   };
 
   const CategoryData = useCallback(async () => {
-   
     if (selectedCategoryId != null) {
       try {
-         let upload = document.querySelector("#label-uplod");
-    let img = document.querySelector("#lable-img");
-    img.classList.remove("hidden");
-    upload.classList.add("hidden");
-        const res = await getRequest(`/api/admin/itemCategory/${selectedCategoryId}`);
+        let upload = document.querySelector("#label-uplod");
+        let img = document.querySelector("#lable-img");
+        img.classList.remove("hidden");
+        upload.classList.add("hidden");
+        const res = await getRequest(
+          `/api/admin/itemCategory/${selectedCategoryId}`
+        );
         setNameAr(res.nameAr), setNameEn(res.nameEn);
         setPhoto((prev) => ({
           ...prev,
-          image: process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL+'/images' + res.imageURL,
+          image: process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL + res.imageURL,
         }));
       } catch (error) {
         console.log(error);
       }
-    }
-    else{
-      setNameAr(''), setNameEn('');
-        setPhoto('');
-         let upload = document.querySelector("#label-uplod");
-    let img = document.querySelector("#lable-img");
-    img.classList.add("hidden");
-    upload.classList.remove("hidden");
+    } else {
+      setNameAr(""), setNameEn("");
+      setPhoto("");
+      let upload = document.querySelector("#label-uplod");
+      let img = document.querySelector("#lable-img");
+      img.classList.add("hidden");
+      upload.classList.remove("hidden");
     }
   }, [selectedCategoryId]);
 
@@ -120,7 +120,7 @@ export default function CategoryForm() {
         t("message_EditText")
       );
       triggerRefresh();
-      selectedCategoryId === null
+      selectedCategoryId === null;
       // let upload = document.querySelector("#label-uplod");
       // let img = document.querySelector("#lable-img");
       // img.classList.add("hidden");
@@ -133,7 +133,7 @@ export default function CategoryForm() {
   };
 
   useEffect(() => {
-    console.log('>>>>>>>>..' +selectedCategoryId)
+    console.log(">>>>>>>>.." + selectedCategoryId);
     CategoryData();
   }, [CategoryData]);
   return (
@@ -156,7 +156,6 @@ export default function CategoryForm() {
         </div>
         <hr className="h-1 mb-3"></hr>
         <div className="flex   justify-center items-center ">
-
           <form
             className=" md:w-[60%] xs:w-[80%] "
             onSubmit={(e) => {

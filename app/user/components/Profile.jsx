@@ -21,13 +21,13 @@ export default function Profile() {
   const [username, setUsername] = useState("");
   const [phone, setPhone] = useState("");
   const navigate = useRouter();
-  const {t} = useLanguage()
+  const { t } = useLanguage();
 
   useEffect(() => {
-        AOS.init({
-          duration: 1000,
-          once: false,
-        });
+    AOS.init({
+      duration: 1000,
+      once: false,
+    });
     const firstName = localStorage.getItem("firstName");
     setFirstName(firstName);
     const lastName = localStorage.getItem("lastName");
@@ -40,37 +40,34 @@ export default function Profile() {
     setPhone(phone);
     const emailAdress = localStorage.getItem("email");
     setEmail(emailAdress);
-    
   }, []);
 
   return (
     <div data-aos="fade-up" className="p-10">
-      
       <div className="flex h-full gap-10 justify-between">
         <div className="bg-white w-[30%] h-[400px] flex flex-col gap-3   p-10 rounded-md shadow-md">
           <div className="flex items-center bg-red-600 p-2 rounded-md text-white gap-3 cursor-pointer">
             <span className="text-xl">
               <FaUser />
             </span>
-            <span>{t('personalAccount')} </span>
+            <span>{t("personalAccount")} </span>
           </div>
           <Link href="/user/ordershistory">
             <div className="flex items-center hover:bg-red-600 p-2 rounded-md hover:text-white text-gray-600 gap-3 cursor-pointer">
               <span className="text-2xl">
                 <RiShoppingBag4Fill />
               </span>
-              <span> {t('orderHistory')} </span>
+              <span> {t("orderHistory")} </span>
             </div>
           </Link>
-                    <Link href="/user/wishlist">
-
-          <div className="flex items-center hover:bg-red-600 p-2 rounded-md hover:text-white text-gray-600 gap-3 cursor-pointer">
-            <span className="text-xl">
-              <FaHeart />
-            </span>
-            <span> {t('wishlist')} </span>
-          </div>
-</Link>
+          <Link href="/user/wishlist">
+            <div className="flex items-center hover:bg-red-600 p-2 rounded-md hover:text-white text-gray-600 gap-3 cursor-pointer">
+              <span className="text-xl">
+                <FaHeart />
+              </span>
+              <span> {t("wishlist")} </span>
+            </div>
+          </Link>
           <hr className="my-10"></hr>
           <div className="flex justify-start cursor-pointer hover:scale-105 duration-200 items-center gap-1  text-red-600">
             <span>
@@ -90,7 +87,7 @@ export default function Profile() {
                 navigate.push("/SignIn");
               }}
             >
-             {t('logout')}
+              {t("logout")}
             </span>
           </div>
         </div>
@@ -117,7 +114,7 @@ export default function Profile() {
                 </div>
               </div>
               <span className="bg-red-200 px-3 py-2 text-xs font-semibold text-red-700 rounded-md">
-               {t('unverifiedAccount')} 
+                {t("unverifiedAccount")}
               </span>
             </div>
           </div>
@@ -138,32 +135,31 @@ export default function Profile() {
 
           <div className="w-full  bg-white rounded-md shadow-sm border">
             <div className="p-7  font-semibold">
-              <span className=""> {t('editPersonalInfo')} </span>
+              <span className=""> {t("editPersonalInfo")} </span>
             </div>
             <hr></hr>
             <form className="p-7">
               <div className="grid grid-cols-2 gap-6">
                 <div className="flex flex-col gap-3">
                   <label className="text-xs font-semibold text-gray-500">
-                   {t('firstName')} 
+                    {t("firstName")}
                   </label>
                   <input
                     type="text"
                     value={firstName}
                     className="bg-slate-50 outline-none  p-2 rounded-lg border "
-                                        onChange={(e)=>setFirstName(e.target.value)}
-
+                    onChange={(e) => setFirstName(e.target.value)}
                   />
                 </div>
                 <div className="flex flex-col gap-3">
                   <label className="text-xs font-semibold text-gray-500">
-                   {t('lastName')} 
+                    {t("lastName")}
                   </label>
                   <input
                     type="text"
                     value={lastName}
                     className="bg-slate-50 outline-none  p-2 rounded-lg border "
-                    onChange={(e)=>setLastName(e.target.value)}
+                    onChange={(e) => setLastName(e.target.value)}
                   />
                 </div>
                 {/* <div className="flex flex-col gap-3">
@@ -178,26 +174,24 @@ export default function Profile() {
                 </div> */}
                 <div className="flex flex-col gap-3">
                   <label className="text-xs font-semibold text-gray-500">
-                   {t('phoneNumber')} 
+                    {t("phoneNumber")}
                   </label>
                   <input
                     type="text"
                     value={phone}
                     className="bg-slate-50 p- outline-none p-2 rounded-lg border "
-                                        onChange={(e)=>setPhone(e.target.value)}
-
+                    onChange={(e) => setPhone(e.target.value)}
                   />
                 </div>
                 <div className="flex flex-col gap-3">
                   <label className="text-xs font-semibold text-gray-500">
-                   {t('address')} 
+                    {t("address")}
                   </label>
                   <input
                     type="text"
                     value={address}
                     className="bg-slate-50  outline-none p-2 rounded-lg border "
-                                        onChange={(e)=>setAddress(e.target.value)}
-
+                    onChange={(e) => setAddress(e.target.value)}
                   />
                 </div>
               </div>
@@ -207,17 +201,15 @@ export default function Profile() {
                   type="submit"
                   className="px-5 py-2 text-white bg-red-600 hover:bg-red-700 hover:scale-105 duration-150 rounded-md text-sm font-semibold"
                 >
-                 {t('saveChanges')} 
+                  {t("saveChanges")}
                 </button>
-                <button className="text-gray-600 font-semibold text-sm">
-                 
-                </button>
+                <button className="text-gray-600 font-semibold text-sm"></button>
               </div>
             </form>
           </div>
           <div className="w-full h-[150px] bg-white rounded-md shadow-sm border mb-10">
             <div className="p-5 text-sm font-semibold">
-              <span className=""> {t('cancel')}   </span>
+              <span className=""> {t("cancel")} </span>
             </div>
             <hr></hr>
             <div className="p-5 flex justify-between items-center">
@@ -225,16 +217,18 @@ export default function Profile() {
                 <span className="p-3 text-xl rounded-full text-gray-600 bg-gray-100">
                   <MdLock />
                 </span>
-                <span>{t('password')}  </span>
+                <span>{t("password")} </span>
               </div>
-              <button className="text-red-500 text-sm font-semibold"
-              onClick={()=>{
-                const resetpasswordform = document.querySelector('#resetpasswordform')
-                resetpasswordform.classList.remove('hidden')
-                resetpasswordform.classList.add('flex')
-              }}
+              <button
+                className="text-red-500 text-sm font-semibold"
+                onClick={() => {
+                  const resetpasswordform =
+                    document.querySelector("#resetpasswordform");
+                  resetpasswordform.classList.remove("hidden");
+                  resetpasswordform.classList.add("flex");
+                }}
               >
-               {t('updatePassword')} 
+                {t("updatePassword")}
               </button>
             </div>
           </div>

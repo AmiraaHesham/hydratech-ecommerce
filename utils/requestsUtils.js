@@ -51,6 +51,7 @@ export const postRequest = async (endpoint, dataBody, message) => {
             },
           },
         );
+        toast.loading("Loading...")
         toast.success(response.data.message);
         return await response.data;
       }
@@ -170,13 +171,15 @@ export const deleteRequest = async (endpoint, message) => {
     });
 
     if (result.isConfirmed) {
-      const response = await axios.delete(endpoint, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token ? `Bearer ${token}` : undefined,
-          "Accept-Language": lang,
-        },
-      });
+      const response = await axios.delete(
+        process.env.NEXT_PUBLIC_API_BASE_URL + endpoint,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token ? `Bearer ${token}` : undefined,
+            "Accept-Language": lang,
+          },
+        });
       toast.success(response.data.message);
       return await response.data;
     }
