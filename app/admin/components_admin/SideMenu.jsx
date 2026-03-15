@@ -244,7 +244,7 @@ export default function SideMenu() {
               localStorage.setItem("phone", "");
               localStorage.setItem("role", "");
               localStorage.setItem("username", "");
-              navigate.push("/SignIn");
+              navigate.push("/signIn");
             }}
           >
             <span className="text-2xl">

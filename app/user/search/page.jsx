@@ -8,6 +8,8 @@ import { useRouter } from "next/navigation";
 import { useIdContext } from "../../../context/idContext";
 import ProductCard from "../components/ProductCard";
 import { useLanguage } from "../../../context/LanguageContext";
+import { BsList } from "react-icons/bs";
+
 export default function Searchpage() {
   const { t } = useLanguage();
   const [products, setProducts] = useState([]);
@@ -51,40 +53,54 @@ export default function Searchpage() {
     getAllProducts,
   ]);
   return (
-    <div className="pb-10 ">
+    <div className=" ">
       <div className="flex items-start justify-end gap-5 ">
         <CategoriesSideManu />
 
         <div className="md:w-[80%] xs:w-full p-5  ">
-          <div className="bg-white flex  gap-4 items-center w-[330px] border rounded-md  px-3 h-10  mb-5">
-            <h1 className="text-sm text-gray-500"> {t("sortBy")}: </h1>
-            <select
-              className=" h-full w-[70%]   font-semibold  rounded-md outline-none "
-              onChange={(e) => {
-                setAscending(e.target.value.split(",")[0]);
-                setSortBy(e.target.value.split(",")[1]);
+          <div className="flex gap-5 ">
+            <span
+              className="xs:flex md:hidden p-2 cursor-pointer gap-2 bg-red-600 h-10 text-white rounded-md items-center"
+              onClick={() => {
+                const catego_sideMenu =
+                  document.querySelector("#catego-sideMenu");
+                catego_sideMenu.classList.remove("xs:hidden");
               }}
             >
-              <option
-                value=""
-                className="bg-red-700 rounded-md text-lg text-white font-semibold"
+              <BsList className="text-2xl font-bold" />
+              {t("categories")}
+            </span>
+            <div className="bg-white flex  gap-4 items-center w-[330px] border rounded-md  px-3 h-10  mb-5">
+              <h1 className="text-sm text-gray-500"> {t("sortBy")}: </h1>
+              <select
+                className=" h-full w-[70%] bg-none  font-semibold  rounded-md outline-none "
+                onChange={(e) => {
+                  setAscending(e.target.value.split(",")[0]);
+                  setSortBy(e.target.value.split(",")[1]);
+                }}
               >
-                {t("all")}
-              </option>
-              <option
-                value="true,price"
-                className="bg-red-700 rounded-md text-lg text-white font-semibold"
-              >
-                {t("priceLowToHigh")}{" "}
-              </option>
-              <option
-                value="false,price"
-                className="bg-red-700 rounded-md text-lg text-white font-semibold"
-              >
-                {t("priceHighToLow")}{" "}
-              </option>
-            </select>
+                <option
+                  value=""
+                  className="bg-red-700 rounded-md text-lg text-white font-semibold"
+                >
+                  {t("all")}
+                </option>
+                <option
+                  value="true,price"
+                  className="bg-red-700 rounded-md text-lg text-white font-semibold"
+                >
+                  {t("priceLowToHigh")}{" "}
+                </option>
+                <option
+                  value="false,price"
+                  className="bg-red-700 rounded-md text-lg text-white font-semibold"
+                >
+                  {t("priceHighToLow")}{" "}
+                </option>
+              </select>
+            </div>
           </div>
+
           {loading ? (
             <div className="grid xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-3 xs:grid-cols-2 gap-5 ">
               {[...Array(8)].map((_, index) => (

@@ -12,6 +12,7 @@ import { IoMdSearch } from "react-icons/io";
 import { deleteRequest } from "../../../../utils/requestsUtils.js";
 import { useRefresh } from "../../../../context/refreshContext.jsx";
 import { IoReloadCircle } from "react-icons/io5";
+import { getThumbnailUrl } from "../../../../utils/functions.jsx";
 
 export default function ProductsTable() {
   const { t } = useLanguage();
@@ -34,7 +35,7 @@ export default function ProductsTable() {
           size: 15,
           searchText: searchInputRef.current.value,
         },
-        "",
+        ""
       );
       const resProducts = response.data || [];
       if (pageNum.current === 0) {
@@ -42,7 +43,7 @@ export default function ProductsTable() {
       } else setProducts((prev) => [...prev, ...resProducts]);
     } catch (error) {
       console.log(error);
-    } 
+    }
     // finally {
     //   setLoading(false);
     // }
@@ -55,7 +56,7 @@ export default function ProductsTable() {
     await postRequest(
       `/api/admin/items/${productId}/favorite`,
       "",
-      t("message_AddText"),
+      t("message_AddText")
     );
     triggerRefresh();
   };
@@ -64,7 +65,7 @@ export default function ProductsTable() {
     await postRequest(
       `/api/admin/items/${productId}/unfavorite`,
       "",
-      t("message_AddText"),
+      t("message_AddText")
     );
     triggerRefresh();
   };
@@ -72,7 +73,7 @@ export default function ProductsTable() {
     await postRequest(
       `/api/admin/items/${productId}/activate`,
       "",
-      t("message_AddText"),
+      t("message_AddText")
     );
     triggerRefresh();
   };
@@ -81,7 +82,7 @@ export default function ProductsTable() {
     await postRequest(
       `/api/admin/items/${productId}/deactivate`,
       "",
-      t("message_AddText"),
+      t("message_AddText")
     );
     triggerRefresh();
   };
@@ -97,6 +98,7 @@ export default function ProductsTable() {
     form.classList.remove("hidden");
     form.classList.add("flex");
     setSelectedProductId(product.itemId);
+    console.log(getThumbnailUrl(products[0].mainImageURL));
   };
   const deleteProduct = async (product) => {
     try {
@@ -224,113 +226,111 @@ export default function ProductsTable() {
                     </td>
                   </tr>
                 )) */}
-              {/* :  */}
-             {products.map((product, index) => (
-                  <tr key={index} className=" border hover:bg-gray-100  ">
-                    <td>
-                      <div className="flex items-center justify-center gap-3">
-                        <button
-                          className={
-                            "flex items-center justify-center gap-3 text-sm " +
-                            (product.active
-                              ? "text-green-600"
-                              : "text-gray-600")
-                          }
-                          onClick={() => {
-                            if (product.active === false) {
-                              productActive(product.itemId);
-                            } else {
-                              productDeaactive(product.itemId);
-                            }
-                          }}
-                        >
-                          <FaCircle />
-                        </button>
-                        <button
-                          className={
-                            "flex items-center justify-center " +
-                            (product.favorite
-                              ? " text-yellow-500"
-                              : " text-gray-500")
-                          }
-                          onClick={async () => {
-                            console.log(product.favorite);
-                            if (product.favorite === false) {
-                              await productFavorite(product.itemId);
-                            } else {
-                              await productUnfavorite(product.itemId);
-                            }
-                          }}
-                        >
-                          <GoStarFill />
-                        </button>
-                      </div>
-                    </td>
-                    <td
-                      className="flex items-center gap-4"
-                      onClick={() => itemProductId(product)}
+            {/* :  */}
+            {products.map((product, index) => (
+              <tr key={index} className=" border hover:bg-gray-100  ">
+                <td>
+                  <div className="flex items-center justify-center gap-3">
+                    <button
+                      className={
+                        "flex items-center justify-center gap-3 text-sm " +
+                        (product.active ? "text-green-600" : "text-gray-600")
+                      }
+                      onClick={() => {
+                        if (product.active === false) {
+                          productActive(product.itemId);
+                        } else {
+                          productDeaactive(product.itemId);
+                        }
+                      }}
                     >
-                      <Image
-                        alt=""
-                        src={`${
-                          process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL +
-                            product.mainImageURL || ""
-                        }`}
-                        width={40}
-                        height={40}
-                        className="rounded-xl xs:w-10 xs:h-10 md:w-14 md:h-12  border my-1 p-1"
-                      />
-                      <div>
-                        <h1 className="text-sm font-semibold">
-                          {localStorage.lang === "ar"
-                            ? product.nameAr
-                            : product.nameEn}
-                        </h1>
-                        <h1 className="text-xs text-gray-500">
-                          {t("code")} : {product.code}
-                        </h1>
-                      </div>
-                    </td>
+                      <FaCircle />
+                    </button>
+                    <button
+                      className={
+                        "flex items-center justify-center " +
+                        (product.favorite
+                          ? " text-yellow-500"
+                          : " text-gray-500")
+                      }
+                      onClick={async () => {
+                        console.log(product.favorite);
+                        if (product.favorite === false) {
+                          await productFavorite(product.itemId);
+                        } else {
+                          await productUnfavorite(product.itemId);
+                        }
+                      }}
+                    >
+                      <GoStarFill />
+                    </button>
+                  </div>
+                </td>
+                <td
+                  className="flex items-center gap-4"
+                  onClick={() => itemProductId(product)}
+                >
+                  <Image
+                    alt=""
+                    src={`${
+                      process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL +
+                        getThumbnailUrl(product.mainImageURL) || ""
+                    }`}
+                    width={40}
+                    height={40}
+                    className="rounded-xl xs:w-10 xs:h-10 md:w-14 md:h-12  border my-1 p-1"
+                  />
+                  <div>
+                    <h1 className="text-sm font-semibold">
+                      {localStorage.lang === "ar"
+                        ? product.nameAr
+                        : product.nameEn}
+                    </h1>
+                    <h1 className="text-xs text-gray-500">
+                      {t("code")} : {product.code}
+                    </h1>
+                  </div>
+                </td>
 
-                    <td onClick={() => itemProductId(product)}>
-                      <div className="  text-sm text-gray-500 font-semibold mx-1">
-                        <h1>
-                          {localStorage.lang === "ar"
-                            ? product.itemCategory.nameAr
-                            : product.itemCategory.nameEn}
-                        </h1>
-                      </div>
-                    </td>
-                    <td
-                      className="text-sm font-bold"
-                      onClick={() => itemProductId(product)}
-                    >
-                      {product.price.toLocaleString("en-US")}
-                    </td>
-                    {/* <td></td> */}
-                    <td
-                      className="text-sm font-bold text-gray-600"
-                      onClick={() => itemProductId(product)}
-                    >
-                      {product.oldPrice
-                        ? product.oldPrice.toLocaleString("en-US") +
-                          " " +
-                          t("currency")
-                        : "--"}
-                    </td>
-                    <td>
-                      <button
-                        className="text-red-800 text-sm flex items-center gap-1 bg-red-300 px-2 py-1 font-semibold rounded-md hover:bg-red-400"
-                        onClick={() => {
-                          deleteProduct(product);
-                        }}
-                      >
-                        <MdDelete />
-                        {t("delete")}
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                <td onClick={() => itemProductId(product)}>
+                  <div className="  text-sm text-gray-500 font-semibold mx-1">
+                    <h1>
+                      {localStorage.lang === "ar"
+                        ? product.itemCategory.nameAr
+                        : product.itemCategory.nameEn}
+                    </h1>
+                  </div>
+                </td>
+                <td
+                  className="text-sm font-bold"
+                  onClick={() => itemProductId(product)}
+                >
+                  {product.price.toLocaleString("en-US")}
+                </td>
+                {/* <td></td> */}
+                <td
+                  className="text-sm font-bold text-gray-600"
+                  onClick={() => itemProductId(product)}
+                >
+                  {product.oldPrice
+                    ? product.oldPrice.toLocaleString("en-US") +
+                      " " +
+                      t("currency")
+                    : "--"}
+                </td>
+                <td>
+                  <button
+                    className="text-red-800 text-sm flex items-center gap-1 bg-red-300 px-2 py-1 font-semibold rounded-md hover:bg-red-400"
+                    onClick={() => {
+                      deleteProduct(product);
+                    }}
+                  >
+                    <MdDelete />
+                    {t("delete")}
+                  </button>
+                </td>
+              </tr>
+            ))}
 
             {/* {products.length <= 15 ? (
               " "

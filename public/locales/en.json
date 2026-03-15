@@ -169,5 +169,6 @@
   "priceLowToHigh": "Price: Low to High",
   "priceHighToLow": "Price: High to Low",
   "no_data": "No products found",
-  "hello": "Hello"
+  "hello": "Hello",
+  "edit_category": "Edit Category"
 }

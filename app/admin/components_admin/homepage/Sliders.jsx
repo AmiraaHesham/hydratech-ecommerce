@@ -20,7 +20,10 @@ import {
   getRequest,
   postRequest,
 } from "../../../../utils/requestsUtils.js";
-import { getSliderImage } from "../../../../utils/functions.jsx";
+import {
+  getSliderImage,
+  getThumbnailUrl,
+} from "../../../../utils/functions.jsx";
 
 export default function Sliders() {
   const { t } = useLanguage();
@@ -157,7 +160,9 @@ export default function Sliders() {
               </span>
               <div className="flex justify-center items-center ">
                 <Image
-                  src={`${process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL}${img.imageUrl}`}
+                  src={`${
+                    process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL
+                  }${getThumbnailUrl(img.imageUrl)}`}
                   alt=""
                   width={100}
                   height={100}

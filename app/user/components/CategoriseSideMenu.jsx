@@ -5,6 +5,10 @@ import { getCategories } from "../../../utils/functions";
 import { useEffect, useState } from "react";
 import { useIdContext } from "../../../context/idContext";
 import { BsList } from "react-icons/bs";
+import { FcCancel } from "react-icons/fc";
+import { GiCancel } from "react-icons/gi";
+import { TiTime } from "react-icons/ti";
+import { MdCancel } from "react-icons/md";
 
 export default function CategoriesSideMenu() {
   const { t } = useLanguage();
@@ -28,11 +32,26 @@ export default function CategoriesSideMenu() {
   }, []);
 
   return (
-    <div className="w-[300px] xs:hidden md:block h-screen bg-[#ffffff]">
+    <div
+      id="catego-sideMenu"
+      className="md:w-[300px] xs:w-[200px] xs:hidden md:block xs:absolute md:relative h-screen bg-[#ffffff]"
+    >
       <div className="  w-full h-full   ">
-        <div className="flex items-center m-3 gap-2 text-xl">
-          <BsList />
-          <h1 className=" font-semibold">{t("categories")} </h1>
+        <div className="flex justify-between p-3 items-center">
+          <span className="flex items-center  gap-2 text-lg">
+            <BsList />
+            <h1 className=" font-semibold">{t("categories")} </h1>
+          </span>
+          <span
+            className="xs:block md:hidden w-5 h-5 cursor-pointer text-red-600  "
+            onClick={() => {
+              const catego_sideMenu =
+                document.querySelector("#catego-sideMenu");
+              catego_sideMenu.classList.add("xs:hidden");
+            }}
+          >
+            <MdCancel className="w-full h-full" />
+          </span>
         </div>
         <hr className="h-3  mt-2 text-red-400 w-full"></hr>
         {loading ? (
@@ -59,7 +78,7 @@ export default function CategoriesSideMenu() {
                     setSelectedCategoryId(category.itemCategoryId);
                   }}
                 >
-                  <h1 className=" font-semibold xs:hidden md:block ">
+                  <h1 className=" font-semibold text-sm ">
                     {locale === "ar" ? category.nameAr : category.nameEn}
                   </h1>
                 </div>

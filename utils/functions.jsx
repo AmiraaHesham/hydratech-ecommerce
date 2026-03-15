@@ -32,6 +32,14 @@ export const getProductDetails = async (productId) => {
   const response = await getRequest(`/api/public/items/${productId}`);
   return await response;
 };
+export const getThumbnailUrl = (imageUrl) => {
+  if (!imageUrl) return null;
+
+  const lastSlashIndex = imageUrl.lastIndexOf("/");
+  const path = imageUrl.substring(0, lastSlashIndex + 1);
+  const fileName = imageUrl.substring(lastSlashIndex + 1);
+  return `${path}thumb_${fileName}`;
+};
 //  export const getAllUsers = async () => {
 //       try {
 //         // console.log(searchInputRef.current.value);

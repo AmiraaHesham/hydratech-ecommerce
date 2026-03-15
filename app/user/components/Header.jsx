@@ -64,7 +64,7 @@ export default function Header() {
               />
             </span>
             <div className="cursor-default">
-              <h1 className="lg:text-xl  xs:text-lg w-[100px] text-white font-bold font-sans">
+              <h1 className="lg:text-xl  xs:text-lg w-[120px] text-white font-bold font-sans">
                 {t("alfa_group")}
               </h1>
             </div>
@@ -97,7 +97,7 @@ export default function Header() {
         </div>
 
         <div className="flex items-center   md:gap-5 xs:gap-3 mx-2">
-          {/* <div className="flex items-center   cursor-pointer ">
+          <div className="flex items-center   cursor-pointer ">
             <select
               className=" rounded text-white xs:text-sm md:text-base outline-none bg-red-700 px-1 py-0.5 text-center cursor-pointer"
               value={locale}
@@ -123,7 +123,7 @@ export default function Header() {
                 English
               </option>
             </select>
-          </div> */}
+          </div>
 
           <div className="flex items-center xs:gap-3 md:gap-5 text-white">
             <Link href="/user/ordershistory">
@@ -135,12 +135,12 @@ export default function Header() {
             <Link href="/user/cart">
               <IoMdCart className="w-7 h-7" />
             </Link>
-            <Link href={id ? "/user/pages/profile" : "/SignIn"}>
+            <Link href={id ? "/user/pages/profile" : "/signin"}>
               <div className="flex items-center gap-1  ">
                 <span className="w-9 h-9">
                   <FaRegCircleUser className="w-full h-full" />
                 </span>
-                <span className="text-sm font-semibold text-center ">
+                <span className="md:text-sm xs:text-xs font-semibold text-center ">
                   {username === "" ? t("login") : t("hello") + ", " + username}
                 </span>
               </div>

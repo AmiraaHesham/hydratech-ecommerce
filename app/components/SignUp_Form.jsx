@@ -64,7 +64,7 @@ export default function SignUp() {
 
   return (
     // <div className=w-full h-full flex justify-center items-center">
-    <div className=" h-full w-full px-10 ">
+    <div className=" h-full w-full p-10  md:order-1 xs:order-2">
       <div className="flex justify-between">
         <div className="">
           <h3 className="text-3xl my-3 font-semibold">
@@ -100,7 +100,7 @@ export default function SignUp() {
       <div className="flex justify-center items-center  mt-5">
         <div className="flex flex-col gap-3 w-full justify-center items-center">
           <form
-            className="flex flex-col  gap-2 w-[80%]"
+            className="flex flex-col  gap-2 w-[90%]"
             onSubmit={handleSignUp}
           >
             <div className=" flex items-center  gap-5">

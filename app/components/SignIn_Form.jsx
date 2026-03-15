@@ -60,7 +60,7 @@ export default function SignIn() {
   };
 
   return (
-    <div className="h-full w-full px-10  ">
+    <div className="h-full w-full p-10  md:order-1 xs:order-2">
       <div className="flex justify-between">
         <div className="">
           <h3 className="text-3xl my-3 font-semibold font-serif">

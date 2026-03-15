@@ -7,6 +7,7 @@ import { useLanguage } from "../../../../context/LanguageContext.js";
 import { deleteRequest, getRequest } from "../../../../utils/requestsUtils.js";
 import { useEffect, useState } from "react";
 import { MdDelete } from "react-icons/md";
+import { getThumbnailUrl } from "../../../../utils/functions";
 
 export default function CategorysTable() {
   const { t } = useLanguage();
@@ -37,7 +38,7 @@ export default function CategorysTable() {
     let btn_editCategory = document.querySelector("#btn-editCategory");
     btn_editCategory.classList.remove("hidden");
     btn_saveCategory.classList.add("hidden");
-    nameFormCatogery.innerHTML = "Edit Category ";
+    nameFormCatogery.innerHTML = t("edit_category");
     form.classList.toggle("hidden");
     form.classList.add("flex");
   };
@@ -70,7 +71,7 @@ export default function CategorysTable() {
             btn_editCategory.classList.add("hidden");
             btn_saveCategory.classList.remove("hidden");
             let nameFormCategory = document.querySelector("#nameFormCategory");
-            nameFormCategory.innerHTML = "Add Category";
+            nameFormCategory.innerHTML = t("add_category");
             form.classList.remove("hidden");
             form.classList.add("flex");
             let upload = document.querySelector("#label-uplod");
@@ -136,7 +137,9 @@ export default function CategorysTable() {
                         <span className="w-[100px]">
                           <Image
                             alt=""
-                            src={`${process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL}${category.imageURL}`}
+                            src={`${
+                              process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL
+                            }${getThumbnailUrl(category.imageURL)}`}
                             width={40}
                             height={40}
                             className="rounded-xl xs:w-10 xs:h-10 md:w-14 md:h-12  border my-1 p-1"

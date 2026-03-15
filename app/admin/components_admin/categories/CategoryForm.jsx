@@ -145,7 +145,7 @@ export default function CategoryForm() {
         <div className="m-4 flex justify-between items-center">
           <h1 id="nameFormCategory" className="text-lg font-semibold"></h1>
           <span
-            className="text-3xl text-blue-950  hover:text-blue-800"
+            className="text-3xl text-red-950  hover:text-red-800"
             onClick={() => {
               let form = document.querySelector("#add-category-form");
               form.classList.add("hidden");
@@ -172,7 +172,7 @@ export default function CategoryForm() {
                   value={nameEn}
                   onChange={(e) => setNameEn(e.target.value)}
                   required
-                  className="w-full bg-[#F9FAFB] outline-none text-blue-900 text-lg  p-1 border rounded-md"
+                  className="w-full bg-[#F9FAFB] outline-none text-gray-900 text-lg  p-1 border rounded-md"
                 />
                 <label className="text-md text-gray-500">
                   {t("category_name")}* [ar]
@@ -181,17 +181,17 @@ export default function CategoryForm() {
                   type="text"
                   value={nameAr}
                   onChange={(e) => setNameAr(e.target.value)}
-                  className="w-full bg-[#F9FAFB] outline-none text-blue-900 text-lg  p-1 border rounded-md"
+                  className="w-full bg-[#F9FAFB] outline-none text-gray-900 text-lg  p-1 border rounded-md"
                 />
               </div>
             </div>
             <label htmlFor="fileInput">
-              <div className="flex flex-col items-center h-[150px]  justify-center p-3 border-2 border-dashed border-blue-300 rounded-lg hover:bg-gray-50">
+              <div className="flex flex-col items-center h-[150px]  justify-center p-3 border-2 border-dashed border-red-300 rounded-lg hover:bg-gray-50">
                 <div
                   id="label-uplod"
                   className="flex flex-col justify-center items-center"
                 >
-                  <span className="text-4xl text-blue-600">
+                  <span className="text-4xl text-red-600">
                     <IoCloudUploadSharp />
                   </span>
                   <span className="text-sm text-gray-500">
