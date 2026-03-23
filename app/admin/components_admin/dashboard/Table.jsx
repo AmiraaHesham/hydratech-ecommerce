@@ -5,64 +5,99 @@ import { FaPlus } from "react-icons/fa";
 import { useLanguage } from "../../../../context/LanguageContext.js";
 import Link from "next/link.js";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { getRequest } from "../../../../utils/requestsUtils.js";
+import { FaUserLarge } from "react-icons/fa6";
+import { useNamePageInAdminContext } from "../../../../context/namePageInAdmin.jsx";
 
 export default function RecentOrders_table() {
   const { t } = useLanguage();
+  const { setSelectedNamePage } = useNamePageInAdminContext();
 
+  const [pendingOrders, setPendingOrders] = useState([]);
+  const navigate = useRouter();
+  const dashboardPendingOrders = async () => {
+    const response = await getRequest("/api/admin/dashboard");
+    setPendingOrders(response.pendingOrders);
+    console.log(response.pendingOrders);
+  };
+
+  useEffect(() => {
+    dashboardPendingOrders();
+  }, []);
   return (
-    <div className="mt-5 w-full">
+    <div className="mt-5 w-full ">
       <div className="flex justify-between items-center px-5 h-16 border-s border-t rounded-t-md bg-white">
-        <h1 className="text-lg font-semibold ">{t("recent_orders")}</h1>
-        <button className="text-sm text-red-600">
-          {t("view_all_orders")}{" "}
+        <h1 className="md:text-lg xs:text-sm  font-semibold ">
+          {t("recent_orders")}
+        </h1>
+        <button
+          className="md:text-sm xs:text-xs text-red-600"
+          onClick={() => {
+            navigate.push("/admin/pages/orders_page/Orders");
+            setSelectedNamePage("Orders Management");
+          }}
+        >
+          {t("view_all_orders")}
         </button>
       </div>
-      <div className=" rounded-b-xl w-full h-[370px] border-s border-b   overflow-y-scroll ">
+      <div className=" rounded-b-xl w-full h-[370px] border-s border-b overflow-y-scroll ">
         <table className=" xs:w-[220%] lg:w-full   ">
-          <thead className="bg-[#F9FAFB] text-xs text-gray-500  text-justify">
+          <thead className="bg-[#F9FAFB] text-xs text-gray-500 w-full  text-justify">
             <tr className=" text-gray-500 h-12  ">
-              <th className="w-[2%] "></th>
-              <th className="w-[15%]">{t("order_id")}</th>
-              <th className="w-[15%]">{t("date")}</th>
-              <th className="w-[25%] ">{t("user")}</th>
-              <th className="w-[20%] ">{t("items")}</th>
+              <th className="w-[25%] px-5">{t("order_id")}</th>
+              <th className="w-[20%] ">{t("date")}</th>
+              <th className="w-[30%]  ">{t("user")}</th>
               <th className="w-[15%] ">{t("total")}</th>
-              <th className="w-[25%] ">{t("state_order")}</th>
+              <th className="w-[25%]">{t("state_order")}</th>
             </tr>
           </thead>
           <tbody className="bg-white text-md w-full ">
-            <tr
-              className=" text-red-950 border w-full hover:bg-gray-50"
-              onClick={() =>
-                navigate.push("/admin/orders_page/OrderDetailsPage")
-              }
-            >
-              <td></td>
+            {pendingOrders.map((order, index) => {
+              const date = new Date(order.createdDate);
+              const dateOnly = date.toLocaleDateString("en-US");
+              return (
+                <tr
+                  key={index}
+                  className=" text-red-950 border w-full hover:bg-gray-50 cursor-pointer"
+                  onClick={() => {
+                    navigate.push(
+                      `/admin/pages/orders_page/OrderDetailsPage/${order.orderId}`
+                    );
+                    setSelectedNamePage("Orders Management");
+                  }}
+                >
+                  <td className="font-semibold text-red-500 px-5">
+                    {order.orderCode}
+                  </td>
+                  <td className="text-sm">{dateOnly}</td>
 
-              <td className="font-semibold text-red-500">#ORD-7782</td>
-              <td className="text-sm">Oct 24, 2023</td>
-
-              <td>
-                <div className="flex items-center gap-3">
-                  <div>
-                    <Image
-                      alt=""
-                      src="/img.jpg"
-                      width={45}
-                      height={45}
-                      className="rounded-full border my-1 p-1"
-                    />
-                  </div>
-                  <div>
-                    <h1 className="font-semibold text-sm">Jane Cooper</h1>
-                    <h1 className="text-xs  text-gray-500">Jane@example.com</h1>
-                  </div>
-                </div>
-              </td>
-              <td className="text-sm">iphone15 pro, ...</td>
-              <td className="text-sm font-semibold">EG 1,200.00</td>
-              <td className="text-sm font-semibold">Pending</td>
-            </tr>
+                  <td>
+                    <div className="flex items-center gap-3">
+                      <div>
+                        <span className="w-[40px] text-gray-600 my-2 h-[40px] bg-gray-50 flex justify-center items-center p-2 rounded-full border ">
+                          <FaUserLarge />
+                        </span>
+                      </div>
+                      <div>
+                        <h1 className="font-semibold text-sm">
+                          {order.userName}
+                        </h1>
+                        <h1 className="text-xs  text-gray-500">
+                          {order.userEmail}
+                        </h1>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="text-sm font-semibold">
+                    {order.orderTotal} {t("currency")}
+                  </td>
+                  <td className="text-sm font-semibold text-red-500">
+                    {t(order.state)}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

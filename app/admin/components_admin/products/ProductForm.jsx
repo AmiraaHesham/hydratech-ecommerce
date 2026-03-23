@@ -31,7 +31,7 @@ export default function FormProduct() {
     nameEn: "",
     nameAr: "",
     price: 0,
-    oldPrice: 0,
+    oldPrice: "",
     descriptionEn: "",
     descriptionAr: "",
     category: {
@@ -84,6 +84,12 @@ export default function FormProduct() {
     console.log(resData);
   };
 
+  const images = () => {
+    console.log(product.img2file);
+    console.log(product.img3file);
+    console.log(product.mainImagefile);
+  };
+
   const addProduct = async () => {
     // let form = document.querySelector("#add-product-form");
     // form.classList.add("hidden");
@@ -99,12 +105,13 @@ export default function FormProduct() {
     formData.append("active", enabledActive);
     formData.append("itemCategoryId", product.category.id);
     formData.append("mainImage", product.mainImagefile);
-    // formData.append("itemImages", [product.img2file, product.img3file]);
+    formData.append("itemImages", product.img2file);
+    formData.append("itemImages", product.img3file);
     // console.log(formData);
 
     await postRequest("/api/admin/items", formData, t("message_AddText"));
     triggerRefresh();
-    selectedProductId=== null
+    selectedProductId === null;
 
     // setProduct({
     //   nameEn: "",
@@ -168,59 +175,55 @@ export default function FormProduct() {
         img2: "",
         img3: "",
         category: { id: 0, nameAr: "", nameEn: "" },
-      }
-      
-    ));
-       const labelUpload = document.querySelector(`#label-mainImage`);
+      }));
+      const labelUpload = document.querySelector(`#label-mainImage`);
       labelUpload.classList.remove("hidden");
-    const labelImg = document.querySelector(`#mainImage`);
+      const labelImg = document.querySelector(`#mainImage`);
       labelImg.classList.add("hidden");
 
       const deleteImg = document.querySelector(`#delete-mainImage`);
       deleteImg.classList.add("hidden");
-    
+
       setenabledFavorite(false);
       setenabledActive(true);
-   
     }
   }, [selectedProductId]);
 
   const updataProduct = async () => {
-    if(product.oldPrice > product.price && product.oldPrice != 0){
- let form = document.querySelector("#add-product-form");
-    form.classList.add("hidden");
-    const formData = new FormData();
-    formData.append("nameEn", product.nameEn);
-    formData.append("nameAr", product.nameAr);
-    formData.append("code", product.code);
-    formData.append("price", product.price);
-    formData.append("oldPrice", product.oldPrice);
-    formData.append("descriptionAr", product.descriptionAr);
-    formData.append("descriptionEn", product.descriptionEn);
-    formData.append("active", enabledActive);
-    formData.append("favorite", enabledFavorite);
-    if (product.mainImagefile) {
-      formData.append("mainImage", product.mainImagefile);
-    }
-    formData.append("itemCategoryId", product.category.id);
-    await putRequest(
-      `/api/admin/items/${selectedProductId}`,
-      formData,
-      t("message_EditText"),
-    );
-    triggerRefresh();
-selectedProductId=== null
-  
-    const oldPrice = document.querySelector('#oldPrice')
-      oldPrice.classList.remove('border-red-600')
-    }
-    else{
-      const oldPrice = document.querySelector('#oldPrice')
-      oldPrice.classList.add('border-red-600')
-       toast.error(t("check_oldPrice"));
+    if (product.oldPrice > product.price || product.oldPrice === "") {
+      let form = document.querySelector("#add-product-form");
+      form.classList.add("hidden");
+      const formData = new FormData();
+      formData.append("nameEn", product.nameEn);
+      formData.append("nameAr", product.nameAr);
+      formData.append("code", product.code);
+      formData.append("price", product.price);
+      formData.append("oldPrice", product.oldPrice);
+      formData.append("descriptionAr", product.descriptionAr);
+      formData.append("descriptionEn", product.descriptionEn);
+      formData.append("active", enabledActive);
+      formData.append("favorite", enabledFavorite);
+      if (product.mainImagefile) {
+        formData.append("mainImage", product.mainImagefile);
+      }
+      formData.append("itemImages", product.img2file);
+      formData.append("itemImages", product.img3file);
+      formData.append("itemCategoryId", product.category.id);
+      await putRequest(
+        `/api/admin/items/${selectedProductId}`,
+        formData,
+        t("message_EditText")
+      );
+      triggerRefresh();
+      selectedProductId === null;
 
+      const oldPrice = document.querySelector("#oldPrice");
+      oldPrice.classList.remove("border-red-600");
+    } else {
+      const oldPrice = document.querySelector("#oldPrice");
+      oldPrice.classList.add("border-red-600");
+      toast.error(t("check_oldPrice"));
     }
-   
   };
   useEffect(() => {
     showeCategories();
@@ -406,6 +409,7 @@ selectedProductId=== null
                   setProduct((prev) => ({ ...prev, nameEn: e.target.value }))
                 }
                 required
+                onClick={images}
                 className="w-full bg-[#F9FAFB] outline-none text-blue-900 text-base  my-1  p-1 border rounded-md"
               />
             </div>
@@ -497,9 +501,7 @@ selectedProductId=== null
                 onChange={(e) =>
                   setProduct((prev) => ({ ...prev, oldPrice: e.target.value }))
                 }
-                required
                 id="oldPrice"
-
                 className=" bg-[#F9FAFB] w-full outline-none text-blue-900 text-base  my-1  p-1 border rounded-md"
               />
             </div>

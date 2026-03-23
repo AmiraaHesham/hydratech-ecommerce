@@ -51,7 +51,6 @@ export const postRequest = async (endpoint, dataBody, message) => {
             },
           },
         );
-        toast.loading("Loading...")
         toast.success(response.data.message);
         return await response.data;
       }

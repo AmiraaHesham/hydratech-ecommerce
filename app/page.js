@@ -6,13 +6,20 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function Home() {
-   const router = useRouter();
-
+  const router = useRouter();
+  const role = typeof window !== "undefined" ? localStorage.getItem("role") : null;
   useEffect(() => {
     // غيّر '/ar' إلى الرابط اللي عايزه
-    router.replace('/user/home'); // استخدم replace عشان ما يبقاش في التاريخ
+    if (
+      role === "user" || role === ""
+
+    ) {
+      router.replace('/user/home'); // استخدم replace عشان ما يبقاش في التاريخ
+    } else {
+      router.replace('/admin/pages/Dashboard');
+    }
   }, []);
 
-  return null; 
+  return null;
 
 }

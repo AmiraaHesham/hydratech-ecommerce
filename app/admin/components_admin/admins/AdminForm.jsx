@@ -29,13 +29,17 @@ export default function CategoryForm() {
     form.classList.add("hidden");
 
     try {
-      await postRequest("/api/admin/users", {
-        firstName: adminUser.f_name,
-        lastName: adminUser.l_name,
-        username: adminUser.username,
-        password: adminUser.password,
-        repeatPassword: adminUser.confirmPassword,
-      }, t('message_AddText'));
+      await postRequest(
+        "/api/admin/users",
+        {
+          firstName: adminUser.f_name,
+          lastName: adminUser.l_name,
+          username: adminUser.username,
+          password: adminUser.password,
+          repeatPassword: adminUser.confirmPassword,
+        },
+        t("message_AddText")
+      );
       triggerRefresh();
     } catch (error) {
       console.log(error);
@@ -45,14 +49,13 @@ export default function CategoryForm() {
   const AdminData = useCallback(async () => {
     if (selectedAdminId != null) {
       try {
-       const res =  await getRequest(`/api/users/${selectedAdminId}`);
-       setAdminUser((prev) => ({
-                        ...prev,
-                        l_name: res.lastName,
-                        f_name:res.firstName,
-                        username:res.username,
-                        
-                      }))
+        const res = await getRequest(`/api/users/${selectedAdminId}`);
+        setAdminUser((prev) => ({
+          ...prev,
+          l_name: res.lastName,
+          f_name: res.firstName,
+          username: res.username,
+        }));
       } catch (error) {
         console.log(error);
       }
@@ -62,15 +65,19 @@ export default function CategoryForm() {
   const updateAdmin = async () => {
     let form = document.querySelector("#add-admin-form");
     form.classList.add("hidden");
-    
-    try{
-      await putRequest(`/api/admin/users/${selectedId}`, {
-        firstName: adminUser.f_name,
-        lastName: adminUser.l_name,
-        username: adminUser.username,
-        password: adminUser.password,
-        repeatPassword: adminUser.confirmPassword,
-      }, t('message_EditText'));
+
+    try {
+      await putRequest(
+        `/api/admin/users/${selectedAdminId}`,
+        {
+          firstName: adminUser.f_name,
+          lastName: adminUser.l_name,
+          username: adminUser.username,
+          password: adminUser.password,
+          repeatPassword: adminUser.confirmPassword,
+        },
+        t("message_EditText")
+      );
       triggerRefresh();
     } catch (error) {
       console.log(error);
@@ -109,37 +116,36 @@ export default function CategoryForm() {
             <div className="my-5 ">
               <div className="flex flex-col gap-4 ">
                 <div className="flex justify-between items-center gap-3">
-<div>
-                  <label className="text-sm ">{t("first_name")}</label>
-                  <input
-                    type="text"
-                    value={adminUser.f_name}
-                    onChange={(e) =>
-                      setAdminUser((prev) => ({
-                        ...prev,
-                        f_name: e.target.value,
-                      }))
-                    }
-                    required
-                    className="w-full bg-[#F9FAFB] outline-none text-blue-900 text-lg  p-1 border rounded-md"
-                  />
+                  <div>
+                    <label className="text-sm ">{t("first_name")}</label>
+                    <input
+                      type="text"
+                      value={adminUser.f_name}
+                      onChange={(e) =>
+                        setAdminUser((prev) => ({
+                          ...prev,
+                          f_name: e.target.value,
+                        }))
+                      }
+                      required
+                      className="w-full bg-[#F9FAFB] outline-none text-blue-900 text-lg  p-1 border rounded-md"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm ">{t("last_name")}</label>
+                    <input
+                      type="text"
+                      value={adminUser.l_name}
+                      onChange={(e) =>
+                        setAdminUser((prev) => ({
+                          ...prev,
+                          l_name: e.target.value,
+                        }))
+                      }
+                      className="w-full bg-[#F9FAFB] outline-none text-blue-900 text-lg  p-1 border rounded-md"
+                    />
+                  </div>
                 </div>
-                <div>
-                  <label className="text-sm ">{t("last_name")}</label>
-                  <input
-                    type="text"
-                    value={adminUser.l_name}
-                    onChange={(e) =>
-                      setAdminUser((prev) => ({
-                        ...prev,
-                        l_name: e.target.value,
-                      }))
-                    }
-                    className="w-full bg-[#F9FAFB] outline-none text-blue-900 text-lg  p-1 border rounded-md"
-                  />
-                </div>
-                </div>
-                
 
                 <div>
                   <label className="text-sm">{t("username")}</label>

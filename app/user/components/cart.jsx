@@ -24,29 +24,24 @@ export default function Cart() {
   const [totalOrder, setTotalOrder] = useState(0);
   const [totalDiscount, setTotalDiscount] = useState(0);
   const [itemNum, setItemNum] = useState(0);
-  const userId =typeof window !== 'undefined'?  localStorage.id:null;
+  const userId = typeof window !== "undefined" ? localStorage.id : null;
   const shappingCost = 50;
   const [isFirstAction, setIsFirstAction] = useState(true);
   const [loading, setLoading] = useState(true);
   const navigate = useRouter();
 
   const getProductInCart = async () => {
-    try{
-       const res = await getRequest(`/api/shopCarts/${userId}`);
-    setItems(res.itemLines);
-    setTotalOrder(res.total);
-    setItemNum(res.itemLines.length);
-    setTotalDiscount(res.totalDiscount);
-          setLoading(false)
-
+    try {
+      const res = await getRequest(`/api/shopCarts/${userId}`);
+      setItems(res.itemLines);
+      setTotalOrder(res.total);
+      setItemNum(res.itemLines.length);
+      setTotalDiscount(res.totalDiscount);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(true);
     }
-    catch(error){
-      console.log(error)
-            setLoading(true)
-
-    }
-   
-   
   };
   const changeQuantity = async (itemId, newQuantity) => {
     await postRequest(
@@ -55,7 +50,7 @@ export default function Cart() {
         itemLineId: itemId,
         quantity: newQuantity,
       },
-      "",
+      ""
     );
     getProductInCart();
   };
@@ -63,7 +58,7 @@ export default function Cart() {
   const deleteItemFormCart = async (itemLineId) => {
     await deleteRequest(
       `/api/shopCarts/${userId}/deleteLine/${itemLineId}`,
-      t("message_DeleteText"),
+      t("message_DeleteText")
     );
     getProductInCart();
   };
@@ -73,13 +68,17 @@ export default function Cart() {
       if (isFirstAction) {
         getProductInCart();
       } else {
-        const res = await postRequest(`/api/orders/${userId}/placeOrder`,'','');
+        const res = await postRequest(
+          `/api/orders/${userId}/placeOrder`,
+          "",
+          ""
+        );
         navigate.push("/user/ordershistory");
         console.log(res);
       }
       setIsFirstAction(!isFirstAction);
     } else {
-      toast.error(t('noProductsInCart'));
+      toast.error(t("noProductsInCart"));
     }
   };
 
@@ -94,15 +93,18 @@ export default function Cart() {
     <div data-aos="fade-up" className="xl:p-10 xs:p-7  ">
       <div className="flex justify-between py-5">
         <div className="">
-          <h1 className="text-4xl font-bold mb-2"> {t('shoppingCart')} </h1>
+          <h1 className="text-4xl font-bold mb-2"> {t("shoppingCart")} </h1>
           <span className="text-sm text-gray-500 font-semibold">
-         {t('inYourCart') +' '+itemNum+' '+t('products')}
+            {t("inYourCart") + " " + itemNum + " " + t("products")}
           </span>
         </div>
-        <Link href='/user/home' className="md:text-sm xs:text-xs font-semibold text-red-600 flex items-center gap-2">
-          <h1>{t('continueShopping')} </h1>
-                <span className="mt-2">
-           {localStorage.lang === 'ar'? <FaArrowLeft /> : <FaArrowRight />} 
+        <Link
+          href="/user/home"
+          className="md:text-sm xs:text-xs font-semibold text-red-600 flex items-center gap-2"
+        >
+          <h1>{t("continueShopping")} </h1>
+          <span className="mt-2">
+            {localStorage.lang === "ar" ? <FaArrowLeft /> : <FaArrowRight />}
           </span>
         </Link>
       </div>
@@ -111,36 +113,44 @@ export default function Cart() {
           <table className="  xs:w-[200%] lg:w-full   ">
             <thead className="bg-[#F9FAFB] text-xs text-gray-500  text-justify">
               <tr className=" text-gray-500 h-12">
-                <th className="w-[30%] px-5">{t('product')} </th>
-                <th className="w-[25%]">{t('price')} </th>
-                <th className="w-[15%] ">{t('discount')} </th>
-                <th className="w-[20%] px-7 ">{t('quantity')} </th>
-                <th className="w-[15%] ">{t('total')} </th>
+                <th className="w-[30%] px-5">{t("product")} </th>
+                <th className="w-[25%]">{t("price")} </th>
+                <th className="w-[15%] ">{t("discount")} </th>
+                <th className="w-[20%] px-7 ">{t("quantity")} </th>
+                <th className="w-[15%] ">{t("total")} </th>
                 <th className="w-[10%] px-3">{t("delete")} </th>
               </tr>
             </thead>
             <tbody className="bg-white text-md w-full  ">
-               {loading ? (
-              // Skeleton rows
-              [...Array(5)].map((_, index) => (
-                <tr key={`skeleton-${index}`} className="border-b">
-                  <td className="px-4 py-2 flex items-center gap-2">
-                    <div className="h-14 bg-gray-200 rounded-full animate-pulse w-14"></div>
-                    <div className="flex flex-col gap-2">
-                    <div  className="h-4 bg-gray-200 rounded-lg animate-pulse w-28"></div>
-                    <div  className="h-2 bg-gray-200 rounded-md animate-pulse w-20"></div>
-                    </div>
-                  </td>
-                  <td className=" py-2"><div className="h-4 bg-gray-200 rounded animate-pulse w-24"></div></td>
-                  <td className=" py-2"><div className="h-4 bg-gray-200 rounded animate-pulse w-24"></div></td>
-                  <td className=" py-2"><div className="h-4 bg-gray-200 rounded animate-pulse w-24"></div></td>
-                  <td className="py-2"><div className="h-4 bg-gray-200 rounded animate-pulse w-16"></div></td>
-                   <td className=" py-2"><div className="h-4 bg-gray-200 rounded animate-pulse w-16"></div></td>
-
-                </tr>
-              ))
-            ):( 
-              items.length != 0 ? (
+              {loading ? (
+                // Skeleton rows
+                [...Array(5)].map((_, index) => (
+                  <tr key={`skeleton-${index}`} className="border-b">
+                    <td className="px-4 py-2 flex items-center gap-2">
+                      <div className="h-14 bg-gray-200 rounded-full animate-pulse w-14"></div>
+                      <div className="flex flex-col gap-2">
+                        <div className="h-4 bg-gray-200 rounded-lg animate-pulse w-28"></div>
+                        <div className="h-2 bg-gray-200 rounded-md animate-pulse w-20"></div>
+                      </div>
+                    </td>
+                    <td className=" py-2">
+                      <div className="h-4 bg-gray-200 rounded animate-pulse w-24"></div>
+                    </td>
+                    <td className=" py-2">
+                      <div className="h-4 bg-gray-200 rounded animate-pulse w-24"></div>
+                    </td>
+                    <td className=" py-2">
+                      <div className="h-4 bg-gray-200 rounded animate-pulse w-24"></div>
+                    </td>
+                    <td className="py-2">
+                      <div className="h-4 bg-gray-200 rounded animate-pulse w-16"></div>
+                    </td>
+                    <td className=" py-2">
+                      <div className="h-4 bg-gray-200 rounded animate-pulse w-16"></div>
+                    </td>
+                  </tr>
+                ))
+              ) : items.length != 0 ? (
                 items.map((product, index) => {
                   return (
                     <tr key={index} className=" text-blue-950 border w-full">
@@ -168,11 +178,16 @@ export default function Cart() {
                       </td>
                       <td className="font-semibold text-red-500">
                         <div>
-                          <span> {product.unitPrice.toLocaleString('en-US')} {t("currency")} </span>
+                          <span>
+                            {" "}
+                            {product.unitPrice.toLocaleString("en-US")}{" "}
+                            {t("currency")}{" "}
+                          </span>
 
                           {product.oldUnitPrice ? (
                             <span className="text-gray-400 line-through text-sm mx-2 opacity-90">
-                              {product.oldUnitPrice.toLocaleString('en-US')} {t("currency")}
+                              {product.oldUnitPrice.toLocaleString("en-US")}{" "}
+                              {t("currency")}
                             </span>
                           ) : (
                             ""
@@ -202,7 +217,7 @@ export default function Cart() {
                             onClick={() => {
                               changeQuantity(
                                 product.itemLineId,
-                                product.quantity + 1,
+                                product.quantity + 1
                               );
                             }}
                             className="text-xl font-bold text-gray-600  hover:text-blue-600"
@@ -221,7 +236,7 @@ export default function Cart() {
                               if (product.quantity > 1) {
                                 changeQuantity(
                                   product.itemLineId,
-                                  product.quantity - 1,
+                                  product.quantity - 1
                                 );
                               }
                             }}
@@ -232,7 +247,8 @@ export default function Cart() {
                         </div>
                       </td>
                       <td className="text-sm font-semibold">
-                        {product.totalPrice.toLocaleString('en-US')} {t("currency")}
+                        {product.totalPrice.toLocaleString("en-US")}{" "}
+                        {t("currency")}
                       </td>
                       <td className=" font-semibold text-lg text-gray-600 px-5 cursor-pointer">
                         <button
@@ -250,108 +266,132 @@ export default function Cart() {
               ) : (
                 <tr>
                   <td colSpan="6" className="text-center p-4">
-                   {t('noProductsInCart')}
+                    {t("noProductsInCart")}
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
         <div className=" h-screen md:w-[40%]  xs:w-full">
-           {loading ? (
-              // Skeleton rows
-<div  className=" h-[500px] p-7  w-full bg-white rounded-lg border">
-            <h1 className="mb-10 text-2xl font-bold">{t('orderSummary')} </h1>
-            <div className="flex justify-between items-center mb-5">
-              <span className="text-gray-600"> {t('totalProducts')}  </span>
-              <span className="h-4 bg-gray-200 rounded animate-pulse w-20"> </span>
-            </div>
-            <div className="flex justify-between items-center mb-5">
-              <span className="text-gray-600">{t('totalDiscount')} </span>
-              <span className="h-4 bg-gray-200 rounded animate-pulse w-20"> </span>
-            </div>
+          {loading ? (
+            // Skeleton rows
+            <div className=" h-[500px] p-7  w-full bg-white rounded-lg border">
+              <h1 className="mb-10 text-2xl font-bold">{t("orderSummary")} </h1>
+              <div className="flex justify-between items-center mb-5">
+                <span className="text-gray-600"> {t("totalProducts")} </span>
+                <span className="h-4 bg-gray-200 rounded animate-pulse w-20">
+                  {" "}
+                </span>
+              </div>
+              <div className="flex justify-between items-center mb-5">
+                <span className="text-gray-600">{t("totalDiscount")} </span>
+                <span className="h-4 bg-gray-200 rounded animate-pulse w-20">
+                  {" "}
+                </span>
+              </div>
 
-            <div className="flex justify-between items-center">
-              <span className="text-gray-600">{t('shippingCost')} </span>
-              <span className="h-4 bg-gray-200 rounded animate-pulse w-20"> </span>
-            </div>
-            <hr className="my-6" />
-            <div className="flex justify-between items-center text-2xl font-semibold">
-              <span>{t('grandTotal')} </span>
-             <span className="h-4 bg-gray-200 rounded animate-pulse w-20"></span>
-            </div>
-            <button
-                 className={`flex justify-center items-center w-full  py-2 rounded-md mt-10 text-white text-lg  ${
-                items.length === 0
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-red-600 hover:bg-red-700"
-              }`}
-            >
-              {t("proceedToCheckout")}
-            </button>
-            <div className="flex gap-4 p-2 w-full bg-red-50 mt-5 rounded-md">
-              <span className="text-2xl text-red-600 mt-1">
-                <AiFillSafetyCertificate />
-              </span>
-              <div>
-                <h1 className="text-red-600  font-semibold">
-                  {t('secureShopping')}
-                </h1>
-                <h2 className="text-gray-600 text-xs">
-                 {t('protectedData')}
-                </h2>
+              <div className="flex justify-between items-center">
+                <span className="text-gray-600">{t("shippingCost")} </span>
+                <span className="h-4 bg-gray-200 rounded animate-pulse w-20">
+                  {" "}
+                </span>
+              </div>
+              <hr className="my-6" />
+              <div className="flex justify-between items-center text-2xl font-semibold">
+                <span>{t("grandTotal")} </span>
+                <span className="h-4 bg-gray-200 rounded animate-pulse w-20"></span>
+              </div>
+              <button
+                className={`flex justify-center items-center w-full  py-2 rounded-md mt-10 text-white text-lg  ${
+                  items.length === 0
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-red-600 hover:bg-red-700"
+                }`}
+              >
+                {t("proceedToCheckout")}
+              </button>
+              <div className="flex gap-4 p-2 w-full bg-red-50 mt-5 rounded-md">
+                <span className="text-2xl text-red-600 mt-1">
+                  <AiFillSafetyCertificate />
+                </span>
+                <div>
+                  <h1 className="text-red-600  font-semibold">
+                    {t("secureShopping")}
+                  </h1>
+                  <h2 className="text-gray-600 text-xs">
+                    {t("protectedData")}
+                  </h2>
+                </div>
               </div>
             </div>
-          </div>
-              ):(
-                <div className=" h-[500px] p-7  w-full bg-white rounded-lg border">
-            <h1 className="mb-10 text-2xl font-bold">{t('orderSummary')} </h1>
-            <div className="flex justify-between items-center mb-5">
-              <span className="text-gray-600"> { t('totalProducts') +' '+(itemNum)}</span>
-              <span className="font-semibold">{totalOrder.toLocaleString('en-US') + ' ' + t('currency')} </span>
-            </div>
-            <div className="flex justify-between items-center mb-5">
-              <span className="text-gray-600">{t('totalDiscount')} </span>
-              <span className="font-semibold">{totalDiscount.toLocaleString('en-US')+ ' ' + t('currency')} </span>
-            </div>
+          ) : (
+            <div className=" h-[500px] p-7  w-full bg-white rounded-lg border">
+              <h1 className="mb-10 text-2xl font-bold">{t("orderSummary")} </h1>
+              <div className="flex justify-between items-center mb-5">
+                <span className="text-gray-600">
+                  {" "}
+                  {t("totalProducts") + " " + itemNum}
+                </span>
+                <span className="font-semibold">
+                  {totalOrder.toLocaleString("en-US") + " " + t("currency")}{" "}
+                </span>
+              </div>
+              <div className="flex justify-between items-center mb-5">
+                <span className="text-gray-600">{t("totalDiscount")} </span>
+                <span className="font-semibold">
+                  {totalDiscount.toLocaleString("en-US") + " " + t("currency")}{" "}
+                </span>
+              </div>
 
-            <div className="flex justify-between items-center">
-              <span className="text-gray-600">{t('shippingCost')} </span>
-              <span className="font-semibold">{shappingCost+ ' ' + t('currency')}</span>
-            </div>
-            <hr className="my-6" />
-            <div className="flex justify-between items-center text-2xl font-semibold">
-              <span>{t('grandTotal')} </span>
-              <span className="text-red-500">
-                {totalOrder === 0 ? 0 :( totalOrder + shappingCost).toLocaleString('en-US')+ ' ' + t('currency')}
-              </span>
-            </div>
-            <button
-              className={`flex justify-center items-center w-full  py-2 rounded-md mt-10 text-white text-lg  ${
-                items.length === 0
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-red-600 hover:bg-red-700"
-              }`}
-              onClick={placeOrder}
-            >
-              {isFirstAction ?t("proceedToCheckout") : loading? <LuLoader className="animate-spin" />: t("confirmOrder")}
-            </button>
-            <div className="flex gap-4 p-2 w-full bg-red-50 mt-5 rounded-md">
-              <span className="text-2xl text-red-600 mt-1">
-                <AiFillSafetyCertificate />
-              </span>
-              <div>
-                <h1 className="text-red-600  font-semibold">
-                  {t('secureShopping')}
-                </h1>
-                <h2 className="text-gray-600 text-xs">
-                 {t('protectedData')}
-                </h2>
+              <div className="flex justify-between items-center">
+                <span className="text-gray-600">{t("shippingCost")} </span>
+                <span className="font-semibold">
+                  {shappingCost + " " + t("currency")}
+                </span>
+              </div>
+              <hr className="my-6" />
+              <div className="flex justify-between items-center text-2xl font-semibold">
+                <span>{t("grandTotal")} </span>
+                <span className="text-red-500">
+                  {totalOrder === 0
+                    ? 0
+                    : (totalOrder + shappingCost).toLocaleString("en-US") +
+                      " " +
+                      t("currency")}
+                </span>
+              </div>
+              <button
+                className={`flex justify-center items-center w-full  py-2 rounded-md mt-10 text-white text-lg  ${
+                  items.length === 0
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-red-600 hover:bg-red-700"
+                }`}
+                onClick={placeOrder}
+              >
+                {isFirstAction ? (
+                  t("proceedToCheckout")
+                ) : loading ? (
+                  <LuLoader className="animate-spin" />
+                ) : (
+                  t("confirmOrder")
+                )}
+              </button>
+              <div className="flex gap-4 p-2 w-full bg-red-50 mt-5 rounded-md">
+                <span className="text-2xl text-red-600 mt-1">
+                  <AiFillSafetyCertificate />
+                </span>
+                <div>
+                  <h1 className="text-red-600  font-semibold">
+                    {t("secureShopping")}
+                  </h1>
+                  <h2 className="text-gray-600 text-xs">
+                    {t("protectedData")}
+                  </h2>
+                </div>
               </div>
             </div>
-          </div>
-              )}
-          
+          )}
         </div>
       </div>
     </div>

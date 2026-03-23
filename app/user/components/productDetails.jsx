@@ -174,7 +174,8 @@ export default function ProductDetails({ itemId }) {
               <div className="flex justify-between items-start">
                 <span>
                   <h1 className="text-xl font-semibold">
-                    {localStorage.lang === "ar"
+                    {typeof localStorage.lang !== "undefined" &&
+                    localStorage.lang === "ar"
                       ? product.nameAr
                       : product.nameEn}
                   </h1>
@@ -189,7 +190,8 @@ export default function ProductDetails({ itemId }) {
                     navigate.push("/user/search");
                   }}
                 >
-                  {localStorage.lang === "ar"
+                  {typeof localStorage.lang !== "undefined" &&
+                  localStorage.lang === "ar"
                     ? product.category.nameAr
                     : product.category.nameEn}
                 </span>
@@ -198,7 +200,8 @@ export default function ProductDetails({ itemId }) {
               <hr className="w-full  my-5"></hr>
             </div>
             <span className="text-gray-500">
-              {localStorage.lang === "ar"
+              {typeof localStorage.lang !== "undefined" &&
+              localStorage.lang === "ar"
                 ? product.descriptionAr
                 : product.descriptionEn}
             </span>

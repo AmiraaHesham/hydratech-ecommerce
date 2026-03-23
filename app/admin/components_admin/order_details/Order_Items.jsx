@@ -9,18 +9,18 @@ import { useOrderDetailsContext } from "../../../../context/orderDetailsContext.
 export default function OrdersItems({ orderId }) {
   const { t } = useLanguage();
   const [orderItems, setOrderItems] = useState([]);
-    const {setSelectedOrderState} = useOrderDetailsContext()
-    const {setSelectedOrderCode} = useOrderDetailsContext()
-    const {setSelectedOrderDate} = useOrderDetailsContext()
+  const { setSelectedOrderState } = useOrderDetailsContext();
+  const { setSelectedOrderCode } = useOrderDetailsContext();
+  const { setSelectedOrderDate } = useOrderDetailsContext();
 
   const [orderTotalPrice, setOrderTotalPrice] = useState("");
   const orderItem = async () => {
     const res = await getRequest(`/api/orders/${orderId}`);
     setOrderItems(res.orderItemLines);
-    setOrderTotalPrice(res.total)
-    setSelectedOrderState(res.state)
-    setSelectedOrderDate(res.createdDate)
-    setSelectedOrderCode(res.code)
+    setOrderTotalPrice(res.total);
+    setSelectedOrderState(res.state);
+    setSelectedOrderDate(res.createdDate);
+    setSelectedOrderCode(res.code);
   };
   useEffect(() => {
     orderItem();
@@ -28,8 +28,16 @@ export default function OrdersItems({ orderId }) {
   return (
     <div className="w-full ">
       <div className="h-16 flex border-t  border-l border-r rounded-t-lg items-center justify-between  px-6 bg-white">
-        <h1 className="text-lg">{t("order_items")} ({orderItems.length})</h1>
-        <span className="text-gray-600"> {t("Total")}: <span className="text-lg text-red-500 font-semibold">{orderTotalPrice.toLocaleString('en-US')} EG</span> </span>
+        <h1 className="text-lg">
+          {t("order_items")} ({orderItems.length})
+        </h1>
+        <span className="text-gray-600">
+          {" "}
+          {t("Total")}:{" "}
+          <span className="text-lg text-red-500 font-semibold">
+            {orderTotalPrice.toLocaleString("en-US")} EG
+          </span>{" "}
+        </span>
       </div>
       <div className=" rounded-b-lg  w-full h-[435px]  border overflow-hidden overflow-y-scroll ">
         <table className=" w-full  rounded-lg  ">
@@ -45,24 +53,28 @@ export default function OrdersItems({ orderId }) {
           <tbody className="bg-white text-md w-full ">
             {orderItems.map((item, index) => {
               return (
-                <tr
-                  key={index}
-                  className=" text-blue-950 border-b w-full hover:bg-gray-50"
-                >
+                <tr key={index} className=" text-blue-950 border-b w-full">
                   <td></td>
                   <td>
                     <div className="flex items-center gap-3">
                       <div>
                         <Image
                           alt=""
-                          src={process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL + item.item.mainImageURL}
+                          src={
+                            process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL +
+                            item.item.mainImageURL
+                          }
                           width={55}
                           height={55}
                           className="rounded-xl  my-1 p-1"
                         />
                       </div>
                       <div>
-                        <h1 className="font-semibold text-sm">{localStorage.lang==='ar'? item.item.nameAr:item.item.nameEn}</h1>
+                        <h1 className="font-semibold text-sm">
+                          {localStorage.lang === "ar"
+                            ? item.item.nameAr
+                            : item.item.nameEn}
+                        </h1>
                         <h1 className="text-xs  text-gray-500">
                           {item.item.code}
                         </h1>
@@ -70,12 +82,14 @@ export default function OrdersItems({ orderId }) {
                     </div>
                   </td>
                   <td className="text-sm font-semibold text-center text-gray-500">
-                    EG {item.item.price.toLocaleString('en-US')}
+                    EG {item.item.price.toLocaleString("en-US")}
                   </td>
-                  <td className="text-sm text-center text-gray-500">{item.quantity}</td>
+                  <td className="text-sm text-center text-gray-500">
+                    {item.quantity}
+                  </td>
 
                   <td className="text-sm font-semibold text-center">
-                    EG {item.totalPrice.toLocaleString('en-US')}
+                    EG {item.totalPrice.toLocaleString("en-US")}
                   </td>
                 </tr>
               );

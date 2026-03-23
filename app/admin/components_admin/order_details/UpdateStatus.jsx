@@ -3,10 +3,13 @@ import { FaBox, FaCheck, FaShoppingBag, FaTruck } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { postRequest } from "../../../../utils/requestsUtils";
 import { useOrderDetailsContext } from "../../../../context/orderDetailsContext";
+import { useLanguage } from "../../../../context/LanguageContext";
 
 export default function UpdateStatus({ orderId }) {
   const [activeStep, setActiveStep] = useState();
-  const { selectedOrderState, setSelectedOrderState } = useOrderDetailsContext();
+  const { t } = useLanguage();
+  const { selectedOrderState, setSelectedOrderState } =
+    useOrderDetailsContext();
   // const [state, setState] = useState('');
   const [orderStepPath, setOrderStepPath] = useState(5);
 
@@ -20,33 +23,37 @@ export default function UpdateStatus({ orderId }) {
     } else if (selectedOrderState === "SHIPPED") {
       setActiveStep(3);
       setOrderStepPath(23);
-    } 
-    
-    else if(selectedOrderState ==='DELIVERED') {
+    } else if (selectedOrderState === "DELIVERED") {
       setActiveStep(4);
       setOrderStepPath(30);
-    }
-else{
-   setActiveStep(0);
+    } else {
+      setActiveStep(0);
       setOrderStepPath(1);
-}
+    }
   }, [selectedOrderState]);
 
   const lang =
     typeof window !== "undefined" ? localStorage.getItem("lang") : null;
   const steps = [
-    { icon: <FaShoppingBag size={20} />, label: "PENDING" },
-    { icon: <FaBox size={20} />, label: "PROCESSING" },
-    { icon: <FaTruck size={20} />, label: "SHIPPED" },
-    { icon: <FaCheck size={20} />, label: "DELIVERED" },
+    {
+      icon: <FaShoppingBag size={20} />,
+      label: t("PENDING"),
+      value: "PENDING",
+    },
+    { icon: <FaBox size={20} />, label: t("PROCESSING"), value: "PROCESSING" },
+    { icon: <FaTruck size={20} />, label: t("SHIPPED"), value: "SHIPPED" },
+    { icon: <FaCheck size={20} />, label: t("DELIVERED"), value: "DELIVERED" },
   ];
   const changeState = async (state) => {
     try {
-     const res =  await postRequest(`/api/admin/orders/${orderId}/changeState/${state}`);
-     if(res.success === true){
-      setSelectedOrderState(state);
-
-     }
+      const res = await postRequest(
+        `/api/admin/orders/${orderId}/changeState/${state}`,
+        "",
+        t("message_AddText")
+      );
+      if (res.success === true) {
+        setSelectedOrderState(state);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -56,17 +63,21 @@ else{
       <div
         className="absolute top-1/2 left-0 right-0 h-0.5"
         style={{
-          background: `linear-gradient(${lang === "en" ? "to right" : "to left"}, red ${activeStep * orderStepPath}%, #e0e0e0 ${activeStep * orderStepPath}%)`,
+          background: `linear-gradient(${
+            lang === "en" ? "to right" : "to left"
+          }, red ${activeStep * orderStepPath}%, #e0e0e0 ${
+            activeStep * orderStepPath
+          }%)`,
         }}
       ></div>
       <div className="flex justify-between w-full relative z-10">
         {steps.map((step, index) => (
           <div
             key={index}
-            className="flex flex-col items-center"
+            className="flex flex-col items-center cursor-pointer"
             onClick={() => {
               // console.log(step.l);
-              changeState(step.label);
+              changeState(step.value);
             }}
           >
             {/* الدائرة المحيطة بالأيقونة */}

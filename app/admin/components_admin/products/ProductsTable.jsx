@@ -11,7 +11,6 @@ import { useIdContext } from "../../../../context/idContext";
 import { IoMdSearch } from "react-icons/io";
 import { deleteRequest } from "../../../../utils/requestsUtils.js";
 import { useRefresh } from "../../../../context/refreshContext.jsx";
-import { IoReloadCircle } from "react-icons/io5";
 import { getThumbnailUrl } from "../../../../utils/functions.jsx";
 
 export default function ProductsTable() {
@@ -228,7 +227,10 @@ export default function ProductsTable() {
                 )) */}
             {/* :  */}
             {products.map((product, index) => (
-              <tr key={index} className=" border hover:bg-gray-100  ">
+              <tr
+                key={index}
+                className=" border hover:bg-gray-100 cursor-pointer  "
+              >
                 <td>
                   <div className="flex items-center justify-center gap-3">
                     <button
@@ -282,9 +284,11 @@ export default function ProductsTable() {
                   />
                   <div>
                     <h1 className="text-sm font-semibold">
-                      {localStorage.lang === "ar"
-                        ? product.nameAr
-                        : product.nameEn}
+                      {typeof window !== "undefined"
+                        ? localStorage.lang === "ar"
+                          ? product.nameAr
+                          : product.nameEn
+                        : null}
                     </h1>
                     <h1 className="text-xs text-gray-500">
                       {t("code")} : {product.code}
@@ -295,9 +299,11 @@ export default function ProductsTable() {
                 <td onClick={() => itemProductId(product)}>
                   <div className="  text-sm text-gray-500 font-semibold mx-1">
                     <h1>
-                      {localStorage.lang === "ar"
-                        ? product.itemCategory.nameAr
-                        : product.itemCategory.nameEn}
+                      {typeof window !== "undefined"
+                        ? localStorage.lang === "ar"
+                          ? product.itemCategory.nameAr
+                          : product.itemCategory.nameEn
+                        : null}
                     </h1>
                   </div>
                 </td>
@@ -334,21 +340,21 @@ export default function ProductsTable() {
 
             {/* {products.length <= 15 ? (
               " "
-            ) : (
-              <tr className="h-5 text-center">
-                <td colSpan="6">
-                  <button
-                    className=" text-red-600 px-5 py-1   my-3 rounded-lg"
-                    onClick={() => {
-                      pageNum.current += 1;
-                      getAllProducts();
-                    }}
-                  >
-                  <IoReloadCircle className="text-4xl"  /> 
-                  </button>
-                </td>
-              </tr>
-            )} */}
+            ) : ( */}
+            <tr className="h-5 text-center">
+              <td colSpan="6">
+                <button
+                  className=" text-red-600 px-5 py-1   my-3 rounded-lg"
+                  onClick={() => {
+                    pageNum.current += 1;
+                    getAllProducts();
+                  }}
+                >
+                  <MdOutlineDownloading className="text-4xl" />
+                </button>
+              </td>
+            </tr>
+            {/* )} */}
           </tbody>
         </table>
       </div>

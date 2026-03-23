@@ -45,7 +45,7 @@ export default function Profile() {
   return (
     <div data-aos="fade-up" className="p-10">
       <div className="flex h-full gap-10 justify-between">
-        <div className="bg-white w-[30%] h-[400px] flex flex-col gap-3   p-10 rounded-md shadow-md">
+        <div className="bg-white w-[30%] h-[400px] md:flex xs:hidden flex-col gap-3   p-10 rounded-md shadow-md">
           <div className="flex items-center bg-red-600 p-2 rounded-md text-white gap-3 cursor-pointer">
             <span className="text-xl">
               <FaUser />
@@ -93,45 +93,32 @@ export default function Profile() {
         </div>
         <div className="w-full flex flex-col gap-5">
           <div className="w-full  bg-white rounded-md shadow-sm border p-5">
-            <div className="flex justify-between items-center">
-              <div className="flex flex-col gap-7">
+            <div className="flex w-full flex-col gap-7">
+              <div className="flex justify-between w-full">
                 <span className="text-xl font-semibold">
                   {firstName + " " + lastName}
                 </span>
-                <div className="flex gap-5 text-gray-600">
-                  <span className="flex items-center gap-1">
-                    <MdEmail />
-                    {email}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <MdPhoneEnabled />
-                    {phone}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <IoLocationSharp />
-                    {address}
-                  </span>
-                </div>
+                <span className="bg-red-200 px-3 py-2 text-xs font-semibold text-red-700 rounded-md">
+                  {t("unverifiedAccount")}
+                </span>
               </div>
-              <span className="bg-red-200 px-3 py-2 text-xs font-semibold text-red-700 rounded-md">
-                {t("unverifiedAccount")}
-              </span>
+
+              <div className="flex md:flex-row xs:flex-col gap-5 text-gray-600">
+                <span className="flex items-center gap-1">
+                  <MdEmail />
+                  {email}
+                </span>
+                <span className="flex items-center gap-1">
+                  <MdPhoneEnabled />
+                  {phone}
+                </span>
+                <span className="flex items-center gap-1">
+                  <IoLocationSharp />
+                  {address}
+                </span>
+              </div>
             </div>
           </div>
-          {/* <div className="w-full flex items-center justify-between  p-5 bg-white rounded-md shadow-sm border ">
-            <div className="flex items-center gap-5">
-              <span className="text-2xl bg-red-100 rounded-md text-red-600 p-3 ">
-                <FaShoppingBag />
-              </span>
-              <div className="flex flex-col">
-                <span className="text-sm">إجمالي الطلبات المكتملة</span>
-                <span className="text-2xl font-semibold ">25 طلب</span>
-              </div>
-            </div>
-            <span className="text-xs font-semibold text-red-600 cursor-pointer ">
-              عرض كل الطلبات
-            </span> */}
-          {/* </div> */}
 
           <div className="w-full  bg-white rounded-md shadow-sm border">
             <div className="p-7  font-semibold">
@@ -207,11 +194,7 @@ export default function Profile() {
               </div>
             </form>
           </div>
-          <div className="w-full h-[150px] bg-white rounded-md shadow-sm border mb-10">
-            <div className="p-5 text-sm font-semibold">
-              <span className=""> {t("cancel")} </span>
-            </div>
-            <hr></hr>
+          <div className="w-full h-[100px] bg-white rounded-md shadow-sm border mb-10">
             <div className="p-5 flex justify-between items-center">
               <div className="flex items-center gap-3">
                 <span className="p-3 text-xl rounded-full text-gray-600 bg-gray-100">

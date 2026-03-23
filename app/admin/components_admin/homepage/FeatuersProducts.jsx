@@ -5,7 +5,7 @@ import { FaCirclePlus } from "react-icons/fa6";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getRequest, postRequest } from "../../../../utils/requestsUtils";
-import ProductForm from "../../components_admin/products/ProductForm";
+import ProductForm from "../products/ProductForm";
 import { useIdContext } from "../../../../context/idContext";
 import { useRefresh } from "../../../../context/refreshContext.jsx";
 import { useLanguage } from "../../../../context/LanguageContext";
@@ -119,9 +119,9 @@ export default function FeaturedProducts() {
                                             </span> */}
                     </div>
                     <h1 className="md:text-sm xs:text-xs text-gray-400 ">
-                      {describtion.length <= 50
+                      {/* {describtion.length <= 50
                         ? describtion
-                        : describtion.slice(0, 50) + " ..."}
+                        : describtion.slice(0, 50) + " ..."} */}
                     </h1>
                   </div>
                 </div>

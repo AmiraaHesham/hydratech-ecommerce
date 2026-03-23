@@ -10,7 +10,7 @@ import { postRequest } from "../../../../utils/requestsUtils.js";
 import { FaUserLarge } from "react-icons/fa6";
 import { IoReloadCircle } from "react-icons/io5";
 import { IoMdSearch } from "react-icons/io";
-export default function Orders_Table() {
+export default function OrderOrders() {
   const { t } = useLanguage();
   const navigate = useRouter();
   const [inputSearch, setInputSearch] = useState(null);
@@ -25,7 +25,7 @@ export default function Orders_Table() {
         "/api/orders/search",
         {
           page: pageNum.current,
-          size: 15,
+          size: 10,
           searchText: inputSearch,
           orderState: state,
         },
@@ -178,11 +178,7 @@ export default function Orders_Table() {
                         className={`text-xs font-semibold ${
                           order.state === "PROCESSING"
                             ? "text-blue-500"
-                            : order.state === "SHIPPED"
-                            ? "text-yellow-500"
-                            : order.state === "PENDING"
-                            ? "text-red-500"
-                            : "text-green-500"
+                            : "text-red-500"
                         }`}
                       >
                         {t(order.state)}
@@ -190,23 +186,23 @@ export default function Orders_Table() {
                     </tr>
                   );
                 })}
-            {/* {orders.length <= 5 ? (
+            {orders.length <= 5 ? (
               " "
-            ) : ( */}
-            <tr className="h-5 text-center">
-              <td colSpan="6">
-                <button
-                  className=" text-red-600 w-[100px] py-1 text-center  my-3 rounded-lg"
-                  onClick={() => {
-                    pageNum.current += 1;
-                    getAllOrders();
-                  }}
-                >
-                  <MdOutlineDownloading className="text-4xl" />
-                </button>
-              </td>
-            </tr>
-            {/* )} */}
+            ) : (
+              <tr className="h-5 text-center">
+                <td colSpan="6">
+                  <button
+                    className=" text-red-600 w-[100px] py-1 text-center  my-3 rounded-lg"
+                    onClick={() => {
+                      pageNum.current += 1;
+                      getAllOrders();
+                    }}
+                  >
+                    <IoReloadCircle className="text-4xl" />
+                  </button>
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

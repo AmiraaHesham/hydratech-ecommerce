@@ -10,27 +10,24 @@ export default function Products() {
   // if(role === "ADMIN"){
   return (
     <div className=" p-5 bg-[#F9FAFB]">
-     
-
-          <div className="  relative ">
-            <FormProduct />
-            <ProductsTable />
-          </div>
-        </div>
-   
-  )
+      <div className="  relative ">
+        <FormProduct />
+        <ProductsTable />
+      </div>
+    </div>
+  );
   // ;}
-//    else{
-//     return(
-//       <div className="w-full h-screen flex justify-center items-center text-center">
-//         <div className=" ">
-//           <div className="flex justify-center items-center mb-10">
-// <Image src='/Images/logo.png' width={200} height={200} alt='logo ' className="flex justify-center items-center"/>
+  //    else{
+  //     return(
+  //       <div className="w-full h-screen flex justify-center items-center text-center">
+  //         <div className=" ">
+  //           <div className="flex justify-center items-center mb-10">
+  // <Image src='/Images/logo.png' width={200} height={200} alt='logo ' className="flex justify-center items-center"/>
 
-//           </div>
-//       <h1 className="text-2xl font-semibold ">You are not authorized to view this page</h1>
-//         </div>
-        
-//         </div>
-//     )}
+  //           </div>
+  //       <h1 className="text-2xl font-semibold ">You are not authorized to view this page</h1>
+  //         </div>
+
+  //         </div>
+  //     )}
 }
