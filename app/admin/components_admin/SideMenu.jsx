@@ -84,10 +84,10 @@ export default function SideMenu() {
           >
             <div
               id="dashboardTab"
-              className={`flex gap-4 mx-3 xs:justify-center md:justify-start  items-center p-3 rounded-md cursor-pointer hover:bg-red-100 hover:text-red-500
+              className={`flex gap-4 mx-3 xs:justify-center md:justify-start  items-center p-3 rounded-md cursor-pointer hover:bg-blue-100 hover:text-blue-700
                  ${
                    selectedNamePage === "dashboard_overview"
-                     ? "bg-red-100 text-red-500"
+                     ? "bg-blue-100 text-blue-700"
                      : ""
                  }`}
             >
@@ -103,10 +103,10 @@ export default function SideMenu() {
             onClick={() => setSelectedNamePage("Homepage Management")}
           >
             <div
-              className={`flex gap-4 mx-3 xs:justify-center md:justify-start  items-center p-3 rounded-md  cursor-pointer hover:bg-red-100 hover:text-red-500
+              className={`flex gap-4 mx-3 xs:justify-center md:justify-start  items-center p-3 rounded-md  cursor-pointer hover:bg-blue-100 hover:text-blue-700
                  ${
                    selectedNamePage === "homepage_management"
-                     ? "bg-red-100 text-red-500"
+                     ? "bg-blue-100 text-blue-700"
                      : ""
                  }`}
             >
@@ -122,10 +122,10 @@ export default function SideMenu() {
             onClick={() => setSelectedNamePage("Categories Management")}
           >
             <div
-              className={`flex gap-4 mx-3 xs:justify-center md:justify-start  items-center p-3 rounded-md cursor-pointer hover:bg-red-100 hover:text-red-500
+              className={`flex gap-4 mx-3 xs:justify-center md:justify-start  items-center p-3 rounded-md cursor-pointer hover:bg-blue-100 hover:text-blue-700
                  ${
                    selectedNamePage === "categories_management"
-                     ? "bg-red-100 text-red-500"
+                     ? "bg-blue-100 text-blue-700"
                      : ""
                  }`}
             >
@@ -141,10 +141,10 @@ export default function SideMenu() {
             onClick={() => setSelectedNamePage("Products Management")}
           >
             <div
-              className={`flex gap-4 mx-3 xs:justify-center md:justify-start items-center p-3 rounded-md cursor-pointer  hover:bg-red-100 hover:text-red-500
+              className={`flex gap-4 mx-3 xs:justify-center md:justify-start items-center p-3 rounded-md cursor-pointer  hover:bg-blue-100 hover:text-blue-700
                  ${
                    selectedNamePage === "products_management"
-                     ? "bg-red-100 text-red-500"
+                     ? "bg-blue-100 text-blue-700"
                      : ""
                  }`}
             >
@@ -160,10 +160,10 @@ export default function SideMenu() {
             onClick={() => setSelectedNamePage("Orders Management")}
           >
             <div
-              className={`flex gap-4 mx-3 xs:justify-center md:justify-start items-center p-3 rounded-md  cursor-pointer hover:bg-red-100 hover:text-red-500
+              className={`flex gap-4 mx-3 xs:justify-center md:justify-start items-center p-3 rounded-md  cursor-pointer hover:bg-blue-100 hover:text-blue-700
                  ${
                    selectedNamePage === "orders_management"
-                     ? "bg-red-100 text-red-500"
+                     ? "bg-blue-100 text-blue-700"
                      : ""
                  }`}
             >
@@ -179,10 +179,10 @@ export default function SideMenu() {
             onClick={() => setSelectedNamePage("Users Management")}
           >
             <div
-              className={`flex gap-4 mx-3 xs:justify-center md:justify-start  items-center p-3 rounded-md cursor-pointer hover:bg-red-100 hover:text-red-500
+              className={`flex gap-4 mx-3 xs:justify-center md:justify-start  items-center p-3 rounded-md cursor-pointer hover:bg-blue-100 hover:text-blue-700
                  ${
                    selectedNamePage === "users_management"
-                     ? "bg-red-100 text-red-500"
+                     ? "bg-blue-100 text-blue-700"
                      : ""
                  }`}
             >
@@ -199,10 +199,10 @@ export default function SideMenu() {
           >
             <div
               id="adminsTab"
-              className={`flex gap-4 mx-3 xs:justify-center md:justify-start  items-center p-3 rounded-md cursor-pointer hover:bg-red-100 hover:text-red-500
+              className={`flex gap-4 mx-3 xs:justify-center md:justify-start  items-center p-3 rounded-md cursor-pointer hover:bg-blue-100 hover:text-blue-700
                  ${
                    selectedNamePage === "admins_management"
-                     ? "bg-red-100 text-red-500"
+                     ? "bg-blue-100 text-blue-700"
                      : ""
                  }`}
             >
@@ -218,10 +218,10 @@ export default function SideMenu() {
             onClick={() => setSelectedNamePage("Contact Management")}
           >
             <div
-              className={`flex gap-4 mx-3 xs:justify-center md:justify-start items-center p-3 rounded-md cursor-pointer hover:bg-red-100 hover:text-red-500
+              className={`flex gap-4 mx-3 xs:justify-center md:justify-start items-center p-3 rounded-md cursor-pointer hover:bg-blue-100 hover:text-blue-700
                  ${
                    selectedNamePage === "contact_management"
-                     ? "bg-red-100 text-red-500"
+                     ? "bg-blue-100 text-blue-700"
                      : ""
                  }`}
             >

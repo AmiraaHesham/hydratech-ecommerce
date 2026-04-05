@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaRegCalendar } from "react-icons/fa";
 import { IoMdSearch } from "react-icons/io";
 import { VscCircleFilled } from "react-icons/vsc";
@@ -10,6 +10,7 @@ import "aos/dist/aos.css";
 import { useLanguage } from "../../../context/LanguageContext";
 import { useRouter } from "next/navigation";
 import { useIdContext } from "../../../context/idContext";
+import { MdOutlineDownloading } from "react-icons/md";
 export default function OrdersHistory() {
   const { t } = useLanguage();
   const [orders, setOrders] = useState([]);
@@ -17,12 +18,10 @@ export default function OrdersHistory() {
   const [state, setState] = useState("");
   const [loading, setLoading] = useState(true);
   const navigate = useRouter();
+  const pageNum = useRef(0);
+
   const { setSelectedProductId } = useIdContext();
   useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      once: false,
-    });
     getOrders();
   }, [state, inputSearch]);
   const getOrders = async () => {
@@ -30,15 +29,17 @@ export default function OrdersHistory() {
       const res = await postRequest(
         "/api/orders/search",
         {
-          page: 0,
-          size: 100,
+          page: pageNum.current,
+          size: 5,
           searchText: inputSearch,
           orderState: state,
         },
         ""
       );
       console.log(res.data);
-      setOrders(res.data);
+      if (pageNum.current === 0) {
+        setOrders(res.data);
+      } else setOrders((prev) => [...prev, ...res.data]);
       // setLength(res.data.length)
       setLoading(false);
     } catch (error) {
@@ -50,14 +51,10 @@ export default function OrdersHistory() {
   };
 
   useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      once: false,
-    });
     getOrders();
   }, [state, inputSearch]);
   return (
-    <div data-aos="fade-up">
+    <div>
       <div className="md:flex xs:block justify-between  items-center  mb-16">
         <div className="flex flex-col gap-2">
           <span className="text-3xl font-bold">{t("orderHistory")} </span>
@@ -85,8 +82,12 @@ export default function OrdersHistory() {
       <div className="relative">
         <div className="flex gap-8 md:text-lg xs:text-sm items-center  ">
           <span
-            className={` border-b hover:text-red-600 hover:border-red-600 py-4 cursor-pointer 
-               ${state === "" ? "text-red-600 border-red-600" : "text-gray-500"}
+            className={` border-b hover:text-blue-600 hover:border-blue-600 py-4 cursor-pointer 
+               ${
+                 state === ""
+                   ? "text-blue-600 border-blue-600"
+                   : "text-gray-500"
+               }
               `}
             onClick={() => {
               setState("");
@@ -95,7 +96,7 @@ export default function OrdersHistory() {
             {t("allOrders")}
           </span>
           <span
-            className={`border-b hover:text-red-600 hover:border-red-600 py-4 cursor-pointer
+            className={`border-b hover:text-blue-600 hover:border-blue-600 py-4 cursor-pointer
                ${
                  state === "PENDING"
                    ? "text-red-600 border-red-600"
@@ -109,10 +110,10 @@ export default function OrdersHistory() {
             {t("PENDING")}
           </span>
           <span
-            className={`border-b hover:text-red-600 hover:border-red-600 py-4 cursor-pointer 
+            className={`border-b hover:text-blue-600 hover:border-blue-600 py-4 cursor-pointer 
                ${
                  state === "PROCESSING"
-                   ? "text-red-600 border-red-600"
+                   ? "text-blue-600 border-blue-600"
                    : "text-gray-500"
                }
               `}
@@ -123,10 +124,10 @@ export default function OrdersHistory() {
             {t("PROCESSING")}
           </span>
           <span
-            className={`border-b hover:text-red-600 hover:border-red-600 py-4 cursor-pointer
+            className={`border-b hover:text-blue-600 hover:border-blue-600 py-4 cursor-pointer
             ${
               state === "SHIPPED"
-                ? "text-red-600 hover border-red-600"
+                ? "text-blue-600 hover border-blue-600"
                 : "text-gray-500"
             }  
             `}
@@ -137,10 +138,10 @@ export default function OrdersHistory() {
             {t("SHIPPED")}
           </span>
           <span
-            className={` border-b hover:text-red-600 hover:border-red-600 py-4 cursor-pointer 
+            className={` border-b hover:text-blue-600 hover:border-blue-600 py-4 cursor-pointer 
               ${
                 state === "DELIVERED"
-                  ? "text-red-600 border-red-600"
+                  ? "text-blue-600 border-blue-600"
                   : "text-gray-500"
               }
               `}
@@ -215,7 +216,7 @@ export default function OrdersHistory() {
                   <div className="flex items-center gap-1 mx-5">
                     <span className=" text-gray-600">{t("Total")}: </span>
                     <span className="text-xl font-semibold">
-                      {order.total} {t("currency")}
+                      {order.netTotal.toLocaleString("en-US")} {t("currency")}
                     </span>
                   </div>
                 </div>
@@ -269,7 +270,7 @@ export default function OrdersHistory() {
                       navigate.push(`/user/orderdetails/${order.orderId}`);
                     }}
                   >
-                    <button className="p-2 bg-red-600 text-white rounded-md hover:bg-red-700 lg:w-full">
+                    <button className="p-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 lg:w-full">
                       تفاصيل الطلب
                     </button>
                   </div>
@@ -277,6 +278,15 @@ export default function OrdersHistory() {
               </div>
             );
           })}
+          <button
+            className=" text-blue-600 px-5 py-1   my-3 rounded-lg"
+            onClick={() => {
+              pageNum.current += 1;
+              getOrders();
+            }}
+          >
+            <MdOutlineDownloading className="text-4xl" />
+          </button>
         </div>
       )}
     </div>

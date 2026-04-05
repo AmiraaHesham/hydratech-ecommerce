@@ -10,6 +10,7 @@ export default function Home() {
   const role = typeof window !== "undefined" ? localStorage.getItem("role") : null;
   useEffect(() => {
     // غيّر '/ar' إلى الرابط اللي عايزه
+    console.log(role);
     if (
       role === "user" || role === ""
 

@@ -10,15 +10,14 @@ import { useLanguage } from "../../../../context/LanguageContext";
 
 export default function ProductPreview({ sliderImages }) {
   const { t } = useLanguage();
-   const lang = typeof window !== 'undefined' 
-    ? localStorage.getItem('lang') || 'ar' 
-    : 'ar';
+  const lang =
+    typeof window !== "undefined" ? localStorage.getItem("lang") || "ar" : "ar";
   return (
     <div className="border lg:w-[800px] md:w-[550px]  xs:w-[370px] flex justify-center items-center rounded-xl ">
       <div className="bg-white h-[350px] rounded-xl  w-full p-3">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <span className="text-red-600">
+            <span className="text-blue-600">
               <LuEye />
             </span>
             <h1 className="font-semibold md:text-sm xs:text-xs text-gray-600">
@@ -33,12 +32,12 @@ export default function ProductPreview({ sliderImages }) {
 
         <div className="flex justify-start items-center py-3 ">
           <Swiper
-          key={lang}
+            key={lang}
             pagination={{
               clickable: true,
             }}
-    //  rtl={lang === 'ar'}
-      dir={lang === 'ar' ? 'rtl' : 'ltr'}
+            //  rtl={lang === 'ar'}
+            dir={lang === "ar" ? "rtl" : "ltr"}
             spaceBetween={20}
             modules={[Pagination]}
             className=" flex justify-center items-center "

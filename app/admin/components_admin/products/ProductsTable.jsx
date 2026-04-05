@@ -151,14 +151,14 @@ export default function ProductsTable() {
             }}
           />
           <button
-            className="text-lg bg-red-300 hover:bg-red-500 p-1 text-white  rounded-md"
+            className="text-lg bg-blue-300 hover:bg-blue-500 p-1 text-white  rounded-md"
             onClick={getAllProducts}
           >
             <IoMdSearch />
           </button>
         </div>
         <button
-          className="p-2 text-white xs:text-xs md:text-sm rounded-md bg-red-500 text-center flex items-center justify-center gap-2"
+          className="p-2 text-white xs:text-xs md:text-sm rounded-md bg-blue-500 text-center flex items-center justify-center gap-2"
           onClick={() => {
             let form = document.querySelector("#add-product-form");
             form.classList.remove("hidden");
@@ -344,7 +344,7 @@ export default function ProductsTable() {
             <tr className="h-5 text-center">
               <td colSpan="6">
                 <button
-                  className=" text-red-600 px-5 py-1   my-3 rounded-lg"
+                  className=" text-blue-600 px-5 py-1   my-3 rounded-lg"
                   onClick={() => {
                     pageNum.current += 1;
                     getAllProducts();

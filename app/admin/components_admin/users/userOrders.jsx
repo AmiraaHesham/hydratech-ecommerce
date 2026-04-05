@@ -28,6 +28,7 @@ export default function OrderOrders() {
           size: 10,
           searchText: inputSearch,
           orderState: state,
+          userId: 0,
         },
         ""
       );
@@ -146,7 +147,7 @@ export default function OrderOrders() {
                         )
                       }
                     >
-                      <td className="font-semibold text-red-500 px-5">
+                      <td className="font-semibold text-blue-500 px-5">
                         {order.code}
                       </td>
                       <td className="text-sm">{dateOnly}</td>
@@ -167,7 +168,7 @@ export default function OrderOrders() {
                       </td>
 
                       <td className="text-sm ">
-                        <span className="py-2 px-5 font-semibold rounded-full   bg-red-100 text-red-600">
+                        <span className="py-2 px-5 font-semibold rounded-full   bg-blue-100 text-blue-600">
                           {order.orderItemLines.length}
                         </span>
                       </td>
@@ -178,7 +179,7 @@ export default function OrderOrders() {
                         className={`text-xs font-semibold ${
                           order.state === "PROCESSING"
                             ? "text-blue-500"
-                            : "text-red-500"
+                            : "text-blue-500"
                         }`}
                       >
                         {t(order.state)}
@@ -192,7 +193,7 @@ export default function OrderOrders() {
               <tr className="h-5 text-center">
                 <td colSpan="6">
                   <button
-                    className=" text-red-600 w-[100px] py-1 text-center  my-3 rounded-lg"
+                    className=" text-blue-600 w-[100px] py-1 text-center  my-3 rounded-lg"
                     onClick={() => {
                       pageNum.current += 1;
                       getAllOrders();

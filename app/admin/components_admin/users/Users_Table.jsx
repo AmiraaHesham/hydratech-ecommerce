@@ -81,7 +81,7 @@ export default function UsersPage() {
             className="bg-none outline-none placeholder:text-xs  h-8   bg-gray-100 p-2 rounded-lg"
           />
           <button
-            className="text-lg bg-red-300 hover:bg-red-500 p-1 text-white  rounded-md"
+            className="text-lg bg-blue-300 hover:bg-blue-500 p-1 text-white  rounded-md"
             onClick={getAllUsers}
           >
             <IoMdSearch />
@@ -137,7 +137,7 @@ export default function UsersPage() {
                       <button
                         className={`flex items-center justify-center text-base ${
                           user.blocked === true
-                            ? "text-red-600"
+                            ? "text-blue-600"
                             : "text-gray-600"
                         }`}
                         onClick={() => {
@@ -196,7 +196,7 @@ export default function UsersPage() {
                       navigate.push(`/admin/UsersPage/UserInfo/${user.userId}`);
                     }}
                   >
-                    <div className="bg-red-100 w-[80px] text-center rounded-full text-red-700  px-2 font-semibold text-xs">
+                    <div className="bg-blue-100 w-[80px] text-center rounded-full text-blue-700  px-2 font-semibold text-xs">
                       <h1>{user.ordersCount}</h1>
                       <h2>{t("orders")}</h2>
                     </div>
@@ -207,7 +207,7 @@ export default function UsersPage() {
             <tr className="h-5 text-center">
               <td colSpan="6">
                 <button
-                  className=" text-red-600 px-5 py-1   my-3 rounded-lg"
+                  className=" text-blue-600 px-5 py-1   my-3 rounded-lg"
                   onClick={() => {
                     pageNum.current += 1;
                     getAllUsers();

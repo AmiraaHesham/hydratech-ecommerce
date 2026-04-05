@@ -11,11 +11,14 @@ import { FaBox, FaCheck, FaShoppingBag, FaTruck } from "react-icons/fa";
 export default function OrderDetails({ orderId }) {
   const [order, setOrder] = useState([]);
   const [totalOrder, setTotalOrder] = useState();
+  const [netTotalOrder, setNetTotalOrder] = useState();
   const [totalDiscount, setTotalDiscount] = useState();
   const [itemsNum, setItemsNum] = useState();
   const [createdDate, setCreatedDate] = useState();
   const [state, setState] = useState();
   const { setSelectedProductId } = useIdContext();
+  const [totalShippingCost, setTotalShippingCost] = useState(0);
+
   const navigate = useRouter();
   const { t } = useLanguage();
 
@@ -30,15 +33,17 @@ export default function OrderDetails({ orderId }) {
   const [orderStepPath, setOrderStepPath] = useState();
   const [activeStep, setActiveStep] = useState();
 
-  const shappingCost = 50;
   const getOrder = async () => {
     const res = await getRequest(`/api/orders/${orderId}`);
     setOrder(res.orderItemLines);
     setTotalOrder(res.total);
+    setNetTotalOrder(res.netTotal);
     setItemsNum(res.orderItemLines.length);
     setState(res.state);
     setCreatedDate(res.createdDate);
+    setTotalShippingCost(res.totalShippingCost);
     setTotalDiscount(res.totalDiscount);
+    console.log(res);
   };
 
   useEffect(() => {
@@ -72,7 +77,7 @@ export default function OrderDetails({ orderId }) {
           style={{
             background: `linear-gradient(${
               lang === "en" ? "to right" : "to left"
-            }, red ${activeStep * orderStepPath}%, #e0e0e0 ${
+            }, blue ${activeStep * orderStepPath}%, #e0e0e0 ${
               activeStep * orderStepPath
             }%)`,
           }}
@@ -91,14 +96,14 @@ export default function OrderDetails({ orderId }) {
               <div
                 className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
                   index + 1 <= activeStep
-                    ? "bg-red-100 border-2 border-red-300"
+                    ? "bg-blue-100 border-2 border-blue-300"
                     : "bg-gray-100 border-2 border-gray-300"
                 }`}
               >
                 {/* الأيقونة (ملونة حسب المرحلة النشطة) */}
                 <div
                   className={
-                    index + 1 <= activeStep ? "text-red-600" : "text-gray-400"
+                    index + 1 <= activeStep ? "text-blue-600" : "text-gray-400"
                   }
                 >
                   {step.icon}
@@ -108,7 +113,7 @@ export default function OrderDetails({ orderId }) {
               <span
                 className={`text-xs mt-1 font-medium transition-opacity ${
                   index + 1 <= activeStep
-                    ? "text-red-600 opacity-100"
+                    ? "text-blue-600 opacity-100"
                     : "text-gray-500 opacity-70"
                 }`}
               >
@@ -124,9 +129,9 @@ export default function OrderDetails({ orderId }) {
             <thead className="bg-[#F9FAFB] text-xs text-gray-500  text-justify">
               <tr className=" text-gray-500 h-12">
                 <th className="w-[30%] px-5">{t("product")} </th>
-                <th className="w-[25%]">{t("price")} </th>
+                <th className="w-[15%]">{t("price")} </th>
                 <th className="w-[15%] ">{t("discount")} </th>
-                <th className="w-[20%] px-7 ">{t("quantity")} </th>
+                <th className="w-[15%] px-7 ">{t("quantity")} </th>
                 <th className="w-[15%] ">{t("total")} </th>
               </tr>
             </thead>
@@ -166,7 +171,7 @@ export default function OrderDetails({ orderId }) {
                         </div>
                       </div>
                     </td>
-                    <td className="font-semibold text-red-500">
+                    <td className="font-semibold text-blue-500">
                       <div>
                         <span>
                           {product.unitPrice} {t("currency")}
@@ -224,7 +229,7 @@ export default function OrderDetails({ orderId }) {
 
             <div className="flex justify-between orderss-center mb-5">
               <span className="text-gray-600">
-                {t("totalProducts") + " " + itemsNum}
+                {t("totalProducts") + " " + [itemsNum]}
               </span>
 
               <span className="font-semibold">
@@ -233,25 +238,23 @@ export default function OrderDetails({ orderId }) {
             </div>
             <div className="flex justify-between items-center mb-5">
               <span className="text-gray-600">{t("totalDiscount")} </span>
-              <span className="font-semibold">
-                {totalDiscount + " " + t("currency")}{" "}
+              <span className="font-semibold text-green-700">
+                {totalDiscount + "-" + " " + t("currency")}{" "}
               </span>
             </div>
 
             <div className="flex justify-between items-center">
               <span className="text-gray-600">{t("shippingCost")} </span>
               <span className="font-semibold">
-                {shappingCost + " " + t("currency")}
+                {totalShippingCost + " " + t("currency")}
               </span>
             </div>
 
             <hr className="my-6" />
             <div className="flex justify-between orderss-center text-2xl font-semibold">
               <span>{t("grandTotal")} </span>
-              <span className="text-red-500">
-                {totalOrder === 0
-                  ? 0
-                  : totalOrder + shappingCost + " " + t("currency")}
+              <span className="text-blue-500">
+                {netTotalOrder === 0 ? 0 : netTotalOrder + " " + t("currency")}
               </span>
             </div>
           </div>

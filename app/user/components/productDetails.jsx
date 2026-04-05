@@ -89,7 +89,7 @@ export default function ProductDetails({ itemId }) {
         title: "text-xl font-bold text-gray-800 mb-2",
         content: "text-sm text-gray-600 mb-4",
         confirmButton:
-          "bg-red-600 hover:bg-red-500 text-white font-medium px-6 py-2 rounded-lg",
+          "bg-blue-600 hover:bg-blue-500 text-white font-medium px-6 py-2 rounded-lg",
         cancelButton:
           "bg-gray-500 hover:bg-gray-400 text-w  font-medium px-6 py-2 rounded-lg ml-2",
       },
@@ -100,14 +100,10 @@ export default function ProductDetails({ itemId }) {
   };
 
   useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      once: false,
-    });
     productDetails();
   }, []);
   return (
-    <div data-aos="fade-up" className=" ">
+    <div className=" ">
       {loading ? (
         // Skeleton rows
         [...Array(1)].map((_, index) => (
@@ -141,7 +137,7 @@ export default function ProductDetails({ itemId }) {
                 className="w-full border rounded-md shadow-md"
               />
             </div>
-            <div className="flex  items-center gap-4 mt-5 ">
+            {/* <div className="flex  items-center gap-4 mt-5 ">
               <Image
                 src={product.mainImage}
                 alt="mainImage"
@@ -166,7 +162,7 @@ export default function ProductDetails({ itemId }) {
                 priority
                 className="w-[100px] border rounded-md h-[100px] shadow-md"
               />
-            </div>
+            </div> */}
           </div>
 
           <div className="flex py-5 flex-col w-full h-[500px] justify-between bg-white  px-5 border rounded-md shadow-md">
@@ -184,7 +180,7 @@ export default function ProductDetails({ itemId }) {
                   </h1>
                 </span>
                 <span
-                  className="text-red-600 cursor-pointer hover:shadow-sm hover:shadow-red-700 px-4 rounded-md  "
+                  className="text-blue-600 cursor-pointer hover:shadow-sm hover:shadow-blue-700 px-4 rounded-md  "
                   onClick={() => {
                     setSelectedCategoryId(product.category.id);
                     navigate.push("/user/search");
@@ -214,7 +210,7 @@ export default function ProductDetails({ itemId }) {
                   : ""}
               </span>
               <div className="flex items-center gap-2">
-                <span className="text-3xl text-red-600 font-semibold  ">
+                <span className="text-3xl text-blue-600 font-semibold  ">
                   {product.price.toLocaleString("en-US") + " " + t("currency")}
                 </span>
                 {product.oldPrice ? (
@@ -232,7 +228,7 @@ export default function ProductDetails({ itemId }) {
             </div>
             <div className="flex  items-center gap-4 h-10 ">
               <button
-                className=" w-[70%] h-full rounded-md text-white text-lg flex  justify-center items-center gap-3 bg-red-600 hover:bg-red-700 hover:scale-105 duration-200 "
+                className=" w-[70%] h-full rounded-md text-white text-lg flex  justify-center items-center gap-3 bg-blue-600 hover:bg-blue-700 hover:scale-105 duration-200 "
                 onClick={addToCart}
               >
                 {t("addToCart")}

@@ -2,13 +2,14 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 
-export const postRequest = async (endpoint, dataBody, message) => {
+export const postRequest = async (endpoint, dataBody, message, setLoading) => {
   const token =
     typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
   const lang =
     typeof window !== "undefined" ? localStorage.getItem("lang") : null;
   try {
     if (message === "") {
+      if (setLoading) setLoading(true);
       const response = await axios.post(
         process.env.NEXT_PUBLIC_API_BASE_URL + endpoint,
         dataBody,
@@ -24,6 +25,7 @@ export const postRequest = async (endpoint, dataBody, message) => {
 
       return await response.data;
     } else {
+      if (setLoading) setLoading(true);
       const result = await Swal.fire({
         icon: "question",
         title: message,
@@ -35,7 +37,7 @@ export const postRequest = async (endpoint, dataBody, message) => {
           title: "text-xl font-bold text-gray-800 mb-2",
           content: "text-sm text-gray-600 mb-4",
           confirmButton:
-            "bg-red-600 hover:bg-red-500 text-white font-medium px-6 py-2 rounded-lg",
+            "bg-blue-600 hover:bg-blue-500 text-white font-medium px-6 py-2 rounded-lg",
           cancelButton:
             "bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium px-6 py-2 rounded-lg ml-2",
         },
@@ -65,14 +67,18 @@ export const postRequest = async (endpoint, dataBody, message) => {
     );
     throw error;
   }
+  finally {
+    if (setLoading) setLoading(false);
+  }
 };
 
-export const getRequest = async (endpoint) => {
+export const getRequest = async (endpoint, setLoading) => {
   const token =
     typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
   const lang =
     typeof window !== "undefined" ? localStorage.getItem("lang") : null;
   try {
+    if (setLoading) setLoading(true);
     const response = await axios.get(
       process.env.NEXT_PUBLIC_API_BASE_URL + endpoint,
 
@@ -90,15 +96,19 @@ export const getRequest = async (endpoint) => {
 
     throw error;
   }
+  finally {
+    if (setLoading) setLoading(false);
+  }
 };
 
-export const putRequest = async (endpoint, dataBody, message) => {
+export const putRequest = async (endpoint, dataBody, message, setLoading) => {
   const token =
     typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
   const lang =
     typeof window !== "undefined" ? localStorage.getItem("lang") : null;
 
   try {
+    if (setLoading) setLoading(true);
     const result = await Swal.fire({
       icon: "info",
       title: message,
@@ -110,7 +120,7 @@ export const putRequest = async (endpoint, dataBody, message) => {
         title: "text-xl font-bold text-gray-800 mb-2",
         content: "text-sm text-gray-600 mb-4",
         confirmButton:
-          "bg-red-600 hover:bg-red-500 text-white font-medium px-6 py-2 rounded-lg",
+          "bg-blue-600 hover:bg-blue-500 text-white font-medium px-6 py-2 rounded-lg",
         cancelButton:
           "bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium px-6 py-2 rounded-lg ml-2",
       },
@@ -141,15 +151,19 @@ export const putRequest = async (endpoint, dataBody, message) => {
     );
     throw error;
   }
+  finally {
+    if (setLoading) setLoading(false);
+  }
 };
 
-export const deleteRequest = async (endpoint, message) => {
+export const deleteRequest = async (endpoint, message, setLoading) => {
   const token =
     typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
   const lang =
     typeof window !== "undefined" ? localStorage.getItem("lang") : null;
 
   try {
+    if (setLoading) setLoading(true);
     // 🟡 نستخدم Swal.fire مع icon: 'warning' (مش error)
     const result = await Swal.fire({
       icon: "warning",
@@ -162,7 +176,7 @@ export const deleteRequest = async (endpoint, message) => {
         title: "text-xl font-bold text-gray-800 mb-2",
         content: "text-sm text-gray-600 mb-4",
         confirmButton:
-          "bg-red-600 hover:bg-red-500 text-white font-medium px-6 py-2 rounded-lg",
+          "bg-blue-600 hover:bg-blue-500 text-white font-medium px-6 py-2 rounded-lg",
         cancelButton:
           "bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium px-6 py-2 rounded-lg ml-2",
       },
@@ -191,5 +205,8 @@ export const deleteRequest = async (endpoint, message) => {
       ();
 
     throw error;
+  }
+  finally {
+    if (setLoading) setLoading(false);
   }
 };

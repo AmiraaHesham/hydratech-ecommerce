@@ -83,7 +83,7 @@ export default function AdminsTable() {
             className="bg-none outline-none placeholder:text-xs  h-8   bg-gray-100 p-3 rounded-lg"
           />
           <button
-            className="text-lg bg-red-300 hover:bg-red-500 p-1 text-white  rounded-md"
+            className="text-lg bg-blue-300 hover:bg-blue-500 p-1 text-white  rounded-md"
             onClick={getAllUsers}
           >
             <IoMdSearch />
@@ -91,7 +91,7 @@ export default function AdminsTable() {
         </div>
         <div className="">
           <button
-            className="p-2 text-white xs:text-xs md:text-sm rounded-md bg-red-500 text-center flex items-center justify-center gap-2"
+            className="p-2 text-white xs:text-xs md:text-sm rounded-md bg-blue-500 text-center flex items-center justify-center gap-2"
             onClick={() => {
               let form = document.querySelector("#add-admin-form");
               form.classList.remove("hidden");
@@ -172,7 +172,7 @@ export default function AdminsTable() {
                           <button
                             className={`flex items-center justify-center text-base ${
                               user.blocked === true
-                                ? "text-red-600"
+                                ? "text-blue-600"
                                 : "text-gray-600"
                             }`}
                             onClick={() => {
@@ -233,7 +233,7 @@ export default function AdminsTable() {
             <tr className="h-5 text-center">
               <td colSpan="6">
                 <button
-                  className=" text-red-600 px-5 py-1   my-3 rounded-lg"
+                  className=" text-blue-600 px-5 py-1   my-3 rounded-lg"
                   onClick={() => {
                     pageNum.current += 1;
                     getAllUsers();

@@ -22,10 +22,11 @@ export default function Cart() {
   const { t } = useLanguage();
   const [items, setItems] = useState([]);
   const [totalOrder, setTotalOrder] = useState(0);
+  const [netTotalOrder, setNetTotalOrder] = useState(0);
   const [totalDiscount, setTotalDiscount] = useState(0);
+  const [totalShippingCost, setTotalShippingCost] = useState(0);
   const [itemNum, setItemNum] = useState(0);
   const userId = typeof window !== "undefined" ? localStorage.id : null;
-  const shappingCost = 50;
   const [isFirstAction, setIsFirstAction] = useState(true);
   const [loading, setLoading] = useState(true);
   const navigate = useRouter();
@@ -34,9 +35,13 @@ export default function Cart() {
     try {
       const res = await getRequest(`/api/shopCarts/${userId}`);
       setItems(res.itemLines);
+      console.log(res);
+      console.log(res.itemLines);
       setTotalOrder(res.total);
       setItemNum(res.itemLines.length);
       setTotalDiscount(res.totalDiscount);
+      setNetTotalOrder(res.netTotal);
+      setTotalShippingCost(res.totalShippingCost);
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -83,14 +88,10 @@ export default function Cart() {
   };
 
   useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      once: false,
-    });
     getProductInCart();
   }, []);
   return (
-    <div data-aos="fade-up" className="xl:p-10 xs:p-7  ">
+    <div className="xl:p-10 xs:p-7  ">
       <div className="flex justify-between py-5">
         <div className="">
           <h1 className="text-4xl font-bold mb-2"> {t("shoppingCart")} </h1>
@@ -100,7 +101,7 @@ export default function Cart() {
         </div>
         <Link
           href="/user/home"
-          className="md:text-sm xs:text-xs font-semibold text-red-600 flex items-center gap-2"
+          className="md:text-sm xs:text-xs font-semibold text-blue-600 flex items-center gap-2"
         >
           <h1>{t("continueShopping")} </h1>
           <span className="mt-2">
@@ -113,12 +114,13 @@ export default function Cart() {
           <table className="  xs:w-[200%] lg:w-full   ">
             <thead className="bg-[#F9FAFB] text-xs text-gray-500  text-justify">
               <tr className=" text-gray-500 h-12">
-                <th className="w-[30%] px-5">{t("product")} </th>
-                <th className="w-[25%]">{t("price")} </th>
-                <th className="w-[15%] ">{t("discount")} </th>
-                <th className="w-[20%] px-7 ">{t("quantity")} </th>
-                <th className="w-[15%] ">{t("total")} </th>
-                <th className="w-[10%] px-3">{t("delete")} </th>
+                <th className="w-[35%] px-5">{t("product")} </th>
+                <th className="w-[20%]">{t("price")} </th>
+                <th className="w-[10%] ">{t("discount")} </th>
+                <th className="w-[15%] px-7 ">{t("quantity")} </th>
+                <th className="w-[10%] ">{t("total")} </th>
+                {/* <th className="w-[20%] ">{t("shippingCost")} </th> */}
+                <th className="w-[15%] px-3">{t("delete")} </th>
               </tr>
             </thead>
             <tbody className="bg-white text-md w-full  ">
@@ -153,30 +155,35 @@ export default function Cart() {
               ) : items.length != 0 ? (
                 items.map((product, index) => {
                   return (
-                    <tr key={index} className=" text-blue-950 border w-full">
+                    <tr key={index} className=" text-blue-950 border w-full   ">
                       <td className="px-5">
-                        <div className="flex items-center gap-3">
-                          <Image
-                            alt=""
-                            src={`${process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL}${product.item.mainImageURL}`}
-                            width={45}
-                            height={45}
-                            className="rounded-full border my-1 p-1"
-                          />
-
-                          <div>
-                            <h1 className="font-semibold text-sm">
-                              {localStorage.lang === "ar"
-                                ? product.item.nameAr
-                                : product.item.nameEn}
-                            </h1>
-                            <h1 className="text-xs  text-gray-500">
-                              {product.item.code}
-                            </h1>
+                        <Link
+                          href={`/user/pages/productdetails/${product.item.itemId}`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className="h-14 w-14 my-2">
+                              <Image
+                                alt=""
+                                src={`${process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL}${product.item.mainImageURL}`}
+                                width={50}
+                                height={50}
+                                className="rounded-full h-full w-full border my-1 p-1"
+                              />
+                            </div>
+                            <div>
+                              <h1 className="font-semibold text-sm">
+                                {localStorage.lang === "ar"
+                                  ? product.item.nameAr
+                                  : product.item.nameEn}
+                              </h1>
+                              <h1 className="text-xs  text-gray-500">
+                                {product.item.code}
+                              </h1>
+                            </div>
                           </div>
-                        </div>
+                        </Link>
                       </td>
-                      <td className="font-semibold text-red-500">
+                      <td className="font-semibold text-blue-500">
                         <div>
                           <span>
                             {" "}
@@ -250,6 +257,7 @@ export default function Cart() {
                         {product.totalPrice.toLocaleString("en-US")}{" "}
                         {t("currency")}
                       </td>
+                      {/* <td>{product.totalShippingCost}</td> */}
                       <td className=" font-semibold text-lg text-gray-600 px-5 cursor-pointer">
                         <button
                           className=""
@@ -306,17 +314,17 @@ export default function Cart() {
                 className={`flex justify-center items-center w-full  py-2 rounded-md mt-10 text-white text-lg  ${
                   items.length === 0
                     ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-red-600 hover:bg-red-700"
+                    : "bg-blue-600 hover:bg-blue-700"
                 }`}
               >
                 {t("proceedToCheckout")}
               </button>
-              <div className="flex gap-4 p-2 w-full bg-red-50 mt-5 rounded-md">
-                <span className="text-2xl text-red-600 mt-1">
+              <div className="flex gap-4 p-2 w-full bg-blue-50 mt-5 rounded-md">
+                <span className="text-2xl text-blue-600 mt-1">
                   <AiFillSafetyCertificate />
                 </span>
                 <div>
-                  <h1 className="text-red-600  font-semibold">
+                  <h1 className="text-blue-600  font-semibold">
                     {t("secureShopping")}
                   </h1>
                   <h2 className="text-gray-600 text-xs">
@@ -339,24 +347,27 @@ export default function Cart() {
               </div>
               <div className="flex justify-between items-center mb-5">
                 <span className="text-gray-600">{t("totalDiscount")} </span>
-                <span className="font-semibold">
-                  {totalDiscount.toLocaleString("en-US") + " " + t("currency")}{" "}
+                <span className="font-semibold text-green-700">
+                  {totalDiscount.toLocaleString("en-US") +
+                    "-" +
+                    " " +
+                    t("currency")}{" "}
                 </span>
               </div>
 
               <div className="flex justify-between items-center">
-                <span className="text-gray-600">{t("shippingCost")} </span>
+                <span className="text-gray-600">{t("totalShippingCost")} </span>
                 <span className="font-semibold">
-                  {shappingCost + " " + t("currency")}
+                  {totalShippingCost + " " + t("currency")}
                 </span>
               </div>
               <hr className="my-6" />
               <div className="flex justify-between items-center text-2xl font-semibold">
                 <span>{t("grandTotal")} </span>
-                <span className="text-red-500">
+                <span className="text-blue-500">
                   {totalOrder === 0
                     ? 0
-                    : (totalOrder + shappingCost).toLocaleString("en-US") +
+                    : netTotalOrder.toLocaleString("en-US") +
                       " " +
                       t("currency")}
                 </span>
@@ -365,7 +376,7 @@ export default function Cart() {
                 className={`flex justify-center items-center w-full  py-2 rounded-md mt-10 text-white text-lg  ${
                   items.length === 0
                     ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-red-600 hover:bg-red-700"
+                    : "bg-blue-600 hover:bg-blue-700"
                 }`}
                 onClick={placeOrder}
               >
@@ -377,12 +388,12 @@ export default function Cart() {
                   t("confirmOrder")
                 )}
               </button>
-              <div className="flex gap-4 p-2 w-full bg-red-50 mt-5 rounded-md">
-                <span className="text-2xl text-red-600 mt-1">
+              <div className="flex gap-4 p-2 w-full bg-blue-50 mt-5 rounded-md">
+                <span className="text-2xl text-blue-600 mt-1">
                   <AiFillSafetyCertificate />
                 </span>
                 <div>
-                  <h1 className="text-red-600  font-semibold">
+                  <h1 className="text-blue-600  font-semibold">
                     {t("secureShopping")}
                   </h1>
                   <h2 className="text-gray-600 text-xs">

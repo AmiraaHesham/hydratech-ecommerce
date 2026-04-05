@@ -2,16 +2,14 @@
 import { MdEmail, MdLanguage } from "react-icons/md";
 import { FaEyeSlash, FaLocationDot, FaUserLarge } from "react-icons/fa6";
 import { useState, useRef, useEffect } from "react";
-// import { loginUser } from '../../utils/auth';
-
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import { useLanguage } from "../../context/LanguageContext";
-import { IoLocationOutline } from "react-icons/io5";
 import { FaEye, FaPhone } from "react-icons/fa";
 import Link from "next/link";
-import { postRequest } from "../../utils/requestsUtils";
+import Select from "react-select";
+import { getRequest } from "../../utils/requestsUtils";
+import Image from "next/image";
 
 export default function SignUp() {
   const navigate = useRouter();
@@ -36,6 +34,19 @@ export default function SignUp() {
     setError(null);
 
     try {
+      console.log(
+        value.value,
+        username,
+        password,
+        email,
+        firstName,
+        lastName,
+        confirmPassword,
+        address,
+        phoneNumber,
+        locale
+      );
+
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/signup`,
         {
@@ -48,11 +59,12 @@ export default function SignUp() {
           address: address,
           phone: phoneNumber,
           language: locale,
+          governorateId: value ? value.value : null,
         },
         ""
       );
-      localStorage.setItem("accessToken", response.data.accessToken);
-      console.log("accessToken", response.data.accessToken);
+
+      // localStorage.setItem("accessToken", response.data.accessToken);
       console.log(response);
       navigate.push("/signin");
     } catch (err) {
@@ -61,10 +73,34 @@ export default function SignUp() {
       setLoading(false);
     }
   };
+  const [governorates, setGovernorates] = useState([]);
+  const [value, setValue] = useState(null);
 
+  const getGovernorate = async () => {
+    const res = await getRequest("/api/public/governorates");
+    const formatted = res.map((item) => ({
+      value: item.governorateId,
+      label: localStorage.lang === "ar" ? item.nameAr : item.nameEn,
+    }));
+    setGovernorates(formatted);
+  };
+  useEffect(() => {
+    getGovernorate();
+  }, []);
   return (
     // <div className=w-full h-full flex justify-center items-center">
     <div className=" h-full w-full p-10  md:order-1 xs:order-2">
+      {loading && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <Image
+            src="/Images/logo.png"
+            alt=""
+            className="w-[100px] h-[100px]  border-t-transparent rounded-full animate-pulse"
+            width={100}
+            height={100}
+          />
+        </div>
+      )}
       <div className="flex justify-between">
         <div className="">
           <h3 className="text-3xl my-3 font-semibold">
@@ -75,22 +111,23 @@ export default function SignUp() {
           </h4>
         </div>
         <div className="flex items-center gap-1 mx-5  ">
-          <span className="text-red-600 text-2xl ">
+          <span className="text-blue-600 text-2xl ">
             <MdLanguage />
           </span>
 
           <select
-            className=" rounded-md text-white outline-none bg-red-700  py-1  px-2"
+            className=" rounded-md text-white outline-none bg-blue-700  py-1  px-2"
             value={locale} // افترض أن عندك متغير اسمه lang (مثل 'AR' أو 'EN')
             onChange={(e) => {
               const newLang = e.target.value;
               setLocale(newLang);
+              localStorage.setItem("lang", newLang);
             }}
           >
-            <option value="ar" className="bg-white text-red-500">
+            <option value="ar" className="bg-white text-blue-500">
               العربية
             </option>
-            <option value="en" className="bg-white text-red-500">
+            <option value="en" className="bg-white text-blue-500">
               English
             </option>
           </select>
@@ -106,10 +143,9 @@ export default function SignUp() {
             <div className=" flex items-center  gap-5">
               <div className="flex flex-col gap-2  w-full">
                 <label className="text-gray-500 text-sm ">
-                  {" "}
-                  {t("firstName")}{" "}
+                  {t("firstName")}
                 </label>
-                <div className=" flex w-full px-2 rounded-md  border h-10 items-center gap-3">
+                <div className=" flex w-full px-2 rounded-md  border h-10 items-center gap-3 shadow-md">
                   <input
                     className=" w-full px-3 outline-none"
                     value={firstName}
@@ -126,7 +162,7 @@ export default function SignUp() {
                   {" "}
                   {t("lastName")}{" "}
                 </label>
-                <div className=" flex w-full px-2 rounded-md  border h-10 items-center gap-3">
+                <div className=" flex w-full px-2 rounded-md  border h-10 items-center gap-3 shadow-md">
                   <input
                     className=" w-full px-3 outline-none"
                     value={lastName}
@@ -141,7 +177,7 @@ export default function SignUp() {
             </div>
             <div className="flex flex-col gap-2">
               <label className="text-gray-500 text-sm">{t("email")}</label>
-              <div className=" flex w-full px-2 rounded-md  border h-10 items-center gap-3">
+              <div className=" flex w-full px-2 rounded-md  border h-10 items-center gap-3 shadow-md">
                 <input
                   className=" w-full px-3 outline-none"
                   value={email}
@@ -159,7 +195,7 @@ export default function SignUp() {
                 <label className="text-gray-500 text-sm">
                   {t("username")}{" "}
                 </label>
-                <div className=" flex w-full px-2 rounded-md  border h-10 items-center gap-3">
+                <div className=" flex w-full px-2 rounded-md  border h-10 items-center gap-3 shadow-md">
                   <input
                     className=" w-full px-3 outline-none"
                     value={username}
@@ -173,10 +209,9 @@ export default function SignUp() {
               </div>
               <div className="flex flex-col gap-2 w-full">
                 <label className="text-gray-500 text-sm">
-                  {" "}
                   {t("phoneNumber")}
                 </label>
-                <div className=" flex w-full px-2 rounded-md  border h-10 items-center gap-3">
+                <div className=" flex w-full px-2 rounded-md  border h-10 items-center gap-3 shadow-md">
                   <input
                     className=" w-full px-3 outline-none"
                     value={phoneNumber}
@@ -190,25 +225,54 @@ export default function SignUp() {
                 </div>
               </div>
             </div>
-            <div className="flex flex-col gap-2">
-              <label className="text-gray-500 text-sm"> {t("address")} </label>
-              <div className=" flex w-full px-2 rounded-md  border h-10 items-center gap-3">
-                <input
-                  className=" w-full px-3 outline-none"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                  required
-                  type="text"
+            <div className="flex gap-5">
+              <div className="flex flex-col gap-3 w-full">
+                <label className="text-xs font-semibold text-gray-500">
+                  {t("governorate")}
+                </label>
+                <Select
+                  options={governorates}
+                  value={value}
+                  onChange={setValue}
+                  placeholder={t("selectGovernorate")}
+                  classNames={{
+                    control: () =>
+                      "bg-slate-900 border border-slate-700 rounded-xl  hover:border-indigo-500 h-10  shadow-md ",
+                    menu: () =>
+                      "bg-slate-900 border border-slate-700 rounded-xl mt-2",
+                    option: ({ isFocused, isSelected }) =>
+                      `px-3 py-2 cursor-pointer ${
+                        isSelected
+                          ? "bg-indigo-600 text-white"
+                          : isFocused
+                          ? "bg-indigo-500 text-white"
+                          : "text-gray-300"
+                      }`,
+                    placeholder: () => "text-slate-400",
+                    singleValue: () => "text-white",
+                  }}
                 />
-                <span className="text-base  text-gray-600">
-                  <FaLocationDot />
-                </span>
+              </div>
+              <div className="flex flex-col gap-2 w-full">
+                <label className="text-gray-500 text-sm">{t("address")}</label>
+                <div className=" flex w-full px-2 rounded-md  border h-10 items-center gap-3 shadow-md">
+                  <input
+                    className=" w-full px-3 outline-none"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    required
+                    type="text"
+                  />
+                  <span className="text-base  text-gray-600">
+                    <FaLocationDot />
+                  </span>
+                </div>
               </div>
             </div>
             <div className=" flex items-center gap-5">
               <div className="flex flex-col gap-2 w-full">
                 <label className="text-gray-500 text-sm">{t("password")}</label>
-                <div className=" flex w-full px-2 rounded-md  border h-10 items-center gap-3">
+                <div className=" flex w-full px-2 rounded-md  border h-10 items-center gap-3 shadow-md">
                   <input
                     ref={input_passwordRef}
                     className=" w-full px-3 outline-none"
@@ -252,7 +316,7 @@ export default function SignUp() {
                 <label className="text-gray-500 text-sm">
                   {t("confirmPassword")}
                 </label>
-                <div className=" flex w-full px-2 rounded-md  border h-10 items-center gap-3">
+                <div className=" flex w-full px-2 rounded-md  border h-10 items-center gap-3 shadow-md">
                   <input
                     ref={input_confirmPasswordRef}
                     className=" w-full px-3 outline-none"
@@ -301,7 +365,7 @@ export default function SignUp() {
             <hr className="h-1 my-5"></hr>
             <button
               type="submit"
-              className="bg-red-600 text-white rounded-md h-10 "
+              className="bg-blue-600 text-white rounded-md h-10 "
             >
               {loading ? t("loggingIn") : t("create_account")}
             </button>

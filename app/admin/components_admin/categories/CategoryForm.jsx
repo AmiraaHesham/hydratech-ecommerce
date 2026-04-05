@@ -145,7 +145,7 @@ export default function CategoryForm() {
         <div className="m-4 flex justify-between items-center">
           <h1 id="nameFormCategory" className="text-lg font-semibold"></h1>
           <span
-            className="text-3xl text-red-950  hover:text-red-800"
+            className="text-3xl text-blue-950  hover:text-blue-800"
             onClick={() => {
               let form = document.querySelector("#add-category-form");
               form.classList.add("hidden");
@@ -186,12 +186,12 @@ export default function CategoryForm() {
               </div>
             </div>
             <label htmlFor="fileInput">
-              <div className="flex flex-col items-center h-[150px]  justify-center p-3 border-2 border-dashed border-red-300 rounded-lg hover:bg-gray-50">
+              <div className="flex flex-col items-center h-[150px]  justify-center p-3 border-2 border-dashed border-blue-300 rounded-lg hover:bg-gray-50">
                 <div
                   id="label-uplod"
                   className="flex flex-col justify-center items-center"
                 >
-                  <span className="text-4xl text-red-600">
+                  <span className="text-4xl text-blue-600">
                     <IoCloudUploadSharp />
                   </span>
                   <span className="text-sm text-gray-500">
@@ -222,7 +222,7 @@ export default function CategoryForm() {
               <button
                 type="submit"
                 id="btn-saveCategory"
-                className="bg-red-600 py-2 px-3 text-white mt-7  hover:bg-red-800 rounded-lg  "
+                className="bg-blue-600 py-2 px-3 text-white mt-7  hover:bg-blue-800 rounded-lg  "
                 onClick={() => {
                   addCategory();
                 }}
@@ -232,7 +232,7 @@ export default function CategoryForm() {
               <button
                 type="submit"
                 id="btn-editCategory"
-                className=" hidden bg-red-600 py-2 px-3 text-white mt-7  hover:bg-red-800 rounded-lg"
+                className=" hidden bg-blue-600 py-2 px-3 text-white mt-7  hover:bg-blue-800 rounded-lg"
                 onClick={() => {
                   updateCategory();
                 }}

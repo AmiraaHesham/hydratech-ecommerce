@@ -1,21 +1,14 @@
 "use client";
 import Image from "next/image";
-import { MdCancel } from "react-icons/md";
 import { IoCloudUploadSharp } from "react-icons/io5";
-import axios from "axios";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useLanguage } from "../../../../context/LanguageContext.js";
-import { Switch } from "@headlessui/react";
 import { FaCircle, FaTimes } from "react-icons/fa";
 import {
   getCategories,
   getProductDetails,
 } from "../../../../utils/functions.jsx";
-import {
-  getRequest,
-  postRequest,
-  putRequest,
-} from "../../../../utils/requestsUtils.js";
+import { postRequest, putRequest } from "../../../../utils/requestsUtils.js";
 import { useRefresh } from "../../../../context/refreshContext.jsx";
 import { useIdContext } from "../../../../context/idContext.jsx";
 import { GoStarFill } from "react-icons/go";
@@ -25,7 +18,7 @@ export default function FormProduct() {
   const [enabledActive, setenabledActive] = useState(true);
   const [enabledFavorite, setenabledFavorite] = useState(false);
   const { triggerRefresh } = useRefresh();
-  const { selectedProductId } = useIdContext();
+  const { selectedProductId, setSelectedProductId } = useIdContext();
 
   const [product, setProduct] = useState({
     nameEn: "",
@@ -35,11 +28,15 @@ export default function FormProduct() {
     descriptionEn: "",
     descriptionAr: "",
     category: {
-      id: 0,
+      id: "",
       nameAr: "",
       nameEn: "",
     },
     code: "",
+    length: 0,
+    width: 0,
+    height: 0,
+    weight: 0,
     mainImage: "",
     mainImagefile: "",
     img2: "",
@@ -89,6 +86,7 @@ export default function FormProduct() {
     console.log(product.img3file);
     console.log(product.mainImagefile);
   };
+  const [loading, setLoading] = useState(false);
 
   const addProduct = async () => {
     // let form = document.querySelector("#add-product-form");
@@ -98,38 +96,58 @@ export default function FormProduct() {
     formData.append("nameAr", product.nameAr);
     formData.append("code", product.code);
     formData.append("price", product.price);
-    formData.append("oldPrice", product.oldPrice);
+    if (product.oldPrice) formData.append("oldPrice", product.oldPrice);
     formData.append("descriptionAr", product.descriptionAr);
     formData.append("descriptionEn", product.descriptionEn);
     formData.append("favorite", enabledFavorite);
     formData.append("active", enabledActive);
     formData.append("itemCategoryId", product.category.id);
-    formData.append("mainImage", product.mainImagefile);
-    formData.append("itemImages", product.img2file);
-    formData.append("itemImages", product.img3file);
+    formData.append("weight", product.weight);
+    formData.append("height", product.height);
+    formData.append("width", product.width);
+    formData.append("length", product.length);
+    if (product.mainImagefile)
+      formData.append("mainImage", product.mainImagefile);
+    if (product.img2file) formData.append("itemImages", product.img2file);
+    if (product.img3file) formData.append("itemImages", product.img3file);
     // console.log(formData);
 
-    await postRequest("/api/admin/items", formData, t("message_AddText"));
+    await postRequest(
+      "/api/admin/items",
+      formData,
+      t("message_AddText"),
+      setLoading
+    );
     triggerRefresh();
-    selectedProductId === null;
+    setSelectedProductId(null);
 
-    // setProduct({
-    //   nameEn: "",
-    //   nameAr: "",
-    //   price: 0,
-    //   oldPrice: 0,
-    //   descriptionAr: "",
-    //   descriptionEn: "",
-    //   category: { id: 0, nameAr: "", nameEn: "" },
-    //   code: "",
-    //   mainImage: "",
-    //   img2: "",
-    //   img3: "",
-    // });
-    // setProduct((prev) => ({ ...prev, enabledActive: false }));
-    // setProduct((prev) => ({ ...prev, enabledActive: true }));
+    setProduct({
+      nameEn: "",
+      nameAr: "",
+      price: "",
+      oldPrice: "",
+      descriptionAr: "",
+      descriptionEn: "",
+      height: "",
+      weight: "",
+      width: "",
+      length: "",
+      category: { id: "", nameAr: "", nameEn: "" },
+      code: "",
+      mainImage: "",
+      img2: "",
+      img3: "",
+    });
+    setProduct((prev) => ({ ...prev, enabledActive: false }));
+    setProduct((prev) => ({ ...prev, enabledActive: true }));
+    const labelUpload = document.querySelector(`#label-mainImage`);
+    labelUpload.classList.remove("hidden");
+    const labelImg = document.querySelector(`#mainImage`);
+    labelImg.classList.add("hidden");
+    const deleteImg = document.querySelector(`#delete-mainImage`);
+    deleteImg.classList.add("hidden");
   };
-  const productData = useCallback(async () => {
+  const productData = async () => {
     if (selectedProductId != null) {
       const deleteImg = document.querySelector("#delete-mainImage");
       deleteImg.classList.remove("hidden");
@@ -148,6 +166,10 @@ export default function FormProduct() {
         oldPrice: res.oldPrice,
         descriptionAr: res.descriptionAr,
         descriptionEn: res.descriptionEn,
+        height: res.height,
+        weight: res.weight,
+        width: res.width,
+        length: res.length,
         mainImage:
           process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL + res.mainImageURL || "",
         img2: res.img2 || "",
@@ -162,32 +184,33 @@ export default function FormProduct() {
       setenabledFavorite(res.favorite);
       setenabledActive(res.active);
     } else {
-      setProduct((prev) => ({
-        ...prev,
+      setProduct({
         nameEn: "",
         nameAr: "",
         code: "",
-        price: 0,
-        oldPrice: 0,
+        price: "",
+        oldPrice: "",
         descriptionAr: "",
         descriptionEn: "",
         mainImage: "",
         img2: "",
         img3: "",
-        category: { id: 0, nameAr: "", nameEn: "" },
-      }));
+        height: "",
+        weight: "",
+        width: "",
+        length: "",
+        category: { id: "", nameAr: "", nameEn: "" },
+      });
       const labelUpload = document.querySelector(`#label-mainImage`);
       labelUpload.classList.remove("hidden");
       const labelImg = document.querySelector(`#mainImage`);
       labelImg.classList.add("hidden");
-
       const deleteImg = document.querySelector(`#delete-mainImage`);
       deleteImg.classList.add("hidden");
-
       setenabledFavorite(false);
       setenabledActive(true);
     }
-  }, [selectedProductId]);
+  };
 
   const updataProduct = async () => {
     if (product.oldPrice > product.price || product.oldPrice === "") {
@@ -202,12 +225,20 @@ export default function FormProduct() {
       formData.append("descriptionAr", product.descriptionAr);
       formData.append("descriptionEn", product.descriptionEn);
       formData.append("active", enabledActive);
+      formData.append("weight", product.weight);
+      formData.append("height", product.height);
+      formData.append("width", product.width);
+      formData.append("length", product.length);
       formData.append("favorite", enabledFavorite);
       if (product.mainImagefile) {
         formData.append("mainImage", product.mainImagefile);
       }
-      formData.append("itemImages", product.img2file);
-      formData.append("itemImages", product.img3file);
+      if (product.img2file) {
+        formData.append("itemImages", product.img2file);
+      }
+      if (product.img3file) {
+        formData.append("itemImages", product.img3file);
+      }
       formData.append("itemCategoryId", product.category.id);
       await putRequest(
         `/api/admin/items/${selectedProductId}`,
@@ -215,7 +246,7 @@ export default function FormProduct() {
         t("message_EditText")
       );
       triggerRefresh();
-      selectedProductId === null;
+      setSelectedProductId(null);
 
       const oldPrice = document.querySelector("#oldPrice");
       oldPrice.classList.remove("border-red-600");
@@ -227,8 +258,10 @@ export default function FormProduct() {
   };
   useEffect(() => {
     showeCategories();
+  }, []);
+  useEffect(() => {
     productData();
-  }, [productData]);
+  }, [selectedProductId]);
   const { t } = useLanguage();
 
   return (
@@ -236,8 +269,19 @@ export default function FormProduct() {
       id="add-product-form"
       className=" absolute w-full hidden justify-end items-end h-full"
     >
+      {loading && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <Image
+            src="/Images/logo.png"
+            alt=""
+            className="w-[100px] h-[100px]  border-t-transparent rounded-full animate-pulse"
+            width={100}
+            height={100}
+          />
+        </div>
+      )}
       <form
-        className=" bg-white shadow-md shadow-slate-400 rounded-lg w-[550px] px-7 pb-10 border overflow-hidden xs:overflow-y-scroll md:over h-full"
+        className=" bg-white shadow-md shadow-slate-400 rounded-lg w-[650px] px-7 pb-10 border overflow-hidden xs:overflow-y-scroll md:over h-full"
         onSubmit={(e) => {
           e.preventDefault();
         }}
@@ -249,6 +293,7 @@ export default function FormProduct() {
             onClick={() => {
               let form = document.querySelector("#add-product-form");
               form.classList.add("hidden");
+              setSelectedProductId(null);
             }}
           >
             <FaTimes />
@@ -397,8 +442,8 @@ export default function FormProduct() {
         </div>
 
         <div className="flex flex-col  mt-3">
-          <div className=" w-full flex md:flex-row justify-between xs:flex-col gap-3">
-            <div className="">
+          <div className=" w-full flex md:flex-row  justify-between xs:flex-col gap-3">
+            <div className="w-full">
               <label className="text-xs text-gray-600 mb-10">
                 {t("product_name")}* [En]
               </label>
@@ -413,7 +458,7 @@ export default function FormProduct() {
                 className="w-full bg-[#F9FAFB] outline-none text-blue-900 text-base  my-1  p-1 border rounded-md"
               />
             </div>
-            <div>
+            <div className="w-full">
               <label className="text-xs text-gray-600">
                 {t("product_name")}* [Ar]
               </label>
@@ -428,7 +473,60 @@ export default function FormProduct() {
               />
             </div>
           </div>
-
+          <div className="flex items-center md:flex-row  xs:flex-col  justify-between gap-3">
+            <div className="w-full">
+              <label className="text-xs text-gray-600">
+                {t(" وزن المنتج")}
+              </label>
+              <input
+                type="text"
+                value={product.weight}
+                onChange={(e) =>
+                  setProduct((prev) => ({ ...prev, weight: e.target.value }))
+                }
+                required
+                className="w-full bg-[#F9FAFB] outline-none text-blue-900 text-base  my-1  p-1 border rounded-md"
+              />
+            </div>
+            <div className="w-full">
+              <label className="text-xs text-gray-600">{t("طول المنتج")}</label>
+              <input
+                type="text"
+                value={product.length}
+                onChange={(e) =>
+                  setProduct((prev) => ({ ...prev, length: e.target.value }))
+                }
+                required
+                className="w-full bg-[#F9FAFB] outline-none text-blue-900 text-base  my-1  p-1 border rounded-md"
+              />
+            </div>
+            <div className="w-full">
+              <label className="text-xs text-gray-600">{t("عرض المنتج")}</label>
+              <input
+                type="text"
+                value={product.width}
+                onChange={(e) =>
+                  setProduct((prev) => ({ ...prev, width: e.target.value }))
+                }
+                required
+                className="w-full bg-[#F9FAFB] outline-none text-blue-900 text-base  my-1  p-1 border rounded-md"
+              />
+            </div>
+            <div className="w-full">
+              <label className="text-xs text-gray-600">
+                {t("إرتفاع المنتج")}
+              </label>
+              <input
+                type="text"
+                value={product.height}
+                onChange={(e) =>
+                  setProduct((prev) => ({ ...prev, height: e.target.value }))
+                }
+                required
+                className="w-full bg-[#F9FAFB] outline-none text-blue-900 text-base  my-1  p-1 border rounded-md"
+              />
+            </div>
+          </div>
           <div className="flex items-center md:flex-row  xs:flex-col  justify-between gap-3">
             <div className="w-full">
               <label className="text-xs text-gray-600">
@@ -445,7 +543,42 @@ export default function FormProduct() {
               />
             </div>
             <div className="w-full ">
-              <label className="text-xs text-gray-600">{t("Category")}</label>
+              <label className="text-xs text-gray-600">
+                {t("الفئة الرئيسية")}
+              </label>
+              <select
+                value={product.category?.id || ""}
+                onChange={(e) => {
+                  const selectedCategoryId = e.target.value;
+
+                  setProduct((prev) => ({
+                    ...prev,
+                    category: {
+                      ...prev.category,
+                      id: selectedCategoryId,
+                    },
+                  }));
+                }}
+                required
+                className="w-full bg-[#F9FAFB] outline-none text-blue-900 text-base my-2 p-1 border rounded-md"
+              >
+                <option value="">Select Category</option>
+
+                {itemCategory &&
+                  itemCategory.map((category, index) => (
+                    <option key={index} value={category.itemCategoryId}>
+                      {localStorage.lang === "ar"
+                        ? category.nameAr
+                        : category.nameEn}
+                    </option>
+                  ))}
+              </select>
+            </div>
+
+            {/* <div className="w-full ">
+              <label className="text-xs text-gray-600">
+                {t("الفئة الفرعية")}
+              </label>
               <select
                 type="text"
                 onChange={(e) => {
@@ -479,9 +612,8 @@ export default function FormProduct() {
                     })
                   : ""}
               </select>
-            </div>
+            </div> */}
           </div>
-
           <div className="flex md:flex-row  xs:flex-col items-start  justify-between gap-3">
             <div className="w-full">
               <label className="text-xs text-gray-600">{t("Price")}</label>
@@ -578,7 +710,7 @@ export default function FormProduct() {
               <button
                 type="submit"
                 id="btn-saveProduct"
-                className="bg-red-600 h-8  px-3 text-white w-full hover:bg-red-800 rounded-lg"
+                className="bg-blue-600 h-8  px-3 text-white w-full hover:bg-blue-800 rounded-lg"
                 onClick={addProduct}
               >
                 {t("save")}
@@ -586,7 +718,7 @@ export default function FormProduct() {
               <button
                 type="submit"
                 id="btn-editProduct"
-                className="bg-red-600 h-8  px-3 text-white w-full  hover:bg-red-800 rounded-lg"
+                className="bg-blue-600 h-8  px-3 text-white w-full  hover:bg-blue-800 rounded-lg"
                 onClick={updataProduct}
               >
                 {t("save-changes")}
@@ -595,7 +727,7 @@ export default function FormProduct() {
 
             <button
               type="submit"
-              className="bg-white w-full  border h-8  px-3 text-gray-700ss   hover:bg-red-800 hover:text-white rounded-lg"
+              className="bg-white w-full  border h-8  px-3 text-gray-700ss   hover:bg-blue-800 hover:text-white rounded-lg"
               onClick={() => {
                 let form = document.querySelector("#add-product-form");
                 form.classList.add("hidden");

@@ -43,7 +43,7 @@ export default function CategoriesSideMenu() {
             <h1 className=" font-semibold">{t("categories")} </h1>
           </span>
           <span
-            className="xs:block md:hidden w-5 h-5 cursor-pointer text-red-600  "
+            className="xs:block md:hidden w-5 h-5 cursor-pointer text-blue-600  "
             onClick={() => {
               const catego_sideMenu =
                 document.querySelector("#catego-sideMenu");
@@ -53,7 +53,7 @@ export default function CategoriesSideMenu() {
             <MdCancel className="w-full h-full" />
           </span>
         </div>
-        <hr className="h-3  mt-2 text-red-400 w-full"></hr>
+        <hr className="h-3  mt-2 text-blue-400 w-full"></hr>
         {loading ? (
           <div className=" flex flex-col gap-2  px-3 ">
             {[...Array(7)].map((_, index) => (
@@ -69,9 +69,9 @@ export default function CategoriesSideMenu() {
               return (
                 <div
                   key={category.itemCategoryId}
-                  className={`flex gap-4 mx-3 xs:justify-center md:justify-start  items-center p-3 rounded-md cursor-pointer hover:bg-red-100 hover:text-red-500 ${
+                  className={`flex gap-4 mx-3 xs:justify-center md:justify-start  items-center p-3 rounded-md cursor-pointer hover:bg-blue-100 hover:text-blue-500 ${
                     selectedCategoryId === category.itemCategoryId
-                      ? "bg-red-100 text-red-500"
+                      ? "bg-blue-100 text-blue-500"
                       : ""
                   }`}
                   onClick={() => {

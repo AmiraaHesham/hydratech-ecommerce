@@ -40,7 +40,7 @@ export default function FeaturedProducts() {
 
       <div className=" flex justify-between items-center">
         <div className="flex  items-center gap-3">
-          <span className=" text-red-600 rounded-full text-xl  p-1">
+          <span className=" text-blue-600 rounded-full text-xl  p-1">
             <AiFillStar className="" />
           </span>
           <h1 className="font-semibold md:text-xl xs:text-lg">
@@ -49,7 +49,7 @@ export default function FeaturedProducts() {
         </div>
         <Link
           href="/admin/pages/Products"
-          className="md:text-4xl xs:text-3xl mx-10 text-red-700 hover:text-red-800"
+          className="md:text-4xl xs:text-3xl mx-10 text-blue-700 hover:text-blue-800"
         >
           <FaCirclePlus />
         </Link>
@@ -98,18 +98,18 @@ export default function FeaturedProducts() {
                       </h1>
                       {/* <span
                                               id={`btn_fov_${product.itemId}`}
-                                              className={`${product.favorite === true ? "text-gray-400 " : "text-red-600 "}rounded-full`}
+                                              className={`${product.favorite === true ? "text-gray-400 " : "text-blue-600 "}rounded-full`}
                                               onClick={() => {
                                                 const btn_fov = document.querySelector(
                                                   `#btn_fov_${product.itemId}`,
                                                 );
                                                 if (favorite === true) {
-                                                  btn_fov.classList.add("text-red-600");
+                                                  btn_fov.classList.add("text-blue-600");
                                                   deleteFavoriteItems(product.itemId);
                                                 } else {
                                                   btn_fov.classList.remove("text-gray-400");
                                                   addFavoriteItems(product.itemId);
-                                                  btn_fov.classList.add("text-red-600");
+                                                  btn_fov.classList.add("text-blue-600");
                                 
                                                 }
                                                 setSelectedProductId(product.itemId);

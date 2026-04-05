@@ -11,8 +11,10 @@ import { MdEmail, MdLock, MdPhoneEnabled } from "react-icons/md";
 import { PiSignOutBold } from "react-icons/pi";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import Select from "react-select";
 import { useLanguage } from "../../../context/LanguageContext";
 import { RiShoppingBag4Fill } from "react-icons/ri";
+import { getRequest, putRequest } from "../../../utils/requestsUtils";
 export default function Profile() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -22,12 +24,19 @@ export default function Profile() {
   const [phone, setPhone] = useState("");
   const navigate = useRouter();
   const { t } = useLanguage();
+  const [governorates, setGovernorates] = useState([]);
+  const [value, setValue] = useState(null);
 
+  const getGovernorate = async () => {
+    const res = await getRequest("/api/public/governorates");
+    const formatted = res.map((item) => ({
+      value: item.governorateId,
+      label: localStorage.lang === "ar" ? item.nameAr : item.nameEn,
+    }));
+    setGovernorates(formatted);
+  };
   useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      once: false,
-    });
+    getGovernorate();
     const firstName = localStorage.getItem("firstName");
     setFirstName(firstName);
     const lastName = localStorage.getItem("lastName");
@@ -41,19 +50,36 @@ export default function Profile() {
     const emailAdress = localStorage.getItem("email");
     setEmail(emailAdress);
   }, []);
+  const userId =
+    typeof window !== "undefined" ? localStorage.getItem("id") : "";
+  const updateProfileInfo = async (e) => {
+    e.preventDefault();
+    const res = await putRequest(
+      `/api/users/${userId}`,
+      {
+        firstName: firstName,
+        lastName: lastName,
+        phone: phone,
+        address: address,
+        governorateId: value ? value.value : null,
+      },
+      t("message_EditText")
+    );
+    console.log(res);
+  };
 
   return (
-    <div data-aos="fade-up" className="p-10">
+    <div className="p-10">
       <div className="flex h-full gap-10 justify-between">
         <div className="bg-white w-[30%] h-[400px] md:flex xs:hidden flex-col gap-3   p-10 rounded-md shadow-md">
-          <div className="flex items-center bg-red-600 p-2 rounded-md text-white gap-3 cursor-pointer">
+          <div className="flex items-center bg-blue-600 p-2 rounded-md text-white gap-3 cursor-pointer">
             <span className="text-xl">
               <FaUser />
             </span>
             <span>{t("personalAccount")} </span>
           </div>
           <Link href="/user/ordershistory">
-            <div className="flex items-center hover:bg-red-600 p-2 rounded-md hover:text-white text-gray-600 gap-3 cursor-pointer">
+            <div className="flex items-center hover:bg-blue-600 p-2 rounded-md hover:text-white text-gray-600 gap-3 cursor-pointer">
               <span className="text-2xl">
                 <RiShoppingBag4Fill />
               </span>
@@ -61,7 +87,7 @@ export default function Profile() {
             </div>
           </Link>
           <Link href="/user/wishlist">
-            <div className="flex items-center hover:bg-red-600 p-2 rounded-md hover:text-white text-gray-600 gap-3 cursor-pointer">
+            <div className="flex items-center hover:bg-blue-600 p-2 rounded-md hover:text-white text-gray-600 gap-3 cursor-pointer">
               <span className="text-xl">
                 <FaHeart />
               </span>
@@ -98,7 +124,7 @@ export default function Profile() {
                 <span className="text-xl font-semibold">
                   {firstName + " " + lastName}
                 </span>
-                <span className="bg-red-200 px-3 py-2 text-xs font-semibold text-red-700 rounded-md">
+                <span className="bg-blue-200 px-3 py-2 text-xs font-semibold text-blue-700 rounded-md">
                   {t("unverifiedAccount")}
                 </span>
               </div>
@@ -125,7 +151,7 @@ export default function Profile() {
               <span className=""> {t("editPersonalInfo")} </span>
             </div>
             <hr></hr>
-            <form className="p-7">
+            <form className="p-7" onSubmit={updateProfileInfo}>
               <div className="grid grid-cols-2 gap-6">
                 <div className="flex flex-col gap-3">
                   <label className="text-xs font-semibold text-gray-500">
@@ -181,12 +207,39 @@ export default function Profile() {
                     onChange={(e) => setAddress(e.target.value)}
                   />
                 </div>
+                <div className="flex flex-col gap-3">
+                  <label className="text-xs font-semibold text-gray-500">
+                    {t("governorate")}
+                  </label>
+                  <Select
+                    options={governorates}
+                    value={value}
+                    onChange={setValue}
+                    placeholder={t("selectGovernorate")}
+                    classNames={{
+                      control: () =>
+                        "bg-slate-50 border  rounded-lg h-10  hover:border-indigo-500",
+                      menu: () =>
+                        "bg-slate-900 border border-slate-700 rounded-xl mt-2",
+                      option: ({ isFocused, isSelected }) =>
+                        `px-3 py-2 cursor-pointer ${
+                          isSelected
+                            ? "bg-indigo-600 text-white"
+                            : isFocused
+                            ? "bg-indigo-500 text-white"
+                            : "text-gray-300"
+                        }`,
+                      placeholder: () => "text-slate-400",
+                      singleValue: () => "text-white",
+                    }}
+                  />
+                </div>
               </div>
 
               <div className="mt-10 flex items-center gap-5">
                 <button
                   type="submit"
-                  className="px-5 py-2 text-white bg-red-600 hover:bg-red-700 hover:scale-105 duration-150 rounded-md text-sm font-semibold"
+                  className="px-5 py-2 text-white bg-blue-600 hover:bg-blue-700 hover:scale-105 duration-150 rounded-md text-sm font-semibold"
                 >
                   {t("saveChanges")}
                 </button>
@@ -203,7 +256,7 @@ export default function Profile() {
                 <span>{t("password")} </span>
               </div>
               <button
-                className="text-red-500 text-sm font-semibold"
+                className="text-blue-500 text-sm font-semibold"
                 onClick={() => {
                   const resetpasswordform =
                     document.querySelector("#resetpasswordform");

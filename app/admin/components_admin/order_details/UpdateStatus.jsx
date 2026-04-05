@@ -84,14 +84,14 @@ export default function UpdateStatus({ orderId }) {
             <div
               className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
                 index + 1 <= activeStep
-                  ? "bg-red-100 border-2 border-red-300"
+                  ? "bg-blue-100 border-2 border-blue-300"
                   : "bg-gray-100 border-2 border-gray-300"
               }`}
             >
               {/* الأيقونة (ملونة حسب المرحلة النشطة) */}
               <div
                 className={
-                  index + 1 <= activeStep ? "text-red-600" : "text-gray-400"
+                  index + 1 <= activeStep ? "text-blue-600" : "text-gray-400"
                 }
               >
                 {step.icon}
@@ -101,7 +101,7 @@ export default function UpdateStatus({ orderId }) {
             <span
               className={`text-xs mt-1 font-medium transition-opacity ${
                 index + 1 <= activeStep
-                  ? "text-red-600 opacity-100"
+                  ? "text-blue-600 opacity-100"
                   : "text-gray-500 opacity-70"
               }`}
             >

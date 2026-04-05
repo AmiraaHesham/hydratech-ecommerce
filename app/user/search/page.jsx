@@ -60,7 +60,7 @@ export default function Searchpage() {
         <div className="md:w-[80%] xs:w-full p-5  ">
           <div className="flex gap-5 ">
             <span
-              className="xs:flex md:hidden p-2 cursor-pointer gap-2 bg-red-600 h-10 text-white rounded-md items-center"
+              className="xs:flex md:hidden p-2 cursor-pointer gap-2 bg-blue-600 h-10 text-white rounded-md items-center"
               onClick={() => {
                 const catego_sideMenu =
                   document.querySelector("#catego-sideMenu");
@@ -81,19 +81,19 @@ export default function Searchpage() {
               >
                 <option
                   value=""
-                  className="bg-red-700 rounded-md text-lg text-white font-semibold"
+                  className="bg-blue-700 rounded-md text-lg text-white font-semibold"
                 >
                   {t("all")}
                 </option>
                 <option
                   value="true,price"
-                  className="bg-red-700 rounded-md text-lg text-white font-semibold"
+                  className="bg-blue-700 rounded-md text-lg text-white font-semibold"
                 >
                   {t("priceLowToHigh")}{" "}
                 </option>
                 <option
                   value="false,price"
-                  className="bg-red-700 rounded-md text-lg text-white font-semibold"
+                  className="bg-blue-700 rounded-md text-lg text-white font-semibold"
                 >
                   {t("priceHighToLow")}{" "}
                 </option>

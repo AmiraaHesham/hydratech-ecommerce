@@ -65,14 +65,14 @@ export default function Sliders() {
       <div className=" w-[100%] ">
         <div className="flex items-center justify-between  gap-2 mb-3 ">
           <div className="flex items-center gap-3">
-            <span className="text-xl text-red-600">
+            <span className="text-xl text-blue-600">
               <TfiLayoutSliderAlt />
             </span>
             <h1 className="md:text-xl xs:text-lg font-semibold ">Sliders</h1>
           </div>
           <button
             id="btn-livePreview"
-            className="p-2  bg-red-600 text-white hover:bg-red-300 text-sm rounded-md"
+            className="p-2  bg-blue-600 text-white hover:bg-blue-300 text-sm rounded-md"
             onClick={() => {
               const LivePreview = document.querySelector("#LivePreview");
               LivePreview.classList.remove("hidden");
@@ -88,7 +88,7 @@ export default function Sliders() {
           </button>
           <button
             id="btn-hide"
-            className="hidden p-2 bg-red-600 text-white hover:bg-red-300 text-sm rounded-md"
+            className="hidden p-2 bg-blue-600 text-white hover:bg-blue-300 text-sm rounded-md"
             onClick={() => {
               const btn_hide = document.querySelector("#btn-hide");
               btn_hide.classList.add("hidden");
@@ -115,13 +115,13 @@ export default function Sliders() {
       </div>
       <div className="w-full grid lg:grid-cols-5 md:grid-cols-3  xs:grid-cols-2 gap-3  ">
         <div className="bg-white border rounded-md h-[170px] w-full flex flex-col gap-3 p-4 cursor-pointer">
-          <div className=" border-dashed flex justify-center p-5 items-center border-2 rounded-md border-red-400 bg-gray-50  hover:bg-gray-100 w-full h-full ">
+          <div className=" border-dashed flex justify-center p-5 items-center border-2 rounded-md border-blue-400 bg-gray-50  hover:bg-gray-100 w-full h-full ">
             <label htmlFor="fileInput">
               <div
                 id="label-uplod"
                 className="flex flex-col justify-center items-center cursor-pointer"
               >
-                <span className="text-2xl bg-white p-2 rounded-full text-red-500">
+                <span className="text-2xl bg-white p-2 rounded-full text-blue-500">
                   <IoCloudUploadSharp />
                 </span>
                 <span className="flex flex-col gap-2 items-center">

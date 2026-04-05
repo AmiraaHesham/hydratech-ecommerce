@@ -17,7 +17,7 @@ function RTLController({ children }) {
   const { locale } = useLanguage();
 
   useEffect(() => {
-   
+
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
     document.documentElement.lang = locale;
     localStorage.setItem("lang", locale);
@@ -34,26 +34,26 @@ function RTLController({ children }) {
 // });
 
 export default function RootLayout({ children }) {
-   const lang = typeof window !== 'undefined'? localStorage.getItem("lang"):'';
+  const lang = typeof window !== 'undefined' ? localStorage.getItem("lang") : '';
 
-   
+
 
   return (
-    <html lang={lang} dir={lang == "ar"? "rtl" : "ltr"} >
+    <html lang={lang} dir={lang === "ar" ? "rtl" : "ltr"} >
       <body >
-        
+
         <ToastContainer
-          position={lang === "ar" ? "bottom-left" : "bottom-right"}/>
+          position={lang === "ar" ? "bottom-left" : "bottom-right"} />
 
         <LanguageProvider>
           <RTLController>
             <IdProvider>
-              
+
               <SearchInputProvider>
                 <RefreshProvider>
                   <OrderDetailsProvider>
                     <NamePageInAdminProvider>
-                                        {children}
+                      {children}
 
                     </NamePageInAdminProvider>
 

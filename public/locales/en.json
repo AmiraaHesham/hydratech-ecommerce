@@ -154,7 +154,7 @@
   "newPassword": "New Password",
   "confirmPassword": "Confirm Password",
   "welcomeBack": "Welcome Back",
-  "welcomeMessage": "Welcome to Alpha Group, please enter your credentials to login.",
+  "welcomeMessage": "Welcome to HydraTech, please enter your credentials to login.",
   "forgotPassword": "Forgot Password?",
   "login": "Login",
   "loggingIn": "Logging in...",
@@ -163,12 +163,15 @@
   "creating_account": "Creating Account...",
   "addToCart": "Add to Cart",
   "createdDate": "Created date order",
-  "signupWelcomeMessage": "Welcome to Alpha Group, please enter your information to create a new account.",
+  "signupWelcomeMessage": "Welcome to HydraTech, please enter your information to create a new account.",
   "sortBy": "Sort by",
   "all": "All",
   "priceLowToHigh": "Price: Low to High",
   "priceHighToLow": "Price: High to Low",
   "no_data": "No products found",
   "hello": "Hello",
-  "edit_category": "Edit Category"
+  "edit_category": "Edit Category",
+  "selectGovernorate": "Select Governorate",
+  "governorate": "Governorate",
+  "totalShippingCost": "Total Shipping Cost"
 }

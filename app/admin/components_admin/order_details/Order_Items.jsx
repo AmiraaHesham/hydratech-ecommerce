@@ -34,7 +34,7 @@ export default function OrdersItems({ orderId }) {
         <span className="text-gray-600">
           {" "}
           {t("Total")}:{" "}
-          <span className="text-lg text-red-500 font-semibold">
+          <span className="text-lg text-blue-500 font-semibold">
             {orderTotalPrice.toLocaleString("en-US")} EG
           </span>{" "}
         </span>

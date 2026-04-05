@@ -32,7 +32,7 @@ export default function RecentOrders_table() {
           {t("recent_orders")}
         </h1>
         <button
-          className="md:text-sm xs:text-xs text-red-600"
+          className="md:text-sm xs:text-xs text-blue-600"
           onClick={() => {
             navigate.push("/admin/pages/orders_page/Orders");
             setSelectedNamePage("Orders Management");
@@ -59,7 +59,7 @@ export default function RecentOrders_table() {
               return (
                 <tr
                   key={index}
-                  className=" text-red-950 border w-full hover:bg-gray-50 cursor-pointer"
+                  className=" text-blue-950 border w-full hover:bg-gray-50 cursor-pointer"
                   onClick={() => {
                     navigate.push(
                       `/admin/pages/orders_page/OrderDetailsPage/${order.orderId}`
@@ -67,7 +67,7 @@ export default function RecentOrders_table() {
                     setSelectedNamePage("Orders Management");
                   }}
                 >
-                  <td className="font-semibold text-red-500 px-5">
+                  <td className="font-semibold text-blue-500 px-5">
                     {order.orderCode}
                   </td>
                   <td className="text-sm">{dateOnly}</td>

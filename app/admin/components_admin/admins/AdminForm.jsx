@@ -200,7 +200,7 @@ export default function CategoryForm() {
                   <button
                     type="submit"
                     id="btn-save"
-                    className="bg-red-600 h-8  px-3 text-white w-full hover:bg-red-800 rounded-lg"
+                    className="bg-blue-600 h-8  px-3 text-white w-full hover:bg-blue-800 rounded-lg"
                     onClick={() => {
                       addAdminUser();
                     }}
@@ -210,7 +210,7 @@ export default function CategoryForm() {
                   <button
                     type="submit"
                     id="btn-edit"
-                    className="bg-red-600 h-8  px-3 text-white w-full  hover:bg-red-800 rounded-lg"
+                    className="bg-blue-600 h-8  px-3 text-white w-full  hover:bg-blue-800 rounded-lg"
                     onClick={() => {
                       updateAdmin();
                     }}
@@ -220,7 +220,7 @@ export default function CategoryForm() {
                 </div>
                 <button
                   type="submit"
-                  className="bg-white w-full  border h-8  px-3 text-gray-700ss   hover:bg-red-800 hover:text-white rounded-lg"
+                  className="bg-white w-full  border h-8  px-3 text-gray-700ss   hover:bg-blue-800 hover:text-white rounded-lg"
                   onClick={() => {
                     let form = document.querySelector("#add-admin-form");
                     form.classList.add("hidden");

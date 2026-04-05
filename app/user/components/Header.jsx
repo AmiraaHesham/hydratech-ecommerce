@@ -50,22 +50,22 @@ export default function Header() {
 
   return (
     <header>
-      <div className="w-full h-[60px] lg:px-10 xs:px-0 flex items-center border-b  justify-between bg-red-700">
-        <Link href="/">
+      <div className="w-full h-[60px] lg:px-10 xs:px-0 flex items-center border-b  justify-between bg-blue-700">
+        <Link href="/user/home">
           <div className="flex  items-center  ">
-            <span className=" w-12 h-12 ">
+            <span className="h-11 w-16  mt-2">
               <Image
                 src="/Images/logo.png"
                 alt="logo"
-                width={50}
-                height={50}
+                width={300}
+                height={300}
                 priority
                 className="w-full h-full"
               />
             </span>
             <div className="cursor-default">
               <h1 className="lg:text-xl  xs:text-lg w-[120px] text-white font-bold font-sans">
-                {t("alfa_group")}
+                HydraTech
               </h1>
             </div>
           </div>
@@ -73,11 +73,11 @@ export default function Header() {
         <div
           ref={divRef}
           className={`md:flex xs:hidden items-center bg-white justify-start border w-[50%] bg-none h-10  rounded-md 
- ${isFocused ? "border-[3px] border-red-400 " : ""}`}
+ ${isFocused ? "border-[3px] border-blue-400 " : ""}`}
           onClick={() => setIsFocused(true)}
           tabIndex={0}
         >
-          <span className="text-white h-full  rounded-s-md text-2xl bg-red-600 p-2 ">
+          <span className="text-white h-full  rounded-s-md text-2xl bg-blue-600 p-2 ">
             <IoMdSearch />
           </span>
           <input
@@ -99,7 +99,7 @@ export default function Header() {
         <div className="flex items-center   md:gap-5 xs:gap-3 mx-2">
           <div className="flex items-center   cursor-pointer ">
             <select
-              className=" rounded text-white xs:text-sm md:text-base outline-none bg-red-700 px-1 py-0.5 text-center cursor-pointer"
+              className=" rounded text-white xs:text-sm md:text-base outline-none bg-blue-700 px-1 py-0.5 text-center cursor-pointer"
               value={locale}
               onChange={(e) => {
                 const newLang = e.target.value;
@@ -109,7 +109,7 @@ export default function Header() {
             >
               <option
                 value="ar"
-                className="bg-white text-red-500 text-lg font-semibold "
+                className="bg-white text-blue-500 text-lg font-semibold "
               >
                 العربية{" "}
                 <span className="text-white md:text-2xl xs:text-lg">
@@ -118,7 +118,7 @@ export default function Header() {
               </option>
               <option
                 value="en"
-                className="bg-white text-red-500 text-lg font-semibold"
+                className="bg-white text-blue-500 text-lg font-semibold"
               >
                 English
               </option>
@@ -152,11 +152,11 @@ export default function Header() {
       <div
         ref={divRef}
         className={`xs:flex md:hidden items-center justify-start border w-full bg-none h-10 my-2  rounded-md 
- ${isFocused ? "border-[3px] border-red-400 " : ""}`}
+ ${isFocused ? "border-[3px] border-blue-400 " : ""}`}
         onClick={() => setIsFocused(true)}
         tabIndex={0}
       >
-        <span className="text-white h-full  rounded-s-md text-2xl bg-red-600 p-2 ">
+        <span className="text-white h-full  rounded-s-md text-2xl bg-blue-600 p-2 ">
           <IoMdSearch />
         </span>
         <input

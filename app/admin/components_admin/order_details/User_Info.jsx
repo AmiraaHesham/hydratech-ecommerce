@@ -28,17 +28,19 @@ export default function Orders_Details({ orderId }) {
         </div>
         <div>
           <div className="flex gap-5 mt-5 items-center">
-            <span className="text-2xl text-red-500 bg-gray-100 p-2 rounded-md">
+            <span className="text-2xl text-blue-500 bg-gray-100 p-2 rounded-md">
               <PiUserListFill />
             </span>
 
             <div>
-              <h1 className="font-semibold">{orderUser.firstName + " "+ orderUser.lastName}</h1>
+              <h1 className="font-semibold">
+                {orderUser.firstName + " " + orderUser.lastName}
+              </h1>
               {/* <h2 className="text-sm text-gray-500">B.D birthDate</h2> */}
             </div>
           </div>
           <div className="flex gap-5 mt-5 items-center">
-            <span className="text-2xl text-red-500 bg-gray-100 p-2 rounded-md">
+            <span className="text-2xl text-blue-500 bg-gray-100 p-2 rounded-md">
               <MdEmail />
             </span>
             <div>
@@ -49,7 +51,7 @@ export default function Orders_Details({ orderId }) {
             </div>
           </div>
           <div className="flex gap-5 mt-5 items-center">
-            <span className="text-2xl text-red-500 bg-gray-100 p-2 rounded-md">
+            <span className="text-2xl text-blue-500 bg-gray-100 p-2 rounded-md">
               <MdLocalPhone />
             </span>
 

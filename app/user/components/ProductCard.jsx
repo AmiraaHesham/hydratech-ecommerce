@@ -36,7 +36,7 @@ export default function ProductCard({ productInfo, favorite }) {
         title: "text-xl font-bold text-gray-800 mb-2",
         content: "text-sm text-gray-600 mb-4",
         confirmButton:
-          "bg-red-600 hover:bg-red-500 text-white font-medium px-6 py-2 rounded-lg",
+          "bg-blue-600 hover:bg-blue-500 text-white font-medium px-6 py-2 rounded-lg",
         cancelButton:
           "bg-gray-500 hover:bg-gray-400 text-w  font-medium px-6 py-2 rounded-lg ml-2",
       },
@@ -70,22 +70,26 @@ export default function ProductCard({ productInfo, favorite }) {
     } catch (error) {}
   };
   const describtion =
-    typeof localStorage.lang !== "undefined" && localStorage.lang === "ar"
-      ? productInfo.descriptionAr
-      : productInfo.descriptionEn;
+    typeof window !== "undefined"
+      ? localStorage.lang === "ar"
+        ? productInfo.descriptionAr
+        : productInfo.descriptionEn
+      : null;
 
   const productName =
-    typeof localStorage.lang !== "undefined" && localStorage.lang === "ar"
-      ? productInfo.nameAr
-      : productInfo.nameEn;
+    typeof window !== "undefined"
+      ? localStorage.lang === "ar"
+        ? productInfo.nameAr
+        : productInfo.nameEn
+      : null;
 
   return (
     // <div className="h-full w-full border rounded-md bg-white flex justify-center py-2  cursor-pointer duration-300 hover:scale-105 ">
     <div
       id={`div_${productInfo.itemId}`}
-      className="h-[350px] bg-white border rounded-md cursor-pointer  hover:border-b-[7px] hover:border-b-red-600  hover:scale-105 duration-200   hover:shadow-lg "
+      className="h-[350px] bg-white border w-full rounded-md cursor-pointer  hover:border-b-[7px] hover:border-b-blue-600  hover:scale-105 duration-200   hover:shadow-lg "
     >
-      <div className="flex flex-col justify-between items-baseline">
+      <div className="flex flex-col  justify-between items-baseline">
         <Image
           src={`${process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL}${
             productInfo.mainImageURL || ""
@@ -134,12 +138,12 @@ export default function ProductCard({ productInfo, favorite }) {
                   `#btn_fov_${productInfo.itemId}`
                 );
                 if (favorite === true) {
-                  btn_fov.classList.add("text-red-600");
+                  btn_fov.classList.add("text-blue-600");
                   deleteFavoriteItems(productInfo.itemId);
                 } else {
                   btn_fov.classList.remove("text-gray-400");
                   addFavoriteItems(productInfo.itemId);
-                  btn_fov.classList.add("text-red-600");
+                  btn_fov.classList.add("text-blue-600");
                 }
                 setSelectedProductId(productInfo.itemId);
               }}
@@ -158,9 +162,9 @@ export default function ProductCard({ productInfo, favorite }) {
             // title={describtion}
           >
             {describtion}
-            {/* {describtion.length <= 70
+            {describtion.length <= 70
               ? describtion
-              : describtion.slice(0, 70) + " ..."} */}
+              : describtion.slice(0, 70) + " ..."}
           </h1>
 
           {/* <div className="absolute bottom-full left-0  
@@ -210,7 +214,7 @@ export default function ProductCard({ productInfo, favorite }) {
           </div>
 
           <button
-            className="text-xl text-red-700 bg-red-50 p-2 mt-2  hover:bg-red-300 duration-500 hover:scale-110 rounded-md"
+            className="text-xl text-blue-700 bg-blue-50 p-2 mt-2  hover:bg-blue-300 duration-500 hover:scale-110 rounded-md"
             onClick={() => {
               addToCart(productInfo.itemId);
             }}

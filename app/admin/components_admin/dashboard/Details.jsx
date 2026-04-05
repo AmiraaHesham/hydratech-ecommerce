@@ -13,12 +13,14 @@ export default function Dashboard_Details() {
   const [activeItems, setActiveItems] = useState();
   const [newUsers, setNewUsers] = useState();
   const [pendingOrders, setPendingOrders] = useState();
+  const [ordersCount, setOrdersCount] = useState();
 
   const dashboardPendingOrders = async () => {
     const response = await getRequest("/api/admin/dashboard");
     setNewUsers(response.newUsers);
     setActiveItems(response.activeItems);
-    setPendingOrders(response.ordersStats[1].count);
+    setPendingOrders(response.ordersStats[0].count);
+    setOrdersCount(response.ordersCount);
     console.log(response);
   };
 
@@ -29,14 +31,14 @@ export default function Dashboard_Details() {
     <div className="w-full grid lg:grid-cols-4 xs:grid-cols-2 lg:gap-10 xs:gap-2 ">
       <div className="bg-white border flex flex-col gap-5 rounded-lg p-3">
         <div className="flex items-center  gap-2">
-          <span className="md:text-2xl xs:text-lg  p-1 rounded-md text-red-600 bg-red-100">
+          <span className="md:text-2xl xs:text-lg  p-1 rounded-md text-blue-600 bg-blue-100">
             <IoMdCart />
           </span>
           <h1 className="md:text-lg xs:text-xs text-gray-500 font-semibold">
             {t("total_orders")}
           </h1>
         </div>
-        <h1 className="md:text-2xl xs:text-lg  font-bold">3,456</h1>
+        <h1 className="md:text-2xl xs:text-lg  font-bold">{ordersCount}</h1>
       </div>
 
       <div className="bg-white border border-orange-300 flex flex-col gap-5 rounded-lg p-3">
@@ -71,7 +73,7 @@ export default function Dashboard_Details() {
             {t("new_users")}
           </h1>
         </div>
-        <h1 className="md:text-2xl xs:text-lg font-bold">+{newUsers}</h1>
+        <h1 className="md:text-2xl xs:text-lg font-bold">{newUsers}</h1>
       </div>
       {/* <div >
                   <div>
