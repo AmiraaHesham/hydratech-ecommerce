@@ -16,7 +16,6 @@ import { postRequest } from "../../../utils/requestsUtils";
 export default function Header() {
   const { t } = useLanguage();
   const navigate = useRouter();
-  const id = typeof window !== "undefined" ? localStorage.getItem("id") : "";
 
   const [isFocused, setIsFocused] = useState(false);
   const divRef = useRef(null);
@@ -135,7 +134,7 @@ export default function Header() {
             <Link href="/user/cart">
               <IoMdCart className="w-7 h-7" />
             </Link>
-            <Link href={id ? "/user/pages/profile" : "/signin"}>
+            <Link href={userId ? "/user/pages/profile" : "/signin"}>
               <div className="flex items-center gap-1  ">
                 <span className="w-9 h-9">
                   <FaRegCircleUser className="w-full h-full" />

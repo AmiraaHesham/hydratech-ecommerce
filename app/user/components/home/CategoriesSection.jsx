@@ -13,7 +13,7 @@ import { useLanguage } from "../../../../context/LanguageContext";
 
 export default function CategorySection({ categories }) {
   const lang =
-    typeof window !== "undefined" ? localStorage.getItem("lang") || "ar" : "ar";
+    typeof window !== "undefined" ? localStorage.getItem("lang") : "ar";
   const { t } = useLanguage();
 
   const { setSelectedCategoryId } = useIdContext();
@@ -79,9 +79,7 @@ export default function CategorySection({ categories }) {
                     className="rounded-lg h-[150px] w-[150px]"
                   />
                   <h1 className="font-semibold  mt-10">
-                    {localStorage.lang === "ar"
-                      ? category.nameAr
-                      : category.nameEn}
+                    {lang === "ar" ? category.nameAr : category.nameEn}
                   </h1>
                 </div>
               </div>

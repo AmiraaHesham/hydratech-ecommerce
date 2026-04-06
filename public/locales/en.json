@@ -173,5 +173,11 @@
   "edit_category": "Edit Category",
   "selectGovernorate": "Select Governorate",
   "governorate": "Governorate",
-  "totalShippingCost": "Total Shipping Cost"
+  "totalShippingCost": "Total Shipping Cost",
+  "width": "Width",
+  "height": "Height",
+  "length": "Length",
+  "weight": "Weight",
+  "cm": "cm",
+  "kg": "kg"
 }

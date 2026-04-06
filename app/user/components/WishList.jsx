@@ -13,7 +13,10 @@ export default function WishList() {
   const [loading, setLoading] = useState(true);
 
   const { t } = useLanguage();
-  const userId = typeof window !== "undefined" ? localStorage.id : null;
+  const userId =
+    typeof window !== "undefined" ? localStorage.getItem("id") : null;
+  const lang =
+    typeof window !== "undefined" ? localStorage.getItem("lang") : null;
   const getWishList = async () => {
     try {
       const response = await getRequest(`/api/users/${userId}/favoriteItems`);
@@ -43,7 +46,7 @@ export default function WishList() {
         >
           <h1>{t("continueShopping")} </h1>
           <span className="mt-2">
-            {localStorage.lang === "ar" ? <FaArrowLeft /> : <FaArrowRight />}
+            {lang === "ar" ? <FaArrowLeft /> : <FaArrowRight />}
           </span>
         </Link>
       </div>

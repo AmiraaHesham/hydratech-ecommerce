@@ -8,12 +8,28 @@ const LanguageContext = createContext({
   t: (key) => key,
 });
 
-const userLang = navigator.language || navigator.userLanguage;
 export const LanguageProvider = ({ children }) => {
-  const [locale, setLocale] = useState(localStorage.lang || userLang.split('-')[0] || 'ar');
+  const [locale, setLocale] = useState('ar'); // default آمن
   const [messages, setMessages] = useState({});
 
+  // ✅ هنا بس نستخدم localStorage و navigator
   useEffect(() => {
+    const storedLang = localStorage.getItem("lang");
+
+    if (storedLang) {
+      setLocale(storedLang);
+    } else {
+      const userLang =
+        navigator.language || navigator.userLanguage;
+
+      setLocale(userLang.split('-')[0]);
+    }
+  }, []);
+
+  // تحميل الترجمة
+  useEffect(() => {
+    if (!locale) return;
+
     fetch(`/locales/${locale}.json`)
       .then((res) => res.json())
       .then((data) => setMessages(data))

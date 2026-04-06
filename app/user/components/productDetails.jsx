@@ -15,7 +15,8 @@ export default function ProductDetails({ itemId }) {
   const { setSelectedCategoryId } = useIdContext();
   const navigate = useRouter();
   const [loading, setLoading] = useState(true);
-
+  const lang =
+    typeof window !== "undefined" ? localStorage.getItem("lang") : null;
   const { t } = useLanguage();
   const [product, setProduct] = useState({
     nameEn: "",
@@ -30,6 +31,10 @@ export default function ProductDetails({ itemId }) {
       nameEn: "",
     },
     code: "",
+    width: "",
+    height: "",
+    weight: "",
+    length: "",
     mainImage: "",
     mainImagefile: "",
     img2: "",
@@ -49,6 +54,10 @@ export default function ProductDetails({ itemId }) {
         oldPrice: res.oldPrice,
         descriptionAr: res.descriptionAr,
         descriptionEn: res.descriptionEn,
+        width: res.width,
+        height: res.height,
+        weight: res.weight,
+        length: res.length,
         mainImage:
           process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL + res.mainImageURL,
         img2: res.img2 || "",
@@ -67,7 +76,8 @@ export default function ProductDetails({ itemId }) {
     } finally {
     }
   };
-  const userId = typeof window !== "undefined" ? localStorage.id : "";
+  const userId =
+    typeof window !== "undefined" ? localStorage.getItem("id") : "";
 
   const addToCart = async () => {
     await postRequest(
@@ -82,7 +92,7 @@ export default function ProductDetails({ itemId }) {
       icon: "success",
       title: t("تم إضافة المنتج الى سلة التسوق"),
       showCancelButton: true,
-      confirmButtonText: localStorage.lang === "ar" ? " إتمام  الشراء " : "Yes",
+      confirmButtonText: lang === "ar" ? " إتمام  الشراء " : "Yes",
       cancelButtonText: t("continueShopping"),
       customClass: {
         popup: "rounded-xl shadow-lg border border-gray-200 p-6",
@@ -170,10 +180,7 @@ export default function ProductDetails({ itemId }) {
               <div className="flex justify-between items-start">
                 <span>
                   <h1 className="text-xl font-semibold">
-                    {typeof localStorage.lang !== "undefined" &&
-                    localStorage.lang === "ar"
-                      ? product.nameAr
-                      : product.nameEn}
+                    {lang === "ar" ? product.nameAr : product.nameEn}
                   </h1>
                   <h1 className=" text-gray-500 mt-2  text-sm">
                     {t("code")}: {product.code}
@@ -186,8 +193,7 @@ export default function ProductDetails({ itemId }) {
                     navigate.push("/user/search");
                   }}
                 >
-                  {typeof localStorage.lang !== "undefined" &&
-                  localStorage.lang === "ar"
+                  {lang === "ar"
                     ? product.category.nameAr
                     : product.category.nameEn}
                 </span>
@@ -195,12 +201,25 @@ export default function ProductDetails({ itemId }) {
 
               <hr className="w-full  my-5"></hr>
             </div>
-            <span className="text-gray-500">
-              {typeof localStorage.lang !== "undefined" &&
-              localStorage.lang === "ar"
-                ? product.descriptionAr
-                : product.descriptionEn}
-            </span>
+            <div>
+              <div className="text-gray-500">
+                {lang === "ar" ? product.descriptionAr : product.descriptionEn}
+              </div>
+              <div className="text-gray-500 flex flex-col gap-1 mt-5">
+                <span>
+                  {t("width")}: {product.width + " " + t("cm")}
+                </span>
+                <span>
+                  {t("height")}: {product.height + " " + t("cm")}
+                </span>
+                <span>
+                  {t("length")}: {product.length + " " + t("cm")}
+                </span>
+                <span>
+                  {t("weight")}: {product.weight + " " + t("kg")}
+                </span>
+              </div>
+            </div>
             <div className="flex flex-col  gap-3">
               <span className="text-gray-400 text-xl line-through">
                 {product.oldPrice

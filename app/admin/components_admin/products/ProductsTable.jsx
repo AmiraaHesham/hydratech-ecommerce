@@ -23,6 +23,8 @@ export default function ProductsTable() {
   const { setSelectedProductId } = useIdContext();
   const searchInputRef = useRef();
   // const [loading, setLoading] = useState(true);
+  const lang =
+    typeof window !== "undefined" ? localStorage.getItem("lang") : null;
 
   const getAllProducts = async () => {
     try {
@@ -284,11 +286,7 @@ export default function ProductsTable() {
                   />
                   <div>
                     <h1 className="text-sm font-semibold">
-                      {typeof window !== "undefined"
-                        ? localStorage.lang === "ar"
-                          ? product.nameAr
-                          : product.nameEn
-                        : null}
+                      {lang === "ar" ? product.nameAr : product.nameEn}
                     </h1>
                     <h1 className="text-xs text-gray-500">
                       {t("code")} : {product.code}

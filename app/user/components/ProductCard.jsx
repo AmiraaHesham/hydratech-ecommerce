@@ -14,8 +14,11 @@ export default function ProductCard({ productInfo, favorite }) {
   const navigate = useRouter();
   const { t } = useLanguage();
   // const { triggerRefresh } = useRefresh();
+  const lang =
+    typeof window !== "undefined" ? localStorage.getItem("lang") : null;
 
-  const userId = localStorage.id;
+  const userId =
+    typeof window !== "undefined" ? localStorage.getItem("id") : null;
   const addToCart = async (productId) => {
     await postRequest(
       `/api/shopCarts/${userId}/addLine`,
@@ -29,7 +32,7 @@ export default function ProductCard({ productInfo, favorite }) {
       icon: "success",
       title: t("تم إضافة المنتج الى سلة التسوق"),
       showCancelButton: true,
-      confirmButtonText: localStorage.lang === "ar" ? " إتمام  الشراء " : "Yes",
+      confirmButtonText: lang === "ar" ? " إتمام  الشراء " : "Yes",
       cancelButtonText: t("continueShopping"),
       customClass: {
         popup: "rounded-xl shadow-lg border border-gray-200 p-6",
@@ -70,19 +73,8 @@ export default function ProductCard({ productInfo, favorite }) {
     } catch (error) {}
   };
   const describtion =
-    typeof window !== "undefined"
-      ? localStorage.lang === "ar"
-        ? productInfo.descriptionAr
-        : productInfo.descriptionEn
-      : null;
-
-  const productName =
-    typeof window !== "undefined"
-      ? localStorage.lang === "ar"
-        ? productInfo.nameAr
-        : productInfo.nameEn
-      : null;
-
+    lang === "ar" ? productInfo.descriptionAr : productInfo.descriptionEn;
+  const productName = lang === "ar" ? productInfo.nameAr : productInfo.nameEn;
   return (
     // <div className="h-full w-full border rounded-md bg-white flex justify-center py-2  cursor-pointer duration-300 hover:scale-105 ">
     <div

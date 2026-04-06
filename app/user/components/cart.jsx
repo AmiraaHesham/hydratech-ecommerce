@@ -26,11 +26,13 @@ export default function Cart() {
   const [totalDiscount, setTotalDiscount] = useState(0);
   const [totalShippingCost, setTotalShippingCost] = useState(0);
   const [itemNum, setItemNum] = useState(0);
-  const userId = typeof window !== "undefined" ? localStorage.id : null;
+  const userId =
+    typeof window !== "undefined" ? localStorage.getItem("id") : null;
   const [isFirstAction, setIsFirstAction] = useState(true);
   const [loading, setLoading] = useState(true);
   const navigate = useRouter();
-
+  const lang =
+    typeof window !== "undefined" ? localStorage.getItem("lang") : null;
   const getProductInCart = async () => {
     try {
       const res = await getRequest(`/api/shopCarts/${userId}`);
@@ -105,7 +107,7 @@ export default function Cart() {
         >
           <h1>{t("continueShopping")} </h1>
           <span className="mt-2">
-            {localStorage.lang === "ar" ? <FaArrowLeft /> : <FaArrowRight />}
+            {lang === "ar" ? <FaArrowLeft /> : <FaArrowRight />}
           </span>
         </Link>
       </div>
@@ -172,7 +174,7 @@ export default function Cart() {
                             </div>
                             <div>
                               <h1 className="font-semibold text-sm">
-                                {localStorage.lang === "ar"
+                                {lang === "ar"
                                   ? product.item.nameAr
                                   : product.item.nameEn}
                               </h1>

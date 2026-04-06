@@ -14,6 +14,8 @@ const Table = ({ typeCategory, categories, loading }) => {
   const navigate = useRouter();
   const { setSelectedCategoryId } = useIdContext();
   const { setSelectedNamePage } = useNamePageInAdminContext();
+  const lang =
+    typeof window !== "undefined" ? localStorage.getItem("lang") : null;
 
   const { triggerRefresh } = useRefresh();
   const { t } = useLanguage();
@@ -122,9 +124,7 @@ const Table = ({ typeCategory, categories, loading }) => {
                   >
                     <div>
                       <h1 className="md:text-sm xs:text-xs font-semibold">
-                        {localStorage.lang === "ar"
-                          ? category.nameAr
-                          : category.nameEn}
+                        {lang === "ar" ? category.nameAr : category.nameEn}
                       </h1>
                       <h1 className="md:text-xs xs:text-[10px]">
                         {t("main_category")}

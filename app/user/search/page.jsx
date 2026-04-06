@@ -111,7 +111,7 @@ export default function Searchpage() {
               ))}
             </div>
           ) : products.length != 0 ? (
-            <div className="grid xl:grid-cols-4 lg:grid-cols-3  xs:grid-cols-2 gap-5">
+            <div className="grid xl:grid-cols-5 lg:grid-cols-3  xs:grid-cols-2 gap-3">
               {products.map((product, index) => (
                 <div key={index}>
                   <ProductCard productInfo={product} />

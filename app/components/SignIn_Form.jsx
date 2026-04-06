@@ -41,16 +41,36 @@ export default function SignIn() {
       // console.log(response.data);
 
       console.log(response.data);
-      localStorage.setItem("accessToken", response.data.accessToken);
-      localStorage.setItem("id", response.data.userDetails.userId);
-      localStorage.setItem("firstName", response.data.userDetails.firstName);
-      localStorage.setItem("lastName", response.data.userDetails.lastName);
-      localStorage.setItem("address", response.data.userDetails.address);
-      localStorage.setItem("phone", response.data.userDetails.phone);
-      localStorage.setItem("email", response.data.userDetails.email);
-      localStorage.setItem("username", response.data.userDetails.username);
-      localStorage.setItem("lang", response.data.userDetails.language);
-      localStorage.setItem("role", response.data.userDetails.role);
+      typeof window !== "undefined"
+        ? localStorage.setItem("accessToken", response.data.accessToken)
+        : null;
+      typeof window !== "undefined"
+        ? localStorage.setItem("id", response.data.userDetails.userId)
+        : null;
+      typeof window !== "undefined"
+        ? localStorage.setItem("firstName", response.data.userDetails.firstName)
+        : null;
+      typeof window !== "undefined"
+        ? localStorage.setItem("lastName", response.data.userDetails.lastName)
+        : null;
+      typeof window !== "undefined"
+        ? localStorage.setItem("address", response.data.userDetails.address)
+        : null;
+      typeof window !== "undefined"
+        ? localStorage.setItem("phone", response.data.userDetails.phone)
+        : null;
+      typeof window !== "undefined"
+        ? localStorage.setItem("email", response.data.userDetails.email)
+        : null;
+      typeof window !== "undefined"
+        ? localStorage.setItem("username", response.data.userDetails.username)
+        : null;
+      typeof window !== "undefined"
+        ? localStorage.setItem("lang", response.data.userDetails.language)
+        : null;
+      typeof window !== "undefined"
+        ? localStorage.setItem("role", response.data.userDetails.role)
+        : null;
       if (response.data.userDetails.role === "ADMIN") {
         navigate.push("/admin/pages/Dashboard");
       } else navigate.push("/user/home");

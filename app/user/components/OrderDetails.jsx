@@ -161,7 +161,7 @@ export default function OrderDetails({ orderId }) {
 
                         <div>
                           <h1 className="font-semibold text-sm">
-                            {localStorage.lang === "ar"
+                            {lang === "ar"
                               ? product.item.nameAr
                               : product.item.nameEn}
                           </h1>

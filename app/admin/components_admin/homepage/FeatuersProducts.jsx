@@ -18,7 +18,8 @@ export default function FeaturedProducts() {
   const { setSelectedProductId } = useIdContext();
   const { refreshKey } = useRefresh();
   const { t } = useLanguage();
-
+  const lang =
+    typeof window !== "undefined" ? localStorage.getItem("lang") : null;
   const getFeatuersProducts = async () => {
     const response = await postRequest(
       "/api/public/items/search",
@@ -57,9 +58,7 @@ export default function FeaturedProducts() {
       <div className="my-5 grid lg:grid-cols-5 md:grid-cols-3 xs:grid-cols-2 gap-5 w-full">
         {featuersProducts.map((product, index) => {
           const describtion =
-            localStorage.lang === "ar"
-              ? product.descriptionAr
-              : product.descriptionEn;
+            lang === "ar" ? product.descriptionAr : product.descriptionEn;
           return (
             <div
               key={index}
@@ -92,9 +91,7 @@ export default function FeaturedProducts() {
                   <div className="px-3">
                     <div className="flex justify-between items-center">
                       <h1 className="my-3 text-sm font-semibold">
-                        {localStorage.lang === "ar"
-                          ? product.nameAr
-                          : product.nameEn}
+                        {lang === "ar" ? product.nameAr : product.nameEn}
                       </h1>
                       {/* <span
                                               id={`btn_fov_${product.itemId}`}

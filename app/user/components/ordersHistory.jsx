@@ -19,6 +19,8 @@ export default function OrdersHistory() {
   const [loading, setLoading] = useState(true);
   const navigate = useRouter();
   const pageNum = useRef(0);
+  const lang =
+    typeof window !== "undefined" ? localStorage.getItem("lang") : null;
 
   const { setSelectedProductId } = useIdContext();
   useEffect(() => {
@@ -246,7 +248,7 @@ export default function OrdersHistory() {
                           />
                           <div className="flex flex-col text-sm ">
                             <span className="">
-                              {localStorage.lang == "ar"
+                              {lang == "ar"
                                 ? itemLine.item.nameAr
                                 : itemLine.item.nameEn}
                             </span>

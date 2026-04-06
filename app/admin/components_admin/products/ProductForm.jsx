@@ -19,7 +19,8 @@ export default function FormProduct() {
   const [enabledFavorite, setenabledFavorite] = useState(false);
   const { triggerRefresh } = useRefresh();
   const { selectedProductId, setSelectedProductId } = useIdContext();
-
+  const lang =
+    typeof window !== "undefined" ? localStorage.getItem("lang") : null;
   const [product, setProduct] = useState({
     nameEn: "",
     nameAr: "",
@@ -567,9 +568,7 @@ export default function FormProduct() {
                 {itemCategory &&
                   itemCategory.map((category, index) => (
                     <option key={index} value={category.itemCategoryId}>
-                      {localStorage.lang === "ar"
-                        ? category.nameAr
-                        : category.nameEn}
+                      {lang === "ar" ? category.nameAr : category.nameEn}
                     </option>
                   ))}
               </select>

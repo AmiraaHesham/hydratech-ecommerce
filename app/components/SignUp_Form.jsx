@@ -75,12 +75,14 @@ export default function SignUp() {
   };
   const [governorates, setGovernorates] = useState([]);
   const [value, setValue] = useState(null);
+  const lang =
+    typeof window !== "undefined" ? localStorage.getItem("lang") : null;
 
   const getGovernorate = async () => {
     const res = await getRequest("/api/public/governorates");
     const formatted = res.map((item) => ({
       value: item.governorateId,
-      label: localStorage.lang === "ar" ? item.nameAr : item.nameEn,
+      label: lang === "ar" ? item.nameAr : item.nameEn,
     }));
     setGovernorates(formatted);
   };

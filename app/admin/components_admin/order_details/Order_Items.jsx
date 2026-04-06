@@ -12,6 +12,8 @@ export default function OrdersItems({ orderId }) {
   const { setSelectedOrderState } = useOrderDetailsContext();
   const { setSelectedOrderCode } = useOrderDetailsContext();
   const { setSelectedOrderDate } = useOrderDetailsContext();
+  const lang =
+    typeof window !== "undefined" ? localStorage.getItem("lang") : null;
 
   const [orderTotalPrice, setOrderTotalPrice] = useState("");
   const orderItem = async () => {
@@ -71,9 +73,7 @@ export default function OrdersItems({ orderId }) {
                       </div>
                       <div>
                         <h1 className="font-semibold text-sm">
-                          {localStorage.lang === "ar"
-                            ? item.item.nameAr
-                            : item.item.nameEn}
+                          {lang === "ar" ? item.item.nameAr : item.item.nameEn}
                         </h1>
                         <h1 className="text-xs  text-gray-500">
                           {item.item.code}

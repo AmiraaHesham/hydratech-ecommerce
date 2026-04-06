@@ -12,7 +12,7 @@ import ProductCard from "../../components/ProductCard";
 
 export default function FeatuerProducts({ FeatuerProducts }) {
   const lang =
-    typeof window !== "undefined" ? localStorage.getItem("lang") || "ar" : "ar";
+    typeof window !== "undefined" ? localStorage.getItem("lang") : "ar";
   const { t } = useLanguage();
 
   return (
@@ -42,7 +42,7 @@ export default function FeatuerProducts({ FeatuerProducts }) {
               slidesPerView: 5,
             },
             1487: {
-              slidesPerView: 5,
+              slidesPerView: 6,
             },
           }}
           modules={[Navigation, Autoplay]}
@@ -57,7 +57,7 @@ export default function FeatuerProducts({ FeatuerProducts }) {
           {FeatuerProducts.map((product) => {
             return (
               <SwiperSlide key={product.itemId} className=" mt-5   rounded-lg ">
-                <div className="rounded-lg h-[350px]  flex justify-center  cursor-pointer  ">
+                <div className="rounded-lg  flex justify-center  cursor-pointer  ">
                   <ProductCard productInfo={product} favorite={false} />
                 </div>
               </SwiperSlide>

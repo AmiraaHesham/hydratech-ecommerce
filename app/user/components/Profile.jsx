@@ -31,23 +31,29 @@ export default function Profile() {
     const res = await getRequest("/api/public/governorates");
     const formatted = res.map((item) => ({
       value: item.governorateId,
-      label: localStorage.lang === "ar" ? item.nameAr : item.nameEn,
+      label: localStorage.getItem("lang") === "ar" ? item.nameAr : item.nameEn,
     }));
     setGovernorates(formatted);
   };
   useEffect(() => {
     getGovernorate();
-    const firstName = localStorage.getItem("firstName");
+    const firstName =
+      typeof window !== "undefined" ? localStorage.getItem("firstName") : "";
     setFirstName(firstName);
-    const lastName = localStorage.getItem("lastName");
+    const lastName =
+      typeof window !== "undefined" ? localStorage.getItem("lastName") : "";
     setLastName(lastName);
-    const username = localStorage.getItem("username");
+    const username =
+      typeof window !== "undefined" ? localStorage.getItem("username") : "";
     setUsername(username);
-    const address = localStorage.getItem("address");
+    const address =
+      typeof window !== "undefined" ? localStorage.getItem("address") : "";
     setAddress(address);
-    const phone = localStorage.getItem("phone");
+    const phone =
+      typeof window !== "undefined" ? localStorage.getItem("phone") : "";
     setPhone(phone);
-    const emailAdress = localStorage.getItem("email");
+    const emailAdress =
+      typeof window !== "undefined" ? localStorage.getItem("email") : "";
     setEmail(emailAdress);
   }, []);
   const userId =
@@ -101,15 +107,33 @@ export default function Profile() {
             </span>
             <span
               onClick={() => {
-                localStorage.setItem("id", "");
-                localStorage.setItem("accessToken", "");
-                localStorage.setItem("address", "");
-                localStorage.setItem("email", "");
-                localStorage.setItem("firstName", "");
-                localStorage.setItem("lastName", "");
-                localStorage.setItem("phone", "");
-                localStorage.setItem("role", "");
-                localStorage.setItem("username", "");
+                typeof window !== "undefined"
+                  ? localStorage.setItem("id", "")
+                  : "";
+                typeof window !== "undefined"
+                  ? localStorage.setItem("accessToken", "")
+                  : "";
+                typeof window !== "undefined"
+                  ? localStorage.setItem("address", "")
+                  : "";
+                typeof window !== "undefined"
+                  ? localStorage.setItem("email", "")
+                  : "";
+                typeof window !== "undefined"
+                  ? localStorage.setItem("firstName", "")
+                  : "";
+                typeof window !== "undefined"
+                  ? localStorage.setItem("lastName", "")
+                  : "";
+                typeof window !== "undefined"
+                  ? localStorage.setItem("phone", "")
+                  : "";
+                typeof window !== "undefined"
+                  ? localStorage.setItem("role", "")
+                  : "";
+                typeof window !== "undefined"
+                  ? localStorage.setItem("username", "")
+                  : "";
                 navigate.push("/signin");
               }}
             >
