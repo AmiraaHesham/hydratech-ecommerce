@@ -19,7 +19,7 @@ export default function CategoryForm() {
   const [nameAr, setNameAr] = useState("");
   const { t } = useLanguage();
   const { triggerRefresh } = useRefresh();
-
+  const [loading, setLoading] = useState(false);
   const { selectedCategoryId } = useIdContext();
 
   const handelupload = (e) => {
@@ -47,6 +47,7 @@ export default function CategoryForm() {
     let img = document.querySelector("#lable-img");
     img.classList.add("hidden");
     upload.classList.remove("hidden");
+    setLoading(true);
     try {
       const formData = new FormData();
       formData.append("nameEn", nameEn);
@@ -68,10 +69,13 @@ export default function CategoryForm() {
       // setPhoto((prev)=>({...prev, image:''}))
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const CategoryData = useCallback(async () => {
+    setLoading(true);
     if (selectedCategoryId != null) {
       try {
         let upload = document.querySelector("#label-uplod");
@@ -88,6 +92,8 @@ export default function CategoryForm() {
         }));
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     } else {
       setNameAr(""), setNameEn("");
@@ -106,7 +112,7 @@ export default function CategoryForm() {
     // let img = document.querySelector("#lable-img");
     // img.classList.add("hidden");
     // upload.classList.remove("hidden");
-
+    setLoading(true);
     try {
       const formData = new FormData();
       formData.append("nameEn", nameEn);
@@ -129,6 +135,8 @@ export default function CategoryForm() {
       // setNameEn("");
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -141,6 +149,17 @@ export default function CategoryForm() {
       id="add-category-form"
       className=" hidden justify-center items-center w-full  mt-5"
     >
+      {loading && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <Image
+            src="/Images/logo.png"
+            alt=""
+            className="w-[100px] h-[100px]  border-t-transparent rounded-full animate-pulse"
+            width={100}
+            height={100}
+          />
+        </div>
+      )}
       <div className="bg-white shadow-md shadow-slate-400 h-[530px] xs:w-full lg:w-[600px] flex flex-col border rounded-md">
         <div className="m-4 flex justify-between items-center">
           <h1 id="nameFormCategory" className="text-lg font-semibold"></h1>

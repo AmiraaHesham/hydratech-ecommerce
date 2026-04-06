@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { postRequest } from "../../../../utils/requestsUtils";
 import { useOrderDetailsContext } from "../../../../context/orderDetailsContext";
 import { useLanguage } from "../../../../context/LanguageContext";
+import Image from "next/image";
 
 export default function UpdateStatus({ orderId }) {
   const [activeStep, setActiveStep] = useState();
@@ -12,7 +13,7 @@ export default function UpdateStatus({ orderId }) {
     useOrderDetailsContext();
   // const [state, setState] = useState('');
   const [orderStepPath, setOrderStepPath] = useState(5);
-
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     if (selectedOrderState === "PENDING") {
       setActiveStep(1);
@@ -45,6 +46,7 @@ export default function UpdateStatus({ orderId }) {
     { icon: <FaCheck size={20} />, label: t("DELIVERED"), value: "DELIVERED" },
   ];
   const changeState = async (state) => {
+    setLoading(true);
     try {
       const res = await postRequest(
         `/api/admin/orders/${orderId}/changeState/${state}`,
@@ -56,10 +58,23 @@ export default function UpdateStatus({ orderId }) {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
   return (
     <div className="relative flex items-center h-16 px-4 my-5">
+      {loading && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <Image
+            src="/Images/logo.png"
+            alt=""
+            className="w-[100px] h-[100px]  border-t-transparent rounded-full animate-pulse"
+            width={100}
+            height={100}
+          />
+        </div>
+      )}
       <div
         className="absolute top-1/2 left-0 right-0 h-0.5"
         style={{

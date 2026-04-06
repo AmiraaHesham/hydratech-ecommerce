@@ -51,41 +51,60 @@ export default function Cart() {
     }
   };
   const changeQuantity = async (itemId, newQuantity) => {
-    await postRequest(
-      `/api/shopCarts/${userId}/changeQuantity`,
-      {
-        itemLineId: itemId,
-        quantity: newQuantity,
-      },
-      ""
-    );
-    getProductInCart();
+    setLoading(true);
+    try {
+      await postRequest(
+        `/api/shopCarts/${userId}/changeQuantity`,
+        {
+          itemLineId: itemId,
+          quantity: newQuantity,
+        },
+        ""
+      );
+      getProductInCart();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const deleteItemFormCart = async (itemLineId) => {
-    await deleteRequest(
-      `/api/shopCarts/${userId}/deleteLine/${itemLineId}`,
-      t("message_DeleteText")
-    );
-    getProductInCart();
+    setLoading(true);
+    try {
+      await deleteRequest(
+        `/api/shopCarts/${userId}/deleteLine/${itemLineId}`,
+        t("message_DeleteText")
+      );
+      getProductInCart();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const placeOrder = async () => {
-    if (items.length != 0) {
-      if (isFirstAction) {
-        getProductInCart();
+    setLoading(true);
+    try {
+      if (items.length != 0) {
+        if (isFirstAction) {
+          getProductInCart();
+        } else {
+          const res = await postRequest(
+            `/api/orders/${userId}/placeOrder`,
+            "",
+            ""
+          );
+          navigate.push("/user/ordershistory");
+          console.log(res);
+        }
+        setIsFirstAction(!isFirstAction);
       } else {
-        const res = await postRequest(
-          `/api/orders/${userId}/placeOrder`,
-          "",
-          ""
-        );
-        navigate.push("/user/ordershistory");
-        console.log(res);
+        toast.error(t("noProductsInCart"));
       }
-      setIsFirstAction(!isFirstAction);
-    } else {
-      toast.error(t("noProductsInCart"));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -94,6 +113,17 @@ export default function Cart() {
   }, []);
   return (
     <div className="xl:p-10 xs:p-7  ">
+      {loading && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <Image
+            src="/Images/logo.png"
+            alt=""
+            className="w-[100px] h-[100px]  border-t-transparent rounded-full animate-pulse"
+            width={100}
+            height={100}
+          />
+        </div>
+      )}
       <div className="flex justify-between py-5">
         <div className="">
           <h1 className="text-4xl font-bold mb-2"> {t("shoppingCart")} </h1>

@@ -79,33 +79,40 @@ export default function ProductDetails({ itemId }) {
   const userId =
     typeof window !== "undefined" ? localStorage.getItem("id") : "";
 
-  const addToCart = async () => {
-    await postRequest(
-      `/api/shopCarts/${userId}/addLine`,
-      {
-        itemId: itemId,
-        quantity: count,
-      },
-      ""
-    );
-    const result = await Swal.fire({
-      icon: "success",
-      title: t("تم إضافة المنتج الى سلة التسوق"),
-      showCancelButton: true,
-      confirmButtonText: lang === "ar" ? " إتمام  الشراء " : "Yes",
-      cancelButtonText: t("continueShopping"),
-      customClass: {
-        popup: "rounded-xl shadow-lg border border-gray-200 p-6",
-        title: "text-xl font-bold text-gray-800 mb-2",
-        content: "text-sm text-gray-600 mb-4",
-        confirmButton:
-          "bg-blue-600 hover:bg-blue-500 text-white font-medium px-6 py-2 rounded-lg",
-        cancelButton:
-          "bg-gray-500 hover:bg-gray-400 text-w  font-medium px-6 py-2 rounded-lg ml-2",
-      },
-    });
-    if (result.isConfirmed) {
-      navigate.push("/user/cart");
+  const addToCart = async (productId) => {
+    setLoading(true);
+    try {
+      await postRequest(
+        `/api/shopCarts/${userId}/addLine`,
+        {
+          itemId: productId,
+          quantity: 1,
+        },
+        ""
+      );
+      const result = await Swal.fire({
+        icon: "success",
+        title: t("تم إضافة المنتج الى سلة التسوق"),
+        showCancelButton: true,
+        confirmButtonText: lang === "ar" ? " إتمام  الشراء " : "Yes",
+        cancelButtonText: t("continueShopping"),
+        customClass: {
+          popup: "rounded-xl shadow-lg border border-gray-200 p-6",
+          title: "text-xl font-bold text-gray-800 mb-2",
+          content: "text-sm text-gray-600 mb-4",
+          confirmButton:
+            "bg-blue-600 hover:bg-blue-500 text-white font-medium px-6 py-2 rounded-lg",
+          cancelButton:
+            "bg-gray-500 hover:bg-gray-400 text-w  font-medium px-6 py-2 rounded-lg ml-2",
+        },
+      });
+      if (result.isConfirmed) {
+        navigate.push("/user/cart");
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -136,6 +143,17 @@ export default function ProductDetails({ itemId }) {
         ))
       ) : (
         <div className="flex lg:flex-row xs:flex-col  gap-10 py-10 mx-10 ">
+          {loading && (
+            <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+              <Image
+                src="/Images/logo.png"
+                alt=""
+                className="w-[100px] h-[100px]  border-t-transparent rounded-full animate-pulse"
+                width={100}
+                height={100}
+              />
+            </div>
+          )}
           <div className="w-full h-[600px] ">
             <div className="w-full h-[500px] flex justify-center   rounded-md ">
               <Image

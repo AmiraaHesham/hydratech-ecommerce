@@ -23,48 +23,12 @@ export default function ForgotPassword() {
   const { t } = useLanguage();
   const input_passwordRef = useRef();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-
-    try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/login`,
-        {
-          username: username,
-          password: password,
-        },
-        ""
-      );
-      // console.log(response.data);
-      //   console.log(response.data);
-      //   localStorage.setItem("accessToken", response.data.accessToken);
-      //   localStorage.setItem("id", response.data.userDetails.userId);
-      //   localStorage.setItem("firstName", response.data.userDetails.firstName);
-      //   localStorage.setItem("lastName", response.data.userDetails.lastName);
-      //   localStorage.setItem("address", response.data.userDetails.address);
-      //   localStorage.setItem("phone", response.data.userDetails.phone);
-      //   localStorage.setItem("email", response.data.userDetails.email);
-      //   localStorage.setItem("username", response.data.userDetails.username);
-      //   localStorage.setItem("lang", response.data.userDetails.language);
-      //   localStorage.setItem("role", response.data.userDetails.role);
-      //   if (response.data.userDetails.role === "ADMIN") {
-      //     navigate.push("/admin/pages/Dashboard");
-      //   } else navigate.push("/user/home");
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div className="h-full w-full p-10  md:order-1 xs:order-2">
       <div className="flex justify-between">
         <div className="">
           <h3 className="text-3xl my-3 font-semibold font-serif">
-          إعادة تعيين كلمة المرور
+            إعادة تعيين كلمة المرور
           </h3>
           {/* <h4 className="text-sm text-gray-500 font-serif">
             {t("welcomeMessage")}
@@ -94,34 +58,51 @@ export default function ForgotPassword() {
       </div>
       <div className="flex justify-center items-center  mt-20">
         <div className="flex flex-col gap-7 w-[80%]">
-          <form className="flex flex-col gap-6" onSubmit={handleLogin}>
-            <div className="flex w-full px-2 rounded-md h-10 border items-center gap-3">
-              {/* <label className="text-gray-500">Email Address</label>    */}
-              <input
-                className=" w-full px-3 outline-none"
-                placeholder={t("emailAddress")}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-              <span className="text-xl text-gray-700">
-                <FaUserLarge />
-              </span>
+          <form className="flex flex-col gap-6">
+            <div className="flex flex-col gap-3">
+              <div className=" w-full px-2 rounded-md h-10  border items-center ">
+                <input
+                  ref={input_passwordRef}
+                  className=" w-full h-full px-3 outline-none"
+                  placeholder={t("newPassword")}
+                  type="password"
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  requiblue
+                />
+              </div>
+              <div>
+                <div className=" w-full px-2 rounded-md h-10 border items-center gap-3">
+                  <input
+                    ref={input_passwordRef}
+                    className=" w-full h-full px-3 outline-none"
+                    placeholder={t("confirmPassword")}
+                    type="password"
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    requiblue
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="bg-blue-600 text-white rounded-md w-full h-10 my-10 hover:bg-blue-700"
+                >
+                  {loading ? t("save") : t("save")}
+                </button>
+              </div>
             </div>
-
             {/* <div className="flex w-full px-2 rounded-md h-10 border items-center gap-3"> */}
-              {/* <label className="text-gray-500">Email Address</label>    */}
-              {/* <input
+            {/* <label className="text-gray-500">Email Address</label>    */}
+            {/* <input
                 ref={input_passwordRef}
                 className=" w-full px-3 outline-none"
                 placeholder={t("password")}
                 type="password"
                 onChange={(e) => setPassword(e.target.value)}
-                required
+                requiblue
               /> */}
-              {/* <span className="text-xl text-gray-700">
+            {/* <span className="text-xl text-gray-700">
                 <FaEyeSlash
                   id="eyeSlash" */}
-                   {/* className={input_passwordRef.current.type === "text"? "hidden" : "block"
+            {/* className={input_passwordRef.current.type === "text"? "hidden" : "block"
                    }
                   onClick={() => {
                     input_passwordRef.current.type = "text";
@@ -134,7 +115,7 @@ export default function ForgotPassword() {
                 <FaEye
                   id="eye"
                   className="hidden" */}
-                  {/* input_passwordRef.current.type === "password"
+            {/* input_passwordRef.current.type === "password"
                       ? "hidden"
                       : "block"
                    } */}
@@ -150,14 +131,9 @@ export default function ForgotPassword() {
             // </div> */}
             {/* <h1 className="text-blue-500 text-sm">{t("forgotPassword")} </h1>
             <hr className="h-1"></hr> */}
-            <button
-              type="submit"
-              className="bg-blue-600 text-white rounded-md h-10 "
-            >
-              {loading ? t("done") : t("done")}
-            </button>
+
             {/* <Link href="/signup"> */}
-              {/* <span className="flex justify-center items-center text-sm text-gray-500 font-serif">
+            {/* <span className="flex justify-center items-center text-sm text-gray-500 font-serif">
                 {t("createNewAccount")}
               </span> */}
             {/* </Link> */}

@@ -11,13 +11,15 @@ export default function Home() {
   useEffect(() => {
     // غيّر '/ar' إلى الرابط اللي عايزه
     console.log(role);
-    if (
-      role === "user" || role === ""
+    if (role === "admin") {
+      router.replace('/admin/pages/Dashboard')
+    }
 
-    ) {
+
+    else {
+
       router.replace('/user/home'); // استخدم replace عشان ما يبقاش في التاريخ
-    } else {
-      router.replace('/admin/pages/Dashboard');
+
     }
   }, []);
 

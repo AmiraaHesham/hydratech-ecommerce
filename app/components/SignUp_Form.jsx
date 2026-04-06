@@ -32,7 +32,6 @@ export default function SignUp() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-
     try {
       console.log(
         value.value,

@@ -179,5 +179,7 @@
   "length": "Length",
   "weight": "Weight",
   "cm": "cm",
-  "kg": "kg"
+  "kg": "kg",
+  "sending": "Sending",
+  "send": "Send"
 }

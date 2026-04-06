@@ -1,3 +1,4 @@
+"use client";
 import { useIdContext } from "../../../context/idContext";
 import Image from "next/image";
 import { FaHeart } from "react-icons/fa";
@@ -8,44 +9,52 @@ import { useRouter } from "next/navigation";
 import { useRefresh } from "../../../context/refreshContext";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import { useState } from "react";
 
 export default function ProductCard({ productInfo, favorite }) {
   const { setSelectedProductId } = useIdContext();
   const navigate = useRouter();
   const { t } = useLanguage();
   // const { triggerRefresh } = useRefresh();
+  const [loading, setLoading] = useState(false);
   const lang =
     typeof window !== "undefined" ? localStorage.getItem("lang") : null;
-
   const userId =
     typeof window !== "undefined" ? localStorage.getItem("id") : null;
   const addToCart = async (productId) => {
-    await postRequest(
-      `/api/shopCarts/${userId}/addLine`,
-      {
-        itemId: productId,
-        quantity: 1,
-      },
-      ""
-    );
-    const result = await Swal.fire({
-      icon: "success",
-      title: t("تم إضافة المنتج الى سلة التسوق"),
-      showCancelButton: true,
-      confirmButtonText: lang === "ar" ? " إتمام  الشراء " : "Yes",
-      cancelButtonText: t("continueShopping"),
-      customClass: {
-        popup: "rounded-xl shadow-lg border border-gray-200 p-6",
-        title: "text-xl font-bold text-gray-800 mb-2",
-        content: "text-sm text-gray-600 mb-4",
-        confirmButton:
-          "bg-blue-600 hover:bg-blue-500 text-white font-medium px-6 py-2 rounded-lg",
-        cancelButton:
-          "bg-gray-500 hover:bg-gray-400 text-w  font-medium px-6 py-2 rounded-lg ml-2",
-      },
-    });
-    if (result.isConfirmed) {
-      navigate.push("/user/cart");
+    setLoading(true);
+    try {
+      await postRequest(
+        `/api/shopCarts/${userId}/addLine`,
+        {
+          itemId: productId,
+          quantity: 1,
+        },
+        ""
+      );
+      const result = await Swal.fire({
+        icon: "success",
+        title: t("تم إضافة المنتج الى سلة التسوق"),
+        showCancelButton: true,
+        confirmButtonText: lang === "ar" ? " إتمام  الشراء " : "Yes",
+        cancelButtonText: t("continueShopping"),
+        customClass: {
+          popup: "rounded-xl shadow-lg border border-gray-200 p-6",
+          title: "text-xl font-bold text-gray-800 mb-2",
+          content: "text-sm text-gray-600 mb-4",
+          confirmButton:
+            "bg-blue-600 hover:bg-blue-500 text-white font-medium px-6 py-2 rounded-lg",
+          cancelButton:
+            "bg-gray-500 hover:bg-gray-400 text-w  font-medium px-6 py-2 rounded-lg ml-2",
+        },
+      });
+      if (result.isConfirmed) {
+        navigate.push("/user/cart");
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
   const addFavoriteItems = async (productId) => {
@@ -81,6 +90,17 @@ export default function ProductCard({ productInfo, favorite }) {
       id={`div_${productInfo.itemId}`}
       className="h-[350px] bg-white border w-full rounded-md cursor-pointer  hover:border-b-[7px] hover:border-b-blue-600  hover:scale-105 duration-200   hover:shadow-lg "
     >
+      {loading && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <Image
+            src="/Images/logo.png"
+            alt=""
+            className="w-[100px] h-[100px]  border-t-transparent rounded-full animate-pulse"
+            width={100}
+            height={100}
+          />
+        </div>
+      )}
       <div className="flex flex-col  justify-between items-baseline">
         <Image
           src={`${process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL}${

@@ -23,6 +23,7 @@ export default function SignIn() {
   const { locale, setLocale } = useLanguage();
   const { t } = useLanguage();
   const input_passwordRef = useRef();
+  const [email, setEmail] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -81,7 +82,23 @@ export default function SignIn() {
       setLoading(false);
     }
   };
+  const handleSendForgotPasswordEmail = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
 
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/forgot-password/?email=${email}`
+      );
+
+      console.log(response.data);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="h-full w-full p-10  md:order-1 xs:order-2">
       {loading && (
@@ -96,12 +113,22 @@ export default function SignIn() {
         </div>
       )}
       <div className="flex justify-between">
-        <div className="">
+        <div id="welcome_section" className="">
           <h3 className="text-3xl my-3 font-semibold font-serif">
             {t("welcomeBack")}
           </h3>
           <h4 className="text-sm text-gray-500 font-serif">
             {t("welcomeMessage")}
+          </h4>
+        </div>
+        <div id="forgot_password_section" className="hidden">
+          <h3 className="text-3xl my-3 font-semibold font-serif">
+            {t("إعادة تعين كلمة المرور")}
+          </h3>
+          <h4 className="text-xl text-gray-500 font-serif">
+            {t(
+              "سيتم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني إذا كان مسجلاً لدينا"
+            )}
           </h4>
         </div>
         <div className="flex items-center gap-1 mx-5  ">
@@ -128,7 +155,11 @@ export default function SignIn() {
       </div>
       <div className="flex justify-center items-center  mt-20">
         <div className="flex flex-col gap-7 w-[80%]">
-          <form className="flex flex-col gap-6" onSubmit={handleLogin}>
+          <form
+            id="form_login"
+            className="flex flex-col gap-6"
+            onSubmit={handleLogin}
+          >
             <div className="flex w-full px-2 rounded-md h-10 border items-center gap-3 shadow-md">
               {/* <label className="text-gray-500">Email Address</label>    */}
               <input
@@ -182,7 +213,24 @@ export default function SignIn() {
                 />{" "}
               </span>
             </div>
-            <h1 className="text-blue-500 text-sm">{t("forgotPassword")} </h1>
+            <span
+              className="text-blue-500 text-sm flex justify-start items-start "
+              onClick={() => {
+                const welcome_section =
+                  document.querySelector("#welcome_section");
+                const forgot_password_section = document.querySelector(
+                  "#forgot_password_section"
+                );
+                const form_email = document.querySelector("#form_email");
+                const form_login = document.querySelector("#form_login");
+                form_email.classList.remove("hidden");
+                form_login.classList.add("hidden");
+                welcome_section.classList.add("hidden");
+                forgot_password_section.classList.remove("hidden");
+              }}
+            >
+              {t("forgotPassword")}
+            </span>
             <hr className="h-1"></hr>
             <button
               type="submit"
@@ -195,7 +243,51 @@ export default function SignIn() {
                 {t("createNewAccount")}
               </span>
             </Link>
-            {loading ? <Loading /> : null}
+          </form>
+          <form
+            id="form_email"
+            className="hidden w-full "
+            onSubmit={handleSendForgotPasswordEmail}
+          >
+            <div className="flex w-full px-2 rounded-md h-10 border items-center gap-3">
+              <input
+                className=" w-full px-3 outline-none"
+                placeholder={t("email")}
+                type="email"
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <span className="text-xl text-gray-700">
+                <MdEmail />
+              </span>
+            </div>
+            <div className="my-10 flex gap-5">
+              <button
+                type="submit"
+                className="bg-blue-600 text-white rounded-md w-full h-10 shadow hover:bg-blue-700"
+              >
+                {loading ? t("send") : t("sending")}
+              </button>
+              <button
+                type="submit"
+                className="bg-white text-blue-600 border-blue-600 border rounded-md w-full h-10  hover:bg-blue-600 shadow hover:text-white"
+                onClick={() => {
+                  const welcome_section =
+                    document.querySelector("#welcome_section");
+                  const forgot_password_section = document.querySelector(
+                    "#forgot_password_section"
+                  );
+                  const form_email = document.querySelector("#form_email");
+                  const form_login = document.querySelector("#form_login");
+                  form_email.classList.add("hidden");
+                  form_login.classList.remove("hidden");
+                  welcome_section.classList.remove("hidden");
+                  forgot_password_section.classList.add("hidden");
+                }}
+              >
+                {t("cancel")}
+              </button>
+            </div>
           </form>
         </div>
       </div>

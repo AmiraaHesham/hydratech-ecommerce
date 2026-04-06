@@ -29,7 +29,7 @@ export default function Sliders() {
   const { t } = useLanguage();
   const [sliderImages, setSliderImages] = useState([]);
 
-  const [responsSuccess, setResponsSuccess] = useState();
+  const [loading, setLoading] = useState(false);
 
   const getSliderImages = async () => {
     const res = await getSliderImage();
@@ -37,14 +37,22 @@ export default function Sliders() {
   };
 
   const handelupload = async (e) => {
-    const file = e.target.files[0];
-    const formData = new FormData();
-    formData.append("imageFile", file);
-    await postRequest("/api/admin/sliderImages", formData, t("message_add"));
-    getSliderImages();
+    setLoading(true);
+    try {
+      const file = e.target.files[0];
+      const formData = new FormData();
+      formData.append("imageFile", file);
+      await postRequest("/api/admin/sliderImages", formData, t("message_add"));
+      getSliderImages();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const deleteSlideImage = async (deletedSliderImageId) => {
+    setLoading(true);
     try {
       const res = await deleteRequest(
         `/api/admin/sliderImages/${deletedSliderImageId}`,
@@ -53,6 +61,8 @@ export default function Sliders() {
       getSliderImages();
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -62,6 +72,17 @@ export default function Sliders() {
 
   return (
     <div className="h-full w-full p-5">
+      {loading && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <Image
+            src="/Images/logo.png"
+            alt=""
+            className="w-[100px] h-[100px]  border-t-transparent rounded-full animate-pulse"
+            width={100}
+            height={100}
+          />
+        </div>
+      )}
       <div className=" w-[100%] ">
         <div className="flex items-center justify-between  gap-2 mb-3 ">
           <div className="flex items-center gap-3">

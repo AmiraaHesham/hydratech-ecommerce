@@ -18,6 +18,7 @@ export default function CategoryForm() {
     password: "",
     confirmPassword: "",
   });
+  const [loading, setLoading] = useState(false);
   const { t } = useLanguage();
   const router = useRouter();
   const { triggerRefresh } = useRefresh();
@@ -27,7 +28,7 @@ export default function CategoryForm() {
   const addAdminUser = async () => {
     let form = document.querySelector("#add-admin-form");
     form.classList.add("hidden");
-
+    setLoading(true);
     try {
       await postRequest(
         "/api/admin/users",
@@ -43,10 +44,13 @@ export default function CategoryForm() {
       triggerRefresh();
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const AdminData = useCallback(async () => {
+    setLoading(true);
     if (selectedAdminId != null) {
       try {
         const res = await getRequest(`/api/users/${selectedAdminId}`);
@@ -58,6 +62,8 @@ export default function CategoryForm() {
         }));
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     }
   }, [selectedAdminId]);
@@ -65,7 +71,7 @@ export default function CategoryForm() {
   const updateAdmin = async () => {
     let form = document.querySelector("#add-admin-form");
     form.classList.add("hidden");
-
+    setLoading(true);
     try {
       await putRequest(
         `/api/admin/users/${selectedAdminId}`,
@@ -81,6 +87,8 @@ export default function CategoryForm() {
       triggerRefresh();
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -92,6 +100,17 @@ export default function CategoryForm() {
       id="add-admin-form"
       className=" hidden absolute justify-end  w-full h-screen "
     >
+      {loading && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <Image
+            src="/Images/logo.png"
+            alt=""
+            className="w-[100px] h-[100px]  border-t-transparent rounded-full animate-pulse"
+            width={100}
+            height={100}
+          />
+        </div>
+      )}
       <div className="bg-white shadow-md shadow-slate-400  xs:w-full lg:w-[500px] flex flex-col border rounded-md">
         <div className="m-4 flex justify-between items-center">
           <h1 id="nameForm" className="text-lg font-semibold"></h1>

@@ -56,6 +56,7 @@ export default function Profile() {
       typeof window !== "undefined" ? localStorage.getItem("email") : "";
     setEmail(emailAdress);
   }, []);
+
   const userId =
     typeof window !== "undefined" ? localStorage.getItem("id") : "";
   const updateProfileInfo = async (e) => {

@@ -11,6 +11,7 @@ import { IoMdSave, IoMdShare } from "react-icons/io";
 import { useEffect, useState } from "react";
 import { getRequest, putRequest } from "../../../../utils/requestsUtils";
 import { useLanguage } from "../../../../context/LanguageContext";
+import Image from "next/image";
 
 export default function ContactForm() {
   const [contactInfo, setContactInfo] = useState({
@@ -23,22 +24,29 @@ export default function ContactForm() {
     telegram: "",
   });
   const { t } = useLanguage();
-
+  const [loading, setLoading] = useState(false);
   const addContactInfo = async () => {
-    await putRequest(
-      "/api/admin/contact",
-      {
-        phone: contactInfo.phone,
-        email: contactInfo.email,
-        facebookURL: contactInfo.facebock,
-        whatsappURL: contactInfo.whatsApp,
-        telegramURL: contactInfo.telegram,
-        instagramURL: contactInfo.instagram,
-        xURL: contactInfo.x,
-      },
-      t("message_EditText")
-    );
-    getcontactInfo();
+    setLoading(true);
+    try {
+      await putRequest(
+        "/api/admin/contact",
+        {
+          phone: contactInfo.phone,
+          email: contactInfo.email,
+          facebookURL: contactInfo.facebock,
+          whatsappURL: contactInfo.whatsApp,
+          telegramURL: contactInfo.telegram,
+          instagramURL: contactInfo.instagram,
+          xURL: contactInfo.x,
+        },
+        t("message_EditText")
+      );
+      getcontactInfo();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const getcontactInfo = async () => {
@@ -62,6 +70,17 @@ export default function ContactForm() {
   }, []);
   return (
     <div className="bg-white border rounded-md px-5 h-[100%]">
+      {loading && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <Image
+            src="/Images/logo.png"
+            alt=""
+            className="w-[100px] h-[100px]  border-t-transparent rounded-full animate-pulse"
+            width={100}
+            height={100}
+          />
+        </div>
+      )}
       <form
         className="h-full"
         onSubmit={(e) => {

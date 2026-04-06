@@ -112,149 +112,164 @@ export default function FormProduct() {
     if (product.img2file) formData.append("itemImages", product.img2file);
     if (product.img3file) formData.append("itemImages", product.img3file);
     // console.log(formData);
+    setLoading(true);
+    try {
+      await postRequest("/api/admin/items", formData, t("message_AddText"));
+      triggerRefresh();
+      setSelectedProductId(null);
 
-    await postRequest(
-      "/api/admin/items",
-      formData,
-      t("message_AddText"),
-      setLoading
-    );
-    triggerRefresh();
-    setSelectedProductId(null);
-
-    setProduct({
-      nameEn: "",
-      nameAr: "",
-      price: "",
-      oldPrice: "",
-      descriptionAr: "",
-      descriptionEn: "",
-      height: "",
-      weight: "",
-      width: "",
-      length: "",
-      category: { id: "", nameAr: "", nameEn: "" },
-      code: "",
-      mainImage: "",
-      img2: "",
-      img3: "",
-    });
-    setProduct((prev) => ({ ...prev, enabledActive: false }));
-    setProduct((prev) => ({ ...prev, enabledActive: true }));
-    const labelUpload = document.querySelector(`#label-mainImage`);
-    labelUpload.classList.remove("hidden");
-    const labelImg = document.querySelector(`#mainImage`);
-    labelImg.classList.add("hidden");
-    const deleteImg = document.querySelector(`#delete-mainImage`);
-    deleteImg.classList.add("hidden");
-  };
-  const productData = async () => {
-    if (selectedProductId != null) {
-      const deleteImg = document.querySelector("#delete-mainImage");
-      deleteImg.classList.remove("hidden");
-      const labelImg = document.querySelector("#mainImage");
-      labelImg.classList.remove("hidden");
-      const labelUpload = document.querySelector("#label-mainImage");
-      labelUpload.classList.add("hidden");
-      const res = await getProductDetails(selectedProductId);
-
-      setProduct((prev) => ({
-        ...prev,
-        nameEn: res.nameEn,
-        nameAr: res.nameAr,
-        code: res.code,
-        price: res.price,
-        oldPrice: res.oldPrice,
-        descriptionAr: res.descriptionAr,
-        descriptionEn: res.descriptionEn,
-        height: res.height,
-        weight: res.weight,
-        width: res.width,
-        length: res.length,
-        mainImage:
-          process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL + res.mainImageURL || "",
-        img2: res.img2 || "",
-        img3: res.img3 || "",
-        category: {
-          ...prev.category,
-          id: res.itemCategory.itemCategoryId,
-          nameAr: res.itemCategory.nameAr,
-          nameEn: res.itemCategory.nameEn,
-        },
-      }));
-      setenabledFavorite(res.favorite);
-      setenabledActive(res.active);
-    } else {
       setProduct({
         nameEn: "",
         nameAr: "",
-        code: "",
         price: "",
         oldPrice: "",
         descriptionAr: "",
         descriptionEn: "",
-        mainImage: "",
-        img2: "",
-        img3: "",
         height: "",
         weight: "",
         width: "",
         length: "",
         category: { id: "", nameAr: "", nameEn: "" },
+        code: "",
+        mainImage: "",
+        img2: "",
+        img3: "",
       });
+      setProduct((prev) => ({ ...prev, enabledActive: false }));
+      setProduct((prev) => ({ ...prev, enabledActive: true }));
       const labelUpload = document.querySelector(`#label-mainImage`);
       labelUpload.classList.remove("hidden");
       const labelImg = document.querySelector(`#mainImage`);
       labelImg.classList.add("hidden");
       const deleteImg = document.querySelector(`#delete-mainImage`);
       deleteImg.classList.add("hidden");
-      setenabledFavorite(false);
-      setenabledActive(true);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const productData = async () => {
+    setLoading(true);
+    try {
+      if (selectedProductId != null) {
+        const deleteImg = document.querySelector("#delete-mainImage");
+        deleteImg.classList.remove("hidden");
+        const labelImg = document.querySelector("#mainImage");
+        labelImg.classList.remove("hidden");
+        const labelUpload = document.querySelector("#label-mainImage");
+        labelUpload.classList.add("hidden");
+        const res = await getProductDetails(selectedProductId);
+
+        setProduct((prev) => ({
+          ...prev,
+          nameEn: res.nameEn,
+          nameAr: res.nameAr,
+          code: res.code,
+          price: res.price,
+          oldPrice: res.oldPrice,
+          descriptionAr: res.descriptionAr,
+          descriptionEn: res.descriptionEn,
+          height: res.height,
+          weight: res.weight,
+          width: res.width,
+          length: res.length,
+          mainImage:
+            process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL + res.mainImageURL || "",
+          img2: res.img2 || "",
+          img3: res.img3 || "",
+          category: {
+            ...prev.category,
+            id: res.itemCategory.itemCategoryId,
+            nameAr: res.itemCategory.nameAr,
+            nameEn: res.itemCategory.nameEn,
+          },
+        }));
+        setenabledFavorite(res.favorite);
+        setenabledActive(res.active);
+      } else {
+        setProduct({
+          nameEn: "",
+          nameAr: "",
+          code: "",
+          price: "",
+          oldPrice: "",
+          descriptionAr: "",
+          descriptionEn: "",
+          mainImage: "",
+          img2: "",
+          img3: "",
+          height: "",
+          weight: "",
+          width: "",
+          length: "",
+          category: { id: "", nameAr: "", nameEn: "" },
+        });
+        const labelUpload = document.querySelector(`#label-mainImage`);
+        labelUpload.classList.remove("hidden");
+        const labelImg = document.querySelector(`#mainImage`);
+        labelImg.classList.add("hidden");
+        const deleteImg = document.querySelector(`#delete-mainImage`);
+        deleteImg.classList.add("hidden");
+        setenabledFavorite(false);
+        setenabledActive(true);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const updataProduct = async () => {
-    if (product.oldPrice > product.price || product.oldPrice === "") {
-      let form = document.querySelector("#add-product-form");
-      form.classList.add("hidden");
-      const formData = new FormData();
-      formData.append("nameEn", product.nameEn);
-      formData.append("nameAr", product.nameAr);
-      formData.append("code", product.code);
-      formData.append("price", product.price);
-      formData.append("oldPrice", product.oldPrice);
-      formData.append("descriptionAr", product.descriptionAr);
-      formData.append("descriptionEn", product.descriptionEn);
-      formData.append("active", enabledActive);
-      formData.append("weight", product.weight);
-      formData.append("height", product.height);
-      formData.append("width", product.width);
-      formData.append("length", product.length);
-      formData.append("favorite", enabledFavorite);
-      if (product.mainImagefile) {
-        formData.append("mainImage", product.mainImagefile);
-      }
-      if (product.img2file) {
-        formData.append("itemImages", product.img2file);
-      }
-      if (product.img3file) {
-        formData.append("itemImages", product.img3file);
-      }
-      formData.append("itemCategoryId", product.category.id);
-      await putRequest(
-        `/api/admin/items/${selectedProductId}`,
-        formData,
-        t("message_EditText")
-      );
-      triggerRefresh();
-      setSelectedProductId(null);
+    setLoading(true);
+    try {
+      if (product.oldPrice > product.price || product.oldPrice === "") {
+        let form = document.querySelector("#add-product-form");
+        form.classList.add("hidden");
+        const formData = new FormData();
+        formData.append("nameEn", product.nameEn);
+        formData.append("nameAr", product.nameAr);
+        formData.append("code", product.code);
+        formData.append("price", product.price);
+        formData.append("oldPrice", product.oldPrice);
+        formData.append("descriptionAr", product.descriptionAr);
+        formData.append("descriptionEn", product.descriptionEn);
+        formData.append("active", enabledActive);
+        formData.append("weight", product.weight);
+        formData.append("height", product.height);
+        formData.append("width", product.width);
+        formData.append("length", product.length);
+        formData.append("favorite", enabledFavorite);
+        if (product.mainImagefile) {
+          formData.append("mainImage", product.mainImagefile);
+        }
+        if (product.img2file) {
+          formData.append("itemImages", product.img2file);
+        }
+        if (product.img3file) {
+          formData.append("itemImages", product.img3file);
+        }
+        formData.append("itemCategoryId", product.category.id);
+        await putRequest(
+          `/api/admin/items/${selectedProductId}`,
+          formData,
+          t("message_EditText")
+        );
+        triggerRefresh();
+        setSelectedProductId(null);
 
-      const oldPrice = document.querySelector("#oldPrice");
-      oldPrice.classList.remove("border-red-600");
-    } else {
-      const oldPrice = document.querySelector("#oldPrice");
-      oldPrice.classList.add("border-red-600");
-      toast.error(t("check_oldPrice"));
+        const oldPrice = document.querySelector("#oldPrice");
+        oldPrice.classList.remove("border-red-600");
+      } else {
+        const oldPrice = document.querySelector("#oldPrice");
+        oldPrice.classList.add("border-red-600");
+        toast.error(t("check_oldPrice"));
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
   useEffect(() => {
