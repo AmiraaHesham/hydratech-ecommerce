@@ -95,7 +95,7 @@ export default function FormProduct() {
     const formData = new FormData();
     formData.append("nameEn", product.nameEn);
     formData.append("nameAr", product.nameAr);
-    formData.append("code", product.code);
+    formData.append("Model", product.code);
     formData.append("price", product.price);
     if (product.oldPrice) formData.append("oldPrice", product.oldPrice);
     formData.append("descriptionAr", product.descriptionAr);
@@ -159,6 +159,7 @@ export default function FormProduct() {
         labelImg.classList.remove("hidden");
         const labelUpload = document.querySelector("#label-mainImage");
         labelUpload.classList.add("hidden");
+
         const res = await getProductDetails(selectedProductId);
 
         setProduct((prev) => ({
@@ -176,8 +177,8 @@ export default function FormProduct() {
           length: res.length,
           mainImage:
             process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL + res.mainImageURL || "",
-          img2: res.img2 || "",
-          img3: res.img3 || "",
+          img2: process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL + res.img2 || "",
+          img3: process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL + res.img3 || "",
           category: {
             ...prev.category,
             id: res.itemCategory.itemCategoryId,
@@ -223,16 +224,17 @@ export default function FormProduct() {
 
   const updataProduct = async () => {
     setLoading(true);
+    console.log(product.oldPrice);
     try {
-      if (product.oldPrice > product.price || product.oldPrice === "") {
+      if (product.oldPrice > product.price || product.oldPrice === "nudefine") {
         let form = document.querySelector("#add-product-form");
         form.classList.add("hidden");
         const formData = new FormData();
         formData.append("nameEn", product.nameEn);
         formData.append("nameAr", product.nameAr);
-        formData.append("code", product.code);
+        formData.append("Model", product.code);
         formData.append("price", product.price);
-        formData.append("oldPrice", product.oldPrice);
+        if (product.oldPrice) formData.append("oldPrice", product.oldPrice);
         formData.append("descriptionAr", product.descriptionAr);
         formData.append("descriptionEn", product.descriptionEn);
         formData.append("active", enabledActive);
@@ -335,7 +337,7 @@ export default function FormProduct() {
                     const labelUpload =
                       document.querySelector("#label-mainImage");
                     labelUpload.classList.remove("hidden");
-                    setProduct((prev) => ({ ...prev, mainImagefile: {} }));
+                    setProduct((prev) => ({ ...prev, mainImagefile: "" }));
                   }}
                 >
                   <FaTimes />

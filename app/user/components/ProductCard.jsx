@@ -120,7 +120,7 @@ export default function ProductCard({ productInfo, favorite }) {
           <div className="flex justify-between items-center">
             {/* <div> */}
             <h1
-              className=" text-sm font-semibold"
+              className=" text-xs font-semibold"
               onClick={() => {
                 setSelectedProductId(productInfo.itemId);
                 navigate.push(
@@ -166,7 +166,7 @@ export default function ProductCard({ productInfo, favorite }) {
           {/* <div className="group relative inline-block"> */}
 
           <h1
-            className="text-sm text-gray-400 w-full h-16 overflow-hidden"
+            className="text-xs text-gray-400 w-full h-16 overflow-hidden"
             onClick={() => {
               setSelectedProductId(productInfo.itemId);
               navigate.push(`/user/pages/productdetails/${productInfo.itemId}`);
@@ -191,42 +191,46 @@ export default function ProductCard({ productInfo, favorite }) {
 
         <div className="flex w-full justify-between items-center   px-3">
           <div
-            className="flex flex-col my-2"
+            className="flex flex-col "
             onClick={() => {
               setSelectedProductId(productInfo.itemId);
               navigate.push(`/user/pages/productdetails/${productInfo.itemId}`);
             }}
           >
-            {productInfo.oldPrice ? (
-              <div className="flex gap-2">
-                <span className=" font-semibold line-through text-sm flex text-gray-400">
-                  {productInfo.oldPrice} {t("currency")}
-                </span>
-              </div>
-            ) : (
-              <span className="p-[11px]"></span>
-            )}
-            <div className="flex items-center gap-2">
-              <span className=" font-bold ">
-                {productInfo.price} {t("currency")}
-              </span>
+            <div className="w-14 my-2 h-4">
               {productInfo.oldPrice ? (
-                <span className=" font-semibold  text-center bg-green-600 text-sm p-1 text-white rounded-md">
-                  {(
-                    ((productInfo.oldPrice - productInfo.price) /
-                      productInfo.oldPrice) *
-                    100
-                  ).toFixed(0)}
+                <span className=" font-semibold  w-full text-center bg-red-600 text-xs p-[2px]  text-white rounded-md">
+                  {t("off")}
+                  {" " +
+                    (
+                      ((productInfo.oldPrice - productInfo.price) /
+                        productInfo.oldPrice) *
+                      100
+                    ).toFixed(0)}
                   %
                 </span>
               ) : (
                 ""
               )}
             </div>
+            <div className="flex items-center gap-2">
+              <span className=" font-bold ">
+                {productInfo.price} {t("currency")}
+              </span>
+              {productInfo.oldPrice ? (
+                <div className="flex gap-2">
+                  <span className=" font-semibold line-through text-sm  mt-2 flex text-gray-400">
+                    {productInfo.oldPrice} {t("currency")}
+                  </span>
+                </div>
+              ) : (
+                <span className="p-[11px]"></span>
+              )}
+            </div>
           </div>
 
           <button
-            className="text-xl text-blue-700 bg-blue-50 p-2 mt-2  hover:bg-blue-300 duration-500 hover:scale-110 rounded-md"
+            className="text-xl text-blue-700 bg-blue-50 p-2 mt-5  hover:bg-blue-300 duration-500 hover:scale-110 rounded-md"
             onClick={() => {
               addToCart(productInfo.itemId);
             }}

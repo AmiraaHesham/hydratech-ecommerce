@@ -201,7 +201,7 @@ export default function ProductDetails({ itemId }) {
                     {lang === "ar" ? product.nameAr : product.nameEn}
                   </h1>
                   <h1 className=" text-gray-500 mt-2  text-sm">
-                    {t("code")}: {product.code}
+                    {t("Model")}: {product.code}
                   </h1>
                 </span>
                 <span
@@ -239,28 +239,33 @@ export default function ProductDetails({ itemId }) {
               </div>
             </div>
             <div className="flex flex-col  gap-3">
-              <span className="text-gray-400 text-xl line-through">
-                {product.oldPrice
-                  ? product.oldPrice.toLocaleString("en-US") +
-                    " " +
-                    t("currency")
-                  : ""}
-              </span>
-              <div className="flex items-center gap-2">
-                <span className="text-3xl text-blue-600 font-semibold  ">
-                  {product.price.toLocaleString("en-US") + " " + t("currency")}
-                </span>
+              <span>
                 {product.oldPrice ? (
-                  <span className=" font-semibold mt-3  bg-green-600 px-1 text-white rounded-md">
-                    {(
-                      ((product.oldPrice - product.price) / product.oldPrice) *
-                      100
-                    ).toFixed(0)}
+                  <span className=" font-semibold mt-3  w-14 bg-red-600 p-1 text-white rounded-md">
+                    {t("off")}
+                    {" " +
+                      (
+                        ((product.oldPrice - product.price) /
+                          product.oldPrice) *
+                        100
+                      ).toFixed(0)}
                     %
                   </span>
                 ) : (
                   ""
                 )}
+              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-3xl  font-semibold  ">
+                  {product.price.toLocaleString("en-US") + " " + t("currency")}
+                </span>
+                <span className="text-gray-400 text-lg mt-2 line-through">
+                  {product.oldPrice
+                    ? product.oldPrice.toLocaleString("en-US") +
+                      " " +
+                      t("currency")
+                    : ""}
+                </span>
               </div>
             </div>
             <div className="flex  items-center gap-4 h-10 ">

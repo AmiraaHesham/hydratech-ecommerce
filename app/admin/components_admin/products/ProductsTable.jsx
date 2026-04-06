@@ -289,7 +289,7 @@ export default function ProductsTable() {
                       {lang === "ar" ? product.nameAr : product.nameEn}
                     </h1>
                     <h1 className="text-xs text-gray-500">
-                      {t("code")} : {product.code}
+                      {t("Model")} : {product.code}
                     </h1>
                   </div>
                 </td>

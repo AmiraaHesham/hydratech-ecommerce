@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearshInputContext } from "../../../context/searshInputContext";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import CategoriesSideManu from "../components/CategoriseSideMenu";
 import { postRequest } from "../../../utils/requestsUtils";
 import { useRouter } from "next/navigation";
@@ -9,6 +9,7 @@ import { useIdContext } from "../../../context/idContext";
 import ProductCard from "../components/ProductCard";
 import { useLanguage } from "../../../context/LanguageContext";
 import { BsList } from "react-icons/bs";
+import { MdOutlineDownloading } from "react-icons/md";
 
 export default function Searchpage() {
   const { t } = useLanguage();
@@ -16,6 +17,7 @@ export default function Searchpage() {
   const [loading, setLoading] = useState(true);
   const [ascending, setAscending] = useState();
   const [sortBy, setSortBy] = useState();
+  const pageNum = useRef(0);
 
   const { selectedSearchInput } = useSearshInputContext();
   const { selectedCategoryId } = useIdContext();
@@ -24,8 +26,8 @@ export default function Searchpage() {
       const response = await postRequest(
         "/api/public/items/search",
         {
-          page: 0,
-          size: 10,
+          page: pageNum.current,
+          size: 12,
           searchText: selectedSearchInput,
           categoryId: selectedCategoryId,
           sortBy: sortBy || null,
@@ -33,7 +35,9 @@ export default function Searchpage() {
         },
         ""
       );
-      setProducts(response.data);
+      if (pageNum.current === 0) {
+        setProducts(response.data);
+      } else setProducts((prev) => [...prev, ...response.data]);
       // console.log(response.data);
       // console.log(categoryId);
       setLoading(false);
@@ -54,9 +58,8 @@ export default function Searchpage() {
   ]);
   return (
     <div className=" ">
-      <div className="flex items-start justify-end gap-5 ">
+      <div className="flex  items-start justify-end gap-5 ">
         <CategoriesSideManu />
-
         <div className="md:w-[80%] xs:w-full p-5  ">
           <div className="flex gap-5 ">
             <span
@@ -102,7 +105,7 @@ export default function Searchpage() {
           </div>
 
           {loading ? (
-            <div className="grid xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-3 xs:grid-cols-2 gap-5 ">
+            <div className="grid xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-3 xs:grid-cols-2 gap-10 ">
               {[...Array(8)].map((_, index) => (
                 <div
                   key={`skeleton-${index}`}
@@ -111,7 +114,7 @@ export default function Searchpage() {
               ))}
             </div>
           ) : products.length != 0 ? (
-            <div className="grid xl:grid-cols-5 lg:grid-cols-3  xs:grid-cols-2 gap-3">
+            <div className="grid xl:grid-cols-4 lg:grid-cols-3  xs:grid-cols-2 gap-7">
               {products.map((product, index) => (
                 <div key={index}>
                   <ProductCard productInfo={product} />
@@ -123,6 +126,15 @@ export default function Searchpage() {
               {t("no_data")}
             </div>
           )}
+          <button
+            className=" text-blue-600 px-5 py-1 flex justify-center  my-3 rounded-lg"
+            onClick={() => {
+              pageNum.current += 1;
+              getAllProducts();
+            }}
+          >
+            <MdOutlineDownloading className="text-4xl" />
+          </button>
         </div>
       </div>
     </div>

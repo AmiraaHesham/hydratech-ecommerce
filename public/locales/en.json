@@ -34,13 +34,13 @@
   "state": "STATE",
   "product_state ": "Product State ",
   "state_inactive": "inactive",
-  "code": "Code",
+  "Model": "Model",
   "delete": "Delete",
   "photo_main": "Main",
   "add_product": "Add Product",
   "PRODUCT_NAME": "PRODUCT NAME",
   "product_name": "Product Name",
-  "product_code": "Product Code",
+  "product_Model": "Product Model",
   "Category": "Category",
   "Price": "Price",
   "description": "Description",
@@ -50,7 +50,7 @@
   "pending_orders": "Pending Orders",
   "total_revenue_today": "Total Revenue Today",
   "returns_Requested": "Returns Requested",
-  "search_by_order_code_or_name": "Search By Order Code or Name",
+  "search_by_order_code_or_name": "Search By Order code or Name",
   "order_id": "ORDER ID",
   "date": "DATE",
   "user": "USER",
@@ -181,5 +181,6 @@
   "cm": "cm",
   "kg": "kg",
   "sending": "Sending",
-  "send": "Send"
+  "send": "Send",
+  "off": "Off"
 }
