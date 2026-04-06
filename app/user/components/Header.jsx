@@ -64,7 +64,7 @@ export default function Header() {
             </span>
             <div className="cursor-default">
               <h1 className="lg:text-xl  xs:text-lg w-[120px] text-white font-bold font-sans">
-                HydraTech
+                {t("HydraTech")}
               </h1>
             </div>
           </div>

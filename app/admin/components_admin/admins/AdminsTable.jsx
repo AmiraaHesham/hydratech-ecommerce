@@ -111,7 +111,7 @@ export default function AdminsTable() {
           </button>
         </div>
       </div>
-      <div className="rounded-xl w-full h-[550px]  border  mt-3 overflow-hidden overflow-y-scroll ">
+      <div className="rounded-xl w-full h-[600px]  border  mt-3 overflow-hidden overflow-y-scroll ">
         <table className="xs:w-[220%] lg:w-full">
           <thead className="bg-[#F9FAFB] text-xs text-justify">
             <tr className=" text-gray-500 h-12  ">
@@ -230,19 +230,21 @@ export default function AdminsTable() {
                     </tr>
                   );
                 })}
-            <tr className="h-5 text-center">
-              <td colSpan="6">
-                <button
-                  className=" text-blue-600 px-5 py-1   my-3 rounded-lg"
-                  onClick={() => {
-                    pageNum.current += 1;
-                    getAllUsers();
-                  }}
-                >
-                  <MdOutlineDownloading className="text-4xl" />
-                </button>
-              </td>
-            </tr>
+            {users && users.length > 0 && (
+              <tr className="h-5 text-center">
+                <td colSpan="6">
+                  <button
+                    className=" text-blue-600 px-5 py-1   my-3 rounded-lg"
+                    onClick={() => {
+                      pageNum.current += 1;
+                      getAllUsers();
+                    }}
+                  >
+                    <MdOutlineDownloading className="text-4xl" />
+                  </button>
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

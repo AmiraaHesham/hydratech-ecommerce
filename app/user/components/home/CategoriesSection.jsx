@@ -51,8 +51,8 @@ export default function CategorySection({ categories }) {
           dir={lang === "ar" ? "rtl" : "ltr"}
           spaceBetween={20}
           navigation={{
-            nextEl: ".next-btn",
-            prevEl: ".prev-btn",
+            nextEl: ".next2-btn",
+            prevEl: ".prev2-btn",
           }}
           className="w-full h-full  "
         >
@@ -87,14 +87,14 @@ export default function CategorySection({ categories }) {
           ))}
           <div className=" flex flex-col justify-center items-center relative my-20  ">
             <div className=" p-1 rounded-full absolute flex gap-2 justify-center items-center  ">
-              <button className="prev-btn p-1 rounded-full hover:bg-blue-600 border-2 border-blue-600  hover:text-white text-blue-600 text-3xl   font-bold cursor-pointer *:">
+              <button className="next2-btn p-1 rounded-full hover:bg-blue-600 border-2 border-blue-600  hover:text-white text-blue-600 text-3xl   font-bold cursor-pointer *:">
                 {lang === "ar" ? (
                   <IoIosArrowRoundForward className="text-3xl font-bold" />
                 ) : (
                   <IoIosArrowRoundBack />
                 )}
               </button>
-              <button className="next-btn p-1 rounded-full hover:bg-blue-600  border-2  border-blue-600   hover:text-white text-blue-600 text-3xl cursor-pointer font-bold">
+              <button className="prev2-btn p-1 rounded-full hover:bg-blue-600  border-2  border-blue-600   hover:text-white text-blue-600 text-3xl cursor-pointer font-bold">
                 {lang === "ar" ? (
                   <IoIosArrowRoundBack className="text-3xl font-bold" />
                 ) : (

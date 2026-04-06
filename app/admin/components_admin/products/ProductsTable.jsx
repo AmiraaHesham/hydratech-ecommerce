@@ -189,13 +189,13 @@ export default function ProductsTable() {
           <thead className="bg-[#F9FAFB] text-xs text-justify">
             <tr className=" text-gray-500 h-12  ">
               <th className="w-[10%]"></th>
-              <th className="w-[30%]">{t("PRODUCT_NAME")}</th>
-              <th className="w-[20%]">{t("product_category")}</th>
+              <th className="w-[40%]">{t("PRODUCT_NAME")}</th>
+              <th className="w-[15%]">{t("product_category")}</th>
               <th className="w-[15%]">{t("price")}</th>
-              <th className="w-[15%]">{t("old_price")}</th>
+              <th className="w-[10%]">{t("old_price")}</th>
               {/* <th></th> */}
 
-              <th className="w-[20%]"></th>
+              <th className="w-[10%]"></th>
             </tr>
           </thead>
           <tbody className="bg-white text-black text-lg w-full ">
@@ -317,9 +317,7 @@ export default function ProductsTable() {
                   onClick={() => itemProductId(product)}
                 >
                   {product.oldPrice
-                    ? product.oldPrice.toLocaleString("en-US") +
-                      " " +
-                      t("currency")
+                    ? product.oldPrice.toLocaleString("en-US")
                     : "--"}
                 </td>
                 <td>
@@ -336,22 +334,21 @@ export default function ProductsTable() {
               </tr>
             ))}
 
-            {/* {products.length <= 15 ? (
-              " "
-            ) : ( */}
-            <tr className="h-5 text-center">
-              <td colSpan="6">
-                <button
-                  className=" text-blue-600 px-5 py-1   my-3 rounded-lg"
-                  onClick={() => {
-                    pageNum.current += 1;
-                    getAllProducts();
-                  }}
-                >
-                  <MdOutlineDownloading className="text-4xl" />
-                </button>
-              </td>
-            </tr>
+            {products && products.length > 0 && (
+              <tr className="h-5 text-center">
+                <td colSpan="6">
+                  <button
+                    className=" text-blue-600 px-5 py-1   my-3 rounded-lg"
+                    onClick={() => {
+                      pageNum.current += 1;
+                      getAllProducts();
+                    }}
+                  >
+                    <MdOutlineDownloading className="text-4xl" />
+                  </button>
+                </td>
+              </tr>
+            )}
             {/* )} */}
           </tbody>
         </table>

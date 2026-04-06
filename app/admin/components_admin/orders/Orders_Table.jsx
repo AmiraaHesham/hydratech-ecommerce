@@ -89,7 +89,7 @@ export default function Orders_Table() {
           </div>
         </div>
       </div>
-      <div className=" rounded-xl w-full  h-[500px] mt-5  border  overflow-hidden overflow-x-scroll overflow-y-scroll ">
+      <div className=" rounded-xl w-full h-[600px]   mt-5  border  overflow-hidden overflow-x-scroll overflow-y-scroll ">
         <table className="  xs:w-[200%] lg:w-full   ">
           <thead className="bg-[#F9FAFB] text-xs text-gray-500  text-justify">
             <tr className=" text-gray-500 h-12">
@@ -136,7 +136,7 @@ export default function Orders_Table() {
                     </td>
                   </tr>
                 ))
-              : orders.map((order, index) => {
+              : orders?.map((order, index) => {
                   const date = new Date(order.createdDate);
                   const dateOnly = date.toLocaleDateString("en-US");
                   return (
@@ -193,23 +193,21 @@ export default function Orders_Table() {
                     </tr>
                   );
                 })}
-            {/* {orders.length <= 5 ? (
-              " "
-            ) : ( */}
-            <tr className="h-5 text-center">
-              <td colSpan="6">
-                <button
-                  className=" text-blue-600 w-[100px] py-1 text-center  my-3 rounded-lg"
-                  onClick={() => {
-                    pageNum.current += 1;
-                    getAllOrders();
-                  }}
-                >
-                  <MdOutlineDownloading className="text-4xl" />
-                </button>
-              </td>
-            </tr>
-            {/* )} */}
+            {orders && orders.length > 0 && (
+              <tr className="h-5 text-center">
+                <td colSpan="6">
+                  <button
+                    className=" text-blue-600 w-[100px] py-1 text-center  my-3 rounded-lg"
+                    onClick={() => {
+                      pageNum.current += 1;
+                      getAllOrders();
+                    }}
+                  >
+                    <MdOutlineDownloading className="text-4xl" />
+                  </button>
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

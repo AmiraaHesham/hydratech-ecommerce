@@ -197,9 +197,9 @@ export default function ProductCard({ productInfo, favorite }) {
               navigate.push(`/user/pages/productdetails/${productInfo.itemId}`);
             }}
           >
-            <div className="w-14 my-2 h-4">
+            <div className="w-16 my-2 h-4">
               {productInfo.oldPrice ? (
-                <span className=" font-semibold  w-full text-center bg-red-600 text-xs p-[2px]  text-white rounded-md">
+                <span className=" font-semibold  w-full text-center bg-red-600 text-xs p-[4px]  text-white rounded-md">
                   {t("off")}
                   {" " +
                     (

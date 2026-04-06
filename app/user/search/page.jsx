@@ -4,7 +4,6 @@ import { useSearshInputContext } from "../../../context/searshInputContext";
 import { useCallback, useEffect, useRef, useState } from "react";
 import CategoriesSideManu from "../components/CategoriseSideMenu";
 import { postRequest } from "../../../utils/requestsUtils";
-import { useRouter } from "next/navigation";
 import { useIdContext } from "../../../context/idContext";
 import ProductCard from "../components/ProductCard";
 import { useLanguage } from "../../../context/LanguageContext";
@@ -21,7 +20,7 @@ export default function Searchpage() {
 
   const { selectedSearchInput } = useSearshInputContext();
   const { selectedCategoryId } = useIdContext();
-  const getAllProducts = useCallback(async () => {
+  const getAllProducts = async () => {
     try {
       const response = await postRequest(
         "/api/public/items/search",
@@ -45,17 +44,12 @@ export default function Searchpage() {
       console.log(error);
       setLoading(true);
     }
-  }, [selectedCategoryId, selectedSearchInput, sortBy, ascending]);
+  };
 
   useEffect(() => {
-    getAllProducts(ascending, sortBy);
-  }, [
-    selectedCategoryId,
-    selectedCategoryId,
-    sortBy,
-    ascending,
-    getAllProducts,
-  ]);
+    pageNum.current = 0;
+    getAllProducts();
+  }, [selectedCategoryId, selectedSearchInput, sortBy, ascending]);
   return (
     <div className=" ">
       <div className="flex  items-start justify-end gap-5 ">
@@ -84,19 +78,19 @@ export default function Searchpage() {
               >
                 <option
                   value=""
-                  className="bg-blue-700 rounded-md text-lg text-white font-semibold"
+                  className=" rounded-md text-lg text-white font-semibold"
                 >
                   {t("all")}
                 </option>
                 <option
                   value="true,price"
-                  className="bg-blue-700 rounded-md text-lg text-white font-semibold"
+                  className=" rounded-md text-lg text-white font-semibold"
                 >
                   {t("priceLowToHigh")}{" "}
                 </option>
                 <option
                   value="false,price"
-                  className="bg-blue-700 rounded-md text-lg text-white font-semibold"
+                  className=" rounded-md text-lg text-white font-semibold"
                 >
                   {t("priceHighToLow")}{" "}
                 </option>
@@ -114,27 +108,31 @@ export default function Searchpage() {
               ))}
             </div>
           ) : products.length != 0 ? (
-            <div className="grid xl:grid-cols-4 lg:grid-cols-3  xs:grid-cols-2 gap-7">
-              {products.map((product, index) => (
-                <div key={index}>
-                  <ProductCard productInfo={product} />
-                </div>
-              ))}
+            <div>
+              <div className="grid xl:grid-cols-4 lg:grid-cols-3  xs:grid-cols-2 gap-7">
+                {products.map((product, index) => (
+                  <div key={index}>
+                    <ProductCard productInfo={product} />
+                  </div>
+                ))}
+              </div>
+              <div className="w-full ">
+                <button
+                  className="text-blue-600 px-5 py-1 flex justify-center items-center  my-3 rounded-lg"
+                  onClick={() => {
+                    pageNum.current += 1;
+                    getAllProducts();
+                  }}
+                >
+                  <MdOutlineDownloading className="text-4xl" />
+                </button>
+              </div>
             </div>
           ) : (
             <div className="h-10 w-full bg-white flex justify-center py-2  ">
               {t("no_data")}
             </div>
           )}
-          <button
-            className=" text-blue-600 px-5 py-1 flex justify-center  my-3 rounded-lg"
-            onClick={() => {
-              pageNum.current += 1;
-              getAllProducts();
-            }}
-          >
-            <MdOutlineDownloading className="text-4xl" />
-          </button>
         </div>
       </div>
     </div>
