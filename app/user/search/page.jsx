@@ -17,7 +17,7 @@ export default function Searchpage() {
   const [ascending, setAscending] = useState();
   const [sortBy, setSortBy] = useState();
   const pageNum = useRef(0);
-
+  const isFirstRender = useRef(true);
   const { selectedSearchInput } = useSearshInputContext();
   const { selectedCategoryId } = useIdContext();
   const getAllProducts = async () => {
@@ -48,11 +48,11 @@ export default function Searchpage() {
 
   useEffect(() => {
     pageNum.current = 0;
-    if (selectedSearchInput !== "") {
-      getAllProducts();
-    } else {
-      setLoading(false);
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return; // 🚫 امنعي أول render
     }
+    getAllProducts();
   }, [selectedCategoryId, selectedSearchInput, sortBy, ascending]);
   return (
     <div className=" ">
