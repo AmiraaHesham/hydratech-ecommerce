@@ -207,7 +207,7 @@ export default function ProductDetails({ itemId }) {
                 <span
                   className="text-blue-600 cursor-pointer hover:shadow-sm hover:shadow-blue-700 px-4 rounded-md  "
                   onClick={() => {
-                    setSelectedCategoryId(product.category.id);
+                    // setSelectedCategoryId(product.category.id);
                     navigate.push("/user/search");
                   }}
                 >

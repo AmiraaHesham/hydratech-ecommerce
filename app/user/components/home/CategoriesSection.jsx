@@ -74,11 +74,11 @@ export default function CategorySection({ categories }) {
                       category.imageURL || ""
                     }`}
                     alt={category.nameAr || "category"}
-                    width={100}
-                    height={100}
-                    className="rounded-lg h-[150px] w-[150px]"
+                    width={200}
+                    height={200}
+                    className="rounded-md h-[180px] w-[180px]"
                   />
-                  <h1 className="font-semibold  mt-10">
+                  <h1 className="font-semibold  mt-5">
                     {lang === "ar" ? category.nameAr : category.nameEn}
                   </h1>
                 </div>
