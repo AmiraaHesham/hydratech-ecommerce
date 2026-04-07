@@ -39,6 +39,7 @@ export default function FormProduct() {
       nameAr: "",
       nameEn: "",
     },
+    mainCategoryID: "",
     code: "",
     length: 0,
     width: 0,
@@ -90,7 +91,7 @@ export default function FormProduct() {
 
   const getCategoriesById = async () => {
     const respose = await getRequest(
-      `/api/admin/itemCategory/${mainCategoryID}`
+      `/api/public/itemCategory/${mainCategoryID}`
     );
     setSubCategories(respose.subCategories);
     console.log(respose.subCategories);
@@ -109,7 +110,7 @@ export default function FormProduct() {
     const formData = new FormData();
     formData.append("nameEn", product.nameEn);
     formData.append("nameAr", product.nameAr);
-    formData.append("Model", product.code);
+    formData.append("code", product.code);
     formData.append("price", product.price);
     if (product.oldPrice) formData.append("oldPrice", product.oldPrice);
     formData.append("descriptionAr", product.descriptionAr);
@@ -175,7 +176,7 @@ export default function FormProduct() {
         labelUpload.classList.add("hidden");
 
         const res = await getProductDetails(selectedProductId);
-
+        console.log(res);
         setProduct((prev) => ({
           ...prev,
           nameEn: res.nameEn,
@@ -195,7 +196,7 @@ export default function FormProduct() {
           img3: process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL + res.img3 || "",
           subCategory: {
             ...prev.subCategory,
-            id: res.itemCategory.itemCategoryId,
+            id: res.itemCategoryId.itemCategoryId,
             nameAr: res.itemCategory.nameAr,
             nameEn: res.itemCategory.nameEn,
           },
@@ -246,7 +247,7 @@ export default function FormProduct() {
         const formData = new FormData();
         formData.append("nameEn", product.nameEn);
         formData.append("nameAr", product.nameAr);
-        formData.append("Model", product.code);
+        formData.append("code", product.code);
         formData.append("price", product.price);
         if (product.oldPrice) formData.append("oldPrice", product.oldPrice);
         formData.append("descriptionAr", product.descriptionAr);
@@ -377,7 +378,7 @@ export default function FormProduct() {
                   <div id="mainImage" className="hidden w-[100px] h-[100px]">
                     <Image
                       alt=""
-                      src={product.mainImage || "/images/no-image.png"}
+                      src={product.mainImage}
                       width={100}
                       height={100}
                       className="w-full h-full"
@@ -415,7 +416,7 @@ export default function FormProduct() {
                   <div id="img2" className="hidden w-[100px] h-[100px]">
                     <Image
                       alt=""
-                      src={product.img2 || "/images/no-image.png"}
+                      src={product.img2}
                       width={100}
                       height={100}
                       className="w-full h-full"
@@ -454,7 +455,7 @@ export default function FormProduct() {
                   <div id="img3" className="hidden w-[100px] h-[100px]">
                     <Image
                       alt=""
-                      src={product.img3 || "/images/no-image.png"}
+                      src={product.img3}
                       width={100}
                       height={100}
                       className="w-full h-full"

@@ -48,12 +48,16 @@ export default function Searchpage() {
 
   useEffect(() => {
     pageNum.current = 0;
-    getAllProducts();
+    if (selectedSearchInput !== "") {
+      getAllProducts();
+    } else {
+      setLoading(false);
+    }
   }, [selectedCategoryId, selectedSearchInput, sortBy, ascending]);
   return (
     <div className=" ">
       <div className="flex  items-start justify-end gap-5 ">
-        <CategoriesSideManu />
+        <CategoriesSideManu mainCategoryID={selectedCategoryId} />
         <div className="md:w-[80%] xs:w-full p-5  ">
           <div className="flex gap-5 ">
             <span
@@ -129,9 +133,10 @@ export default function Searchpage() {
               </div>
             </div>
           ) : (
-            <div className="h-10 w-full bg-white flex justify-center py-2  ">
-              {t("no_data")}
-            </div>
+            ""
+            // <div className="h-10 w-full bg-white flex justify-center py-2  ">
+            //   {/* {t("no_data")} */}
+            // </div>
           )}
         </div>
       </div>

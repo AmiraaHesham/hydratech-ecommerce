@@ -194,5 +194,10 @@
   "edit_sub_category": "Edit Subcategory",
   "edit_main_category": "Edit Main Category",
   "add_sub_category": "Add Subcategory",
-  "add_main_category": "Add Main Category"
+  "add_main_category": "Add Main Category",
+  "delivery_method": "delivery Method",
+  "choose": "Choose",
+  "locations": "Locations",
+  "PICKUP": "PICKUP",
+  "DELIVERY": "SHIPPING"
 }

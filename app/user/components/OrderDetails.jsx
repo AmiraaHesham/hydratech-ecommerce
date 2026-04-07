@@ -14,6 +14,8 @@ export default function OrderDetails({ orderId }) {
   const [netTotalOrder, setNetTotalOrder] = useState();
   const [totalDiscount, setTotalDiscount] = useState();
   const [itemsNum, setItemsNum] = useState();
+  const [deliveryMethod, setDeliveryMethod] = useState();
+  const [address, setAddress] = useState();
   const [createdDate, setCreatedDate] = useState();
   const [state, setState] = useState();
   const { setSelectedProductId } = useIdContext();
@@ -41,8 +43,10 @@ export default function OrderDetails({ orderId }) {
     setItemsNum(res.orderItemLines.length);
     setState(res.state);
     setCreatedDate(res.createdDate);
+    setAddress(res.address);
     setTotalShippingCost(res.totalShippingCost);
     setTotalDiscount(res.totalDiscount);
+    setDeliveryMethod(res.fulfillmentType);
     console.log(res);
   };
 
@@ -128,11 +132,11 @@ export default function OrderDetails({ orderId }) {
           <table className="  xs:w-[200%] lg:w-full  ">
             <thead className="bg-[#F9FAFB] text-xs text-gray-500  text-justify">
               <tr className=" text-gray-500 h-12">
-                <th className="w-[30%] px-5">{t("product")} </th>
-                <th className="w-[15%]">{t("price")} </th>
-                <th className="w-[15%] ">{t("discount")} </th>
+                <th className="w-[40%] px-5">{t("product")} </th>
+                <th className="w-[20%]">{t("price")} </th>
+                <th className="w-[10%] ">{t("discount")} </th>
                 <th className="w-[15%] px-7 ">{t("quantity")} </th>
-                <th className="w-[15%] ">{t("total")} </th>
+                <th className="w-[10%] ">{t("total")} </th>
               </tr>
             </thead>
             <tbody className="bg-white text-md w-full  ">
@@ -242,7 +246,14 @@ export default function OrderDetails({ orderId }) {
                 {totalDiscount + "-" + " " + t("currency")}{" "}
               </span>
             </div>
-
+            <div className="flex justify-between items-center mb-5">
+              <span className="text-gray-600">{t("delivery_method")} </span>
+              <span className="font-semibold">{t(deliveryMethod)}</span>
+            </div>
+            <div className="flex justify-between items-center mb-5">
+              <span className="text-gray-600">{t("address")} </span>
+              <span className="font-semibold">{t(address)}</span>
+            </div>
             <div className="flex justify-between items-center">
               <span className="text-gray-600">{t("shippingCost")} </span>
               <span className="font-semibold">

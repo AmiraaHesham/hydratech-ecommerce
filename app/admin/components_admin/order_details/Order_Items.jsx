@@ -5,6 +5,7 @@ import Image from "next/image";
 import { getRequest } from "../../../../utils/requestsUtils.js";
 import { useEffect, useState } from "react";
 import { useOrderDetailsContext } from "../../../../context/orderDetailsContext.jsx";
+import { useNamePageInAdminContext } from "../../../../context/namePageInAdmin.jsx";
 
 export default function OrdersItems({ orderId }) {
   const { t } = useLanguage();
@@ -14,7 +15,7 @@ export default function OrdersItems({ orderId }) {
   const { setSelectedOrderDate } = useOrderDetailsContext();
   const lang =
     typeof window !== "undefined" ? localStorage.getItem("lang") : null;
-
+  const { setSelectedNamePage } = useNamePageInAdminContext();
   const [orderTotalPrice, setOrderTotalPrice] = useState("");
   const orderItem = async () => {
     const res = await getRequest(`/api/orders/${orderId}`);
@@ -26,6 +27,7 @@ export default function OrdersItems({ orderId }) {
   };
   useEffect(() => {
     orderItem();
+    setSelectedNamePage("Orders Management");
   }, []);
   return (
     <div className="w-full ">
@@ -37,7 +39,7 @@ export default function OrdersItems({ orderId }) {
           {" "}
           {t("Total")}:{" "}
           <span className="text-lg text-blue-500 font-semibold">
-            {orderTotalPrice.toLocaleString("en-US")} EG
+            {orderTotalPrice.toLocaleString("en-US")} {t("currency")}
           </span>{" "}
         </span>
       </div>
@@ -82,15 +84,14 @@ export default function OrdersItems({ orderId }) {
                     </div>
                   </td>
                   <td className="text-sm font-semibold text-center text-gray-500">
-                    EG {item.item.price.toLocaleString("en-US")}
-                    {t("EG")}
+                    {item.item.price.toLocaleString("en-US")} {t("currency")}
                   </td>
                   <td className="text-sm text-center text-gray-500">
                     {item.quantity}
                   </td>
 
                   <td className="text-sm font-semibold text-center">
-                    {item.totalPrice.toLocaleString("en-US")} {t("EG")}
+                    {item.totalPrice.toLocaleString("en-US")} {t("currency")}
                   </td>
                 </tr>
               );

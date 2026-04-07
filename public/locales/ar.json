@@ -174,7 +174,7 @@
   "edit_category": "تعديل القسم",
   "selectGovernorate": "اختر المحافظة",
   "governorate": "المحافظة",
-  "totalShippingCost": "إجمالي تكلفةالشحن",
+  "totalShippingCost": "إجمالي تكلفة الشحن",
   "width": "العرض",
   "height": "الطول",
   "length": "الطول",
@@ -195,5 +195,10 @@
   "edit_sub_category": "تعديل القسم الفرعي",
   "edit_main_category": "تعديل القسم الرئيسي",
   "add_sub_category": "إضافة قسم فرعي",
-  "add_main_category": "إضافة قسم رئيسي"
+  "add_main_category": "إضافة قسم رئيسي",
+  "PICKUP": "استلام",
+  "DELIVERY": "شحن",
+  "delivery_method": "طريقة التوصيل",
+  "choose": "اختر",
+  "locations": "الفروع"
 }

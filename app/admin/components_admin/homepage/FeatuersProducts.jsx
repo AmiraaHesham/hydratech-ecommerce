@@ -55,10 +55,8 @@ export default function FeaturedProducts() {
           <FaCirclePlus />
         </Link>
       </div>
-      <div className="my-5 grid lg:grid-cols-5 md:grid-cols-3 xs:grid-cols-2 gap-5 w-full">
+      <div className="my-5 grid lg:grid-cols-5 md:grid-cols-3 xs:grid-cols-2 gap-7 w-full">
         {featuersProducts.map((product, index) => {
-          const describtion =
-            lang === "ar" ? product.descriptionAr : product.descriptionEn;
           return (
             <div
               key={index}
@@ -76,7 +74,7 @@ export default function FeaturedProducts() {
               }}
               className="cursor-pointer hover:shadow-md hover:scale-105 duration-200"
             >
-              <div className="h-[320px] bg-white border rounded-md">
+              <div className="h-[300px] bg-white border rounded-md">
                 <div className="">
                   <Image
                     src={`${process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL}${
@@ -93,33 +91,7 @@ export default function FeaturedProducts() {
                       <h1 className="my-3 text-sm font-semibold">
                         {lang === "ar" ? product.nameAr : product.nameEn}
                       </h1>
-                      {/* <span
-                                              id={`btn_fov_${product.itemId}`}
-                                              className={`${product.favorite === true ? "text-gray-400 " : "text-blue-600 "}rounded-full`}
-                                              onClick={() => {
-                                                const btn_fov = document.querySelector(
-                                                  `#btn_fov_${product.itemId}`,
-                                                );
-                                                if (favorite === true) {
-                                                  btn_fov.classList.add("text-blue-600");
-                                                  deleteFavoriteItems(product.itemId);
-                                                } else {
-                                                  btn_fov.classList.remove("text-gray-400");
-                                                  addFavoriteItems(product.itemId);
-                                                  btn_fov.classList.add("text-blue-600");
-                                
-                                                }
-                                                setSelectedProductId(product.itemId);
-                                              }}
-                                            >
-                                              <FaHeart />
-                                            </span> */}
                     </div>
-                    <h1 className="md:text-sm xs:text-xs text-gray-400 ">
-                      {/* {describtion.length <= 50
-                        ? describtion
-                        : describtion.slice(0, 50) + " ..."} */}
-                    </h1>
                   </div>
                 </div>
 

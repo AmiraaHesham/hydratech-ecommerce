@@ -17,7 +17,7 @@ import "aos/dist/aos.css";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import Link from "next/link";
-
+import Select from "react-select";
 export default function Cart() {
   const { t } = useLanguage();
   const [items, setItems] = useState([]);
@@ -30,6 +30,10 @@ export default function Cart() {
     typeof window !== "undefined" ? localStorage.getItem("id") : null;
   const [isFirstAction, setIsFirstAction] = useState(true);
   const [loading, setLoading] = useState(true);
+  const [deliveryMethod, setdeliveryMethod] = useState(null);
+  const [places, setPlaces] = useState([]);
+  const [address, setAddress] = useState("");
+  const [pickupPlace, setPickupPlace] = useState(null);
   const navigate = useRouter();
   const lang =
     typeof window !== "undefined" ? localStorage.getItem("lang") : null;
@@ -82,6 +86,33 @@ export default function Cart() {
     }
   };
 
+  const pickUpPlaces = async () => {
+    try {
+      const res = await postRequest("/api/public/pickUpPlaces/search", "", "");
+
+      const formatted = res.data.map((Place) => ({
+        value: Place.pickUpPlaceId,
+        label:
+          localStorage.getItem("lang") === "ar" ? Place.nameAr : Place.nameEn,
+        address: Place.address,
+      }));
+      setPlaces(formatted);
+      console.log(res.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  // const getAddress = async () => {
+  //   try {
+  //     // if (pickupPlace !== "") {
+  //     const res = await getRequest(`/api/admin/pickUpPlaces/${pickupPlace.}`);
+  //     // setAddress(res);
+  //     console.log(res);
+  //     // }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
   const placeOrder = async () => {
     setLoading(true);
     try {
@@ -91,7 +122,7 @@ export default function Cart() {
         } else {
           const res = await postRequest(
             `/api/orders/${userId}/placeOrder`,
-            "",
+            { pickUpPlaceId: pickupPlace.value },
             ""
           );
           navigate.push("/user/ordershistory");
@@ -107,10 +138,14 @@ export default function Cart() {
       setLoading(false);
     }
   };
-
+  const deliveryMethodOptions = [
+    { value: "shipping", label: t("DELIVERY") },
+    { value: "pickup", label: t("PICKUP") },
+  ];
   useEffect(() => {
     getProductInCart();
-  }, []);
+    pickUpPlaces();
+  }, [pickupPlace]);
   return (
     <div className="xl:p-10 xs:p-7  ">
       {loading && (
@@ -367,11 +402,10 @@ export default function Cart() {
               </div>
             </div>
           ) : (
-            <div className=" h-[500px] p-7  w-full bg-white rounded-lg border">
+            <div className="  p-7  w-full bg-white rounded-lg border">
               <h1 className="mb-10 text-2xl font-bold">{t("orderSummary")} </h1>
               <div className="flex justify-between items-center mb-5">
                 <span className="text-gray-600">
-                  {" "}
                   {t("totalProducts") + " " + `[${itemNum}]`}
                 </span>
                 <span className="font-semibold">
@@ -387,8 +421,88 @@ export default function Cart() {
                     t("currency")}{" "}
                 </span>
               </div>
+              <div className="flex justify-between items-center mb-5">
+                <span className="text-gray-600">{t("delivery_method")}</span>
 
-              <div className="flex justify-between items-center">
+                <Select
+                  options={deliveryMethodOptions}
+                  value={deliveryMethod}
+                  onChange={(option) => {
+                    setdeliveryMethod(option);
+                    setPickupPlace(null);
+                  }}
+                  required
+                  placeholder={t("choose")}
+                  classNames={{
+                    control: () =>
+                      "bg-slate-50 border  rounded-lg h-10  hover:border-indigo-500",
+                    menu: () =>
+                      "bg-slate-900 border border-slate-700 rounded-xl mt-2",
+                    option: ({ isFocused, isSelected }) =>
+                      `px-3 py-2 cursor-pointer ${
+                        isSelected
+                          ? "bg-indigo-600 text-white"
+                          : isFocused
+                          ? "bg-indigo-500 text-white"
+                          : "text-gray-300"
+                      }`,
+                    placeholder: () => "text-slate-400",
+                    singleValue: () => "text-white",
+                  }}
+                />
+              </div>
+              <div
+                className={`flex justify-between items-center mb-5 ${
+                  deliveryMethod
+                    ? deliveryMethod.value === "pickup"
+                      ? "block"
+                      : "hidden"
+                    : "hidden"
+                }`}
+              >
+                <span className="text-gray-600">{t("locations")}</span>
+                <Select
+                  options={places}
+                  value={pickupPlace}
+                  onChange={(option) => setPickupPlace(option)}
+                  placeholder={t("choose")}
+                  classNames={{
+                    control: () =>
+                      "bg-slate-50 border  rounded-lg h-10  hover:border-indigo-500",
+                    menu: () =>
+                      "bg-slate-900 border border-slate-700 rounded-xl mt-2 w-32",
+                    option: ({ isFocused, isSelected }) =>
+                      `px-3 py-2 cursor-pointer ${
+                        isSelected
+                          ? "bg-indigo-600 text-white"
+                          : isFocused
+                          ? "bg-indigo-500 text-white"
+                          : "text-gray-300"
+                      }`,
+                    placeholder: () => "text-slate-400",
+                    singleValue: () => "text-white",
+                  }}
+                />
+              </div>
+              <div
+                className={`flex justify-between items-center mb-5 ${
+                  pickupPlace || deliveryMethod ? "block" : "hidden"
+                }`}
+              >
+                <span className="text-gray-600">{t("address")} </span>
+                <span className="font-semibold">
+                  {pickupPlace ? pickupPlace.address : localStorage.address}
+                </span>
+              </div>
+              <div
+                className={`flex justify-between items-center ${
+                  deliveryMethod
+                    ? deliveryMethod.value === "shipping"
+                      ? "block"
+                      : "hidden"
+                    : "hidden"
+                }`}
+              >
                 <span className="text-gray-600">{t("totalShippingCost")} </span>
                 <span className="font-semibold">
                   {totalShippingCost + " " + t("currency")}

@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useLanguage } from "../../../../context/LanguageContext.js";
 import Image from "next/image";
-import { MdEmail } from "react-icons/md";
+import { MdEmail, MdLocationCity, MdLocationOn } from "react-icons/md";
 import { MdLocalPhone } from "react-icons/md";
 import { PiUserListFill } from "react-icons/pi";
 import { getRequest } from "../../../../utils/requestsUtils.js";
@@ -10,11 +10,14 @@ import { getRequest } from "../../../../utils/requestsUtils.js";
 export default function Orders_Details({ orderId }) {
   const { t } = useLanguage();
   const [orderUser, setOrderUser] = useState([]);
-  const [orderAddress, setOrderAddress] = useState();
+  const [orderAddress, setOrderAddress] = useState("");
+  const [fulfillmentType, setfulfillmentType] = useState("");
   const orderItem = async () => {
     const res = await getRequest(`/api/orders/${orderId}`);
     setOrderUser(res.user);
+    console.log(res);
     setOrderAddress(res.address);
+    setfulfillmentType(res.fulfillmentType);
   };
   useEffect(() => {
     orderItem();
@@ -64,10 +67,18 @@ export default function Orders_Details({ orderId }) {
           </div>
         </div>
         <hr className="my-10" />
-        <div>
+        <div className="flex flex-col gap-5">
           <div>
-            <h1 className="font-semibold text-lg">{t("Shipping Address")}</h1>
-            <h2 className="texxt-sm text-gray-500 mt-5">{orderUser.address}</h2>
+            <h1 className="font-semibold text-lg">{t("delivery_method")}</h1>
+            <h2 className="texxt-sm text-gray-500 mt-5">
+              {t(fulfillmentType)}
+            </h2>
+          </div>
+          <div>
+            <h1 className="font-semibold text-lg flex items-center">
+              <MdLocationOn /> {t("address")}
+            </h1>
+            <h2 className="texxt-sm text-gray-500 mt-5">{orderAddress}</h2>
           </div>
         </div>
       </div>
