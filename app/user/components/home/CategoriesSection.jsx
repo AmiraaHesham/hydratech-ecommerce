@@ -64,7 +64,7 @@ export default function CategorySection({ categories }) {
               <div
                 className="  h-[270px] border-2  border-gray-200 flex justify-center items-center text-center hover:shadow-xl hover:shadow-slate-300   hover:scale-105 duration-200 cursor-pointer rounded-md  hover:border-b-blue-600 hover:border-b-[7px]"
                 onClick={() => {
-                  // setSelectedCategoryId(category.itemCategoryId);
+                  setSelectedCategoryId(category.itemCategoryId);
                   navigate.push("/user/search/");
                 }}
               >

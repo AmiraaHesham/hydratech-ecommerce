@@ -117,12 +117,18 @@ export default function CategoriesSideMenu({ mainCategoryID }) {
                 ) : (
                   <div
                     id={`subCat_${category.itemCategoryId}`}
-                    className="hidden ml-6  flex-col gap-1 mx-10 my-2 text-blue-700"
+                    className={
+                      "hidden ml-6  flex-col gap-1 mx-10 my-2 text-blue-700"
+                    }
                   >
                     {category.subCategories.map((subCat) => (
                       <div
                         key={subCat.subCategoryId}
-                        className="p-2 rounded-md cursor-pointer flex items-center hover:bg-blue-50 hover:text-blue-500"
+                        className={`p-2 rounded-md cursor-pointer flex items-center hover:bg-blue-50 hover:text-blue-500 ${
+                          selectedCategoryId === subCat.itemCategoryId
+                            ? "bg-blue-100 text-blue-500"
+                            : ""
+                        }`}
                         onClick={() =>
                           setSelectedCategoryId(subCat.itemCategoryId)
                         }
