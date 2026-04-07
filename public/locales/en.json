@@ -188,5 +188,11 @@
   "deliverylocations_management": "Delivery Locations Management",
   "name": "Name",
   "location": "Location",
-  "location_name": "Location Name"
+  "location_name": "Location Name",
+  "add_maincategory": "Add Main Category",
+  "add_subcategory": "Add Subcategory",
+  "edit_sub_category": "Edit Subcategory",
+  "edit_main_category": "Edit Main Category",
+  "add_sub_category": "Add Subcategory",
+  "add_main_category": "Add Main Category"
 }

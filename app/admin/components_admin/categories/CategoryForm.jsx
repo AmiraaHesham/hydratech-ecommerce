@@ -10,17 +10,18 @@ import { useRouter } from "next/navigation";
 import { useIdContext } from "../../../../context/idContext";
 import { useRefresh } from "../../../../context/refreshContext.jsx";
 
-export default function CategoryForm() {
+export default function CategoryForm({ CategoryId }) {
   const [photo, setPhoto] = useState({
     imageFile: "",
     image: "",
   });
   const [nameEn, setNameEn] = useState("");
+  const [port, setPort] = useState("");
   const [nameAr, setNameAr] = useState("");
   const { t } = useLanguage();
   const { triggerRefresh } = useRefresh();
   const [loading, setLoading] = useState(false);
-  const { selectedCategoryId } = useIdContext();
+  const { selectedCategoryId, setSelectedCategoryId } = useIdContext();
 
   const handelupload = (e) => {
     var reader = new FileReader();
@@ -52,14 +53,16 @@ export default function CategoryForm() {
       const formData = new FormData();
       formData.append("nameEn", nameEn);
       formData.append("nameAr", nameAr);
-      formData.append("imageFile", photo.imageFile);
+      if (photo.imageFile) formData.append("imageFile", photo.imageFile);
+      formData.append("parent", port === "Categories" ? true : false);
+      formData.append("parentId", port === "Categories" ? "" : CategoryId);
       await postRequest(
         "/api/admin/itemCategory",
         formData,
         t("message_AddText")
       );
       triggerRefresh();
-      selectedCategoryId === null;
+      setSelectedCategoryId(null);
       // let upload = document.querySelector("#label-uplod");
       // let img = document.querySelector("#lable-img");
       // img.classList.add("hidden");
@@ -76,7 +79,7 @@ export default function CategoryForm() {
 
   const CategoryData = async () => {
     if (selectedCategoryId != null) {
-      setLoading(true);
+      // setLoading(true);
 
       try {
         let upload = document.querySelector("#label-uplod");
@@ -121,6 +124,8 @@ export default function CategoryForm() {
       if (photo.imageFile) {
         formData.append("imageFile", photo.imageFile);
       }
+      formData.append("parent", port === "Categories" ? true : false);
+      formData.append("parentId", port === "Categories" ? "" : CategoryId);
       await putRequest(
         `/api/admin/itemCategory/${selectedCategoryId}`,
         formData,
@@ -144,6 +149,11 @@ export default function CategoryForm() {
   useEffect(() => {
     CategoryData();
   }, [selectedCategoryId]);
+
+  useEffect(() => {
+    const lastPort = window.location.pathname.split("/").filter(Boolean).pop();
+    setPort(lastPort);
+  }, []);
   return (
     <div
       id="add-category-form"

@@ -3,7 +3,7 @@ import { FaPlus } from "react-icons/fa";
 import { useIdContext } from "../../../../context/idContext";
 import { useRefresh } from "../../../../context/refreshContext";
 import { useLanguage } from "../../../../context/LanguageContext.js";
-import { getRequest } from "../../../../utils/requestsUtils.js";
+import { getRequest, postRequest } from "../../../../utils/requestsUtils.js";
 import { useEffect, useState } from "react";
 import Table from "./Table";
 export default function CategorysTable() {
@@ -12,12 +12,13 @@ export default function CategorysTable() {
   const { refreshKey } = useRefresh();
   let [itemCategory, setItemCategory] = useState([]);
   const [loading, setLoading] = useState(true);
-  const getAllCategories = async () => {
+  const getAllSubCategories = async () => {
     try {
       const resData = await getRequest(
         "/api/admin/itemCategory/getCategoryWithItemCounts"
       );
       setItemCategory(resData);
+      console.log(resData);
     } catch (error) {
       console.log(error);
     } finally {
@@ -26,7 +27,7 @@ export default function CategorysTable() {
   };
 
   useEffect(() => {
-    getAllCategories();
+    getAllSubCategories();
   }, [refreshKey]);
 
   return (
@@ -41,7 +42,7 @@ export default function CategorysTable() {
             btn_editCategory.classList.add("hidden");
             btn_saveCategory.classList.remove("hidden");
             let nameFormCategory = document.querySelector("#nameFormCategory");
-            nameFormCategory.innerHTML = t("add_category");
+            nameFormCategory.innerHTML = t("add_main_category");
             form.classList.remove("hidden");
             form.classList.add("flex");
             let upload = document.querySelector("#label-uplod");
@@ -54,7 +55,7 @@ export default function CategorysTable() {
           <span>
             <FaPlus />
           </span>
-          <h1>{t("add_category")}</h1>
+          <h1>{t("add_maincategory")}</h1>
         </button>
       </div>
       <Table

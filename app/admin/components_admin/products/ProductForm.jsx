@@ -8,7 +8,11 @@ import {
   getCategories,
   getProductDetails,
 } from "../../../../utils/functions.jsx";
-import { postRequest, putRequest } from "../../../../utils/requestsUtils.js";
+import {
+  getRequest,
+  postRequest,
+  putRequest,
+} from "../../../../utils/requestsUtils.js";
 import { useRefresh } from "../../../../context/refreshContext.jsx";
 import { useIdContext } from "../../../../context/idContext.jsx";
 import { GoStarFill } from "react-icons/go";
@@ -18,7 +22,9 @@ export default function FormProduct() {
   const [enabledActive, setenabledActive] = useState(true);
   const [enabledFavorite, setenabledFavorite] = useState(false);
   const { triggerRefresh } = useRefresh();
-  const { selectedProductId, setSelectedProductId } = useIdContext();
+  const [mainCategoryID, setMainCategoryID] = useState("");
+  const [subCategories, setSubCategories] = useState([]);
+  const { selectedProductId, setSelectedProductId } = useIdContext([]);
   const lang =
     typeof window !== "undefined" ? localStorage.getItem("lang") : null;
   const [product, setProduct] = useState({
@@ -28,7 +34,7 @@ export default function FormProduct() {
     oldPrice: "",
     descriptionEn: "",
     descriptionAr: "",
-    category: {
+    subCategory: {
       id: "",
       nameAr: "",
       nameEn: "",
@@ -82,6 +88,14 @@ export default function FormProduct() {
     console.log(resData);
   };
 
+  const getCategoriesById = async () => {
+    const respose = await getRequest(
+      `/api/admin/itemCategory/${mainCategoryID}`
+    );
+    setSubCategories(respose.subCategories);
+    console.log(respose.subCategories);
+  };
+
   const images = () => {
     console.log(product.img2file);
     console.log(product.img3file);
@@ -102,7 +116,7 @@ export default function FormProduct() {
     formData.append("descriptionEn", product.descriptionEn);
     formData.append("favorite", enabledFavorite);
     formData.append("active", enabledActive);
-    formData.append("itemCategoryId", product.category.id);
+    formData.append("itemCategoryId", product.subCategory.id);
     formData.append("weight", product.weight);
     formData.append("height", product.height);
     formData.append("width", product.width);
@@ -129,7 +143,7 @@ export default function FormProduct() {
         weight: "",
         width: "",
         length: "",
-        category: { id: "", nameAr: "", nameEn: "" },
+        subCategory: { id: "", nameAr: "", nameEn: "" },
         code: "",
         mainImage: "",
         img2: "",
@@ -179,8 +193,8 @@ export default function FormProduct() {
             process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL + res.mainImageURL || "",
           img2: process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL + res.img2 || "",
           img3: process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL + res.img3 || "",
-          category: {
-            ...prev.category,
+          subCategory: {
+            ...prev.subCategory,
             id: res.itemCategory.itemCategoryId,
             nameAr: res.itemCategory.nameAr,
             nameEn: res.itemCategory.nameEn,
@@ -204,7 +218,7 @@ export default function FormProduct() {
           weight: "",
           width: "",
           length: "",
-          category: { id: "", nameAr: "", nameEn: "" },
+          subCategory: { id: "", nameAr: "", nameEn: "" },
         });
         const labelUpload = document.querySelector(`#label-mainImage`);
         labelUpload.classList.remove("hidden");
@@ -252,7 +266,7 @@ export default function FormProduct() {
         if (product.img3file) {
           formData.append("itemImages", product.img3file);
         }
-        formData.append("itemCategoryId", product.category.id);
+        formData.append("itemCategoryId", product.subCategory.id);
         await putRequest(
           `/api/admin/items/${selectedProductId}`,
           formData,
@@ -560,77 +574,6 @@ export default function FormProduct() {
                 className="w-full bg-[#F9FAFB] outline-none text-blue-900 text-base  my-1  p-1 border rounded-md"
               />
             </div>
-            <div className="w-full ">
-              <label className="text-xs text-gray-600">
-                {t("الفئة الرئيسية")}
-              </label>
-              <select
-                value={product.category?.id || ""}
-                onChange={(e) => {
-                  const selectedCategoryId = e.target.value;
-
-                  setProduct((prev) => ({
-                    ...prev,
-                    category: {
-                      ...prev.category,
-                      id: selectedCategoryId,
-                    },
-                  }));
-                }}
-                required
-                className="w-full bg-[#F9FAFB] outline-none text-blue-900 text-base my-2 p-1 border rounded-md"
-              >
-                <option value="">Select Category</option>
-
-                {itemCategory &&
-                  itemCategory.map((category, index) => (
-                    <option key={index} value={category.itemCategoryId}>
-                      {lang === "ar" ? category.nameAr : category.nameEn}
-                    </option>
-                  ))}
-              </select>
-            </div>
-
-            {/* <div className="w-full ">
-              <label className="text-xs text-gray-600">
-                {t("الفئة الفرعية")}
-              </label>
-              <select
-                type="text"
-                onChange={(e) => {
-                  const selectedCategoryId = e.target.value;
-                  setProduct((prev) => ({
-                    ...prev,
-                    category: {
-                      ...prev.category,
-                      id: selectedCategoryId,
-                    },
-                  }));
-                  console.log(e.target);
-                }}
-                required
-                className="w-full bg-[#F9FAFB] outline-none text-blue-900 text-base my-2 p-1 border rounded-md"
-              >
-                <option value={product.category.id}>
-                  {localStorage.lang === "ar"
-                    ? product.category.nameAr
-                    : product.category.nameEn}
-                </option>
-                {itemCategory
-                  ? itemCategory.map((category, index) => {
-                      return (
-                        <option key={index} value={category.itemCategoryId}>
-                          {localStorage.lang === "ar"
-                            ? category.nameAr
-                            : category.nameEn}
-                        </option>
-                      );
-                    })
-                  : ""}
-              </select>
-            </div> */}
-          </div>
-          <div className="flex md:flex-row  xs:flex-col items-start  justify-between gap-3">
             <div className="w-full">
               <label className="text-xs text-gray-600">{t("Price")}</label>
               <input
@@ -652,6 +595,71 @@ export default function FormProduct() {
                 id="oldPrice"
                 className=" bg-[#F9FAFB] w-full outline-none text-blue-900 text-base  my-1  p-1 border rounded-md"
               />
+            </div>
+          </div>
+          <div className="flex md:flex-row  xs:flex-col items-start  justify-between gap-3">
+            <div className="w-full ">
+              <label className="text-xs text-gray-600">
+                {t("الفئة الرئيسية")}
+              </label>
+              <select
+                // value={product.category?.id || ""}
+                onChange={(e) => {
+                  setMainCategoryID(e.target.value);
+                }}
+                required
+                className="w-full bg-[#F9FAFB] outline-none text-blue-900 text-base my-2 p-1 border rounded-md"
+              >
+                <option value=""></option>
+
+                {itemCategory &&
+                  itemCategory.map((category, index) => (
+                    <option key={index} value={category.itemCategoryId}>
+                      {lang === "ar" ? category.nameAr : category.nameEn}
+                    </option>
+                  ))}
+              </select>
+            </div>
+            <div className="w-full ">
+              <label className="text-xs text-gray-600">
+                {t("الفئة الفرعية")}
+              </label>
+              <select
+                onClick={() => {
+                  mainCategoryID !== "" ? getCategoriesById() : "";
+                }}
+                type="text"
+                onChange={(e) => {
+                  const selectedsubCategoryId = e.target.value;
+                  setProduct((prev) => ({
+                    ...prev,
+                    subCategory: {
+                      ...prev.subCategory,
+                      id: selectedsubCategoryId,
+                    },
+                  }));
+                  console.log(e.target);
+                }}
+                required
+                className="w-full bg-[#F9FAFB] outline-none text-blue-900 text-base my-2 p-1 border rounded-md"
+              >
+                <option value={product.subCategory.id}>
+                  {localStorage.lang === "ar"
+                    ? product.subCategory.nameAr
+                    : product.subCategory.nameEn}
+                </option>
+                {subCategories
+                  ? subCategories.map((subCategory, index) => {
+                      return (
+                        <option key={index} value={subCategory.itemCategoryId}>
+                          {localStorage.lang === "ar"
+                            ? subCategory.nameAr
+                            : subCategory.nameEn}
+                        </option>
+                      );
+                    })
+                  : ""}
+              </select>
             </div>
           </div>
           <div className="w-full my-2">

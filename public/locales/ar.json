@@ -190,7 +190,10 @@
   "name": "الاسم",
   "location": "الموقع",
   "location_name": "اسم الموقع",
-  "": "",
-  "": "",
-  "": ""
+  "add_maincategory": "إضافة قسم رئيسي",
+  "add_subcategory": "إضافة قسم فرعي",
+  "edit_sub_category": "تعديل القسم الفرعي",
+  "edit_main_category": "تعديل القسم الرئيسي",
+  "add_sub_category": "إضافة قسم فرعي",
+  "add_main_category": "إضافة قسم رئيسي"
 }

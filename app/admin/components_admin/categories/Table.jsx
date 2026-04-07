@@ -27,7 +27,8 @@ const Table = ({ typeCategory, categories, loading }) => {
     let btn_editCategory = document.querySelector("#btn-editCategory");
     btn_editCategory.classList.remove("hidden");
     btn_saveCategory.classList.add("hidden");
-    nameFormCatogery.innerHTML = t("edit_category");
+    nameFormCatogery.innerHTML =
+      typeCategory === "sub" ? t("edit_sub_category") : t("edit_main_category");
     form.classList.toggle("hidden");
     form.classList.add("flex");
   };
@@ -150,7 +151,7 @@ const Table = ({ typeCategory, categories, loading }) => {
                     <div className="flex items-center justify-center gap-3">
                       <button
                         className={`text-blue-800 text-sm flex items-center gap-1 bg-blue-300 px-2 py-1 font-semibold rounded-md hover:bg-blue-400 
-                        // typeCategory === "main" ? "" : "hidden"
+                        typeCategory === "main" ? "" : "hidden"
                       `}
                         onClick={() => itemCategoryId(category)}
                       >

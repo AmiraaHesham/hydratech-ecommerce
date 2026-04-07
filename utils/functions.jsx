@@ -6,6 +6,7 @@ export const getCategories = async () => {
     {
       page: 0,
       size: 100,
+      isParent: true,
     },
     ""
   );

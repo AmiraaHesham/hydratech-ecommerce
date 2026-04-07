@@ -18,30 +18,33 @@ export default function SubcategoriesTable({ CategoryId }) {
   let [itemCategory, setItemCategory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [mainCategory, setMainCategory] = useState("");
+  const [subCategories, setSubCategories] = useState([]);
   const navigate = useRouter();
   const { setSelectedNamePage } = useNamePageInAdminContext();
   const lang =
     typeof window !== "undefined" ? localStorage.getItem("lang") : "";
-  const getAllCategories = async () => {
-    try {
-      const resData = await getRequest(
-        "/api/admin/itemCategory/getCategoryWithItemCounts"
-      );
-      setItemCategory(resData);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const getAllCategories = async () => {
+  //   try {
+  //     const resData = await getRequest(
+  //       "/api/admin/itemCategory/getCategoryWithItemCounts"
+  //     );
+  //     setItemCategory(resData);
+  //   } catch (error) {
+  //     console.log(error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   const getCategoriesById = async () => {
     const respose = await getRequest(`/api/admin/itemCategory/${CategoryId}`);
     setMainCategory(respose);
+    setSubCategories(respose.subCategories);
+    console.log(respose);
   };
 
   useEffect(() => {
-    getAllCategories();
+    // getAllCategories();
     getCategoriesById();
     setSelectedNamePage("Categories Management");
   }, [refreshKey]);
@@ -61,7 +64,7 @@ export default function SubcategoriesTable({ CategoryId }) {
             btn_editCategory.classList.add("hidden");
             btn_saveCategory.classList.remove("hidden");
             let nameFormCategory = document.querySelector("#nameFormCategory");
-            nameFormCategory.innerHTML = t("add_category");
+            nameFormCategory.innerHTML = t("add_sub_category");
             form.classList.remove("hidden");
             form.classList.add("flex");
             let upload = document.querySelector("#label-uplod");
@@ -74,10 +77,10 @@ export default function SubcategoriesTable({ CategoryId }) {
           <span>
             <FaPlus />
           </span>
-          <h1>{t("add_category")}</h1>
+          <h1>{t("add_subcategory")}</h1>
         </button>
       </div>
-      <Table typeCategory={"sub"} categories={itemCategory} />
+      <Table typeCategory={"sub"} categories={subCategories} />
     </div>
   );
 }

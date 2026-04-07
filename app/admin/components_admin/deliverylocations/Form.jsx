@@ -25,9 +25,9 @@ export default function Form() {
   });
   const [loading, setLoading] = useState(false);
   const addLocation = async () => {
-    let form = document.querySelector("#add-location-form");
-    form.classList.add("hidden");
-
+    // let form = document.querySelector("#add-location-form");
+    // form.classList.add("hidden");
+    loading(true);
     try {
       await postRequest(
         "/api/admin/pickUpPlaces",
@@ -35,6 +35,7 @@ export default function Form() {
         t("message_AddText")
       );
       triggerRefresh();
+      setSelectedLocationId(null);
     } catch (error) {
       console.log(error);
     } finally {
@@ -65,6 +66,12 @@ export default function Form() {
         setLoading(false);
       }
     } else {
+      setLocationInfo({
+        nameEn: "",
+        nameAr: "",
+        address: "",
+        location: "",
+      });
     }
   };
 
@@ -113,6 +120,7 @@ export default function Form() {
             onClick={() => {
               let form = document.querySelector("#add-location-form");
               form.classList.add("hidden");
+              setSelectedLocationId(null);
             }}
           >
             <MdCancel />

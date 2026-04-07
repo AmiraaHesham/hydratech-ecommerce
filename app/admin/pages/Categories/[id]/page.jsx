@@ -12,7 +12,7 @@ export default function Subcategories({ params }) {
       <div className=" w-full bg-[#F9FAFB]">
         <div className=" pt-5 mx-5 relative h-full  ">
           <div className="flex justify-center md:w-[80%] xs:w-full absolute items-center ">
-            <FormCategory />
+            <FormCategory CategoryId={id} />
           </div>
           <SubcategoriesTable CategoryId={id} />
         </div>
