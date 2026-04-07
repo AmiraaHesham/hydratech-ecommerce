@@ -182,5 +182,11 @@
   "kg": "kg",
   "sending": "Sending",
   "send": "Send",
-  "off": "Off"
+  "off": "Off",
+  "deliverylocations": "Delivery Locations",
+  "add_location": "Add Location",
+  "deliverylocations_management": "Delivery Locations Management",
+  "name": "Name",
+  "location": "Location",
+  "location_name": "Location Name"
 }

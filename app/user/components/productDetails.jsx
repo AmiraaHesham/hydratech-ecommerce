@@ -86,7 +86,7 @@ export default function ProductDetails({ itemId }) {
         `/api/shopCarts/${userId}/addLine`,
         {
           itemId: productId,
-          quantity: 1,
+          quantity: count,
         },
         ""
       );
@@ -271,7 +271,7 @@ export default function ProductDetails({ itemId }) {
             <div className="flex  items-center gap-4 h-10 ">
               <button
                 className=" w-[70%] h-full rounded-md text-white text-lg flex  justify-center items-center gap-3 bg-blue-600 hover:bg-blue-700 hover:scale-105 duration-200 "
-                onClick={addToCart}
+                onClick={() => addToCart(product.itemId)}
               >
                 {t("addToCart")}
                 <MdOutlineAddShoppingCart />

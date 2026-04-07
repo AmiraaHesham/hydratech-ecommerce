@@ -72,6 +72,12 @@ export default function SignIn() {
       typeof window !== "undefined"
         ? localStorage.setItem("role", response.data.userDetails.role)
         : null;
+      typeof window !== "undefined"
+        ? localStorage.setItem(
+            "governorate",
+            response.data.userDetails.governorate
+          )
+        : null;
       if (response.data.userDetails.role === "ADMIN") {
         navigate.push("/admin/pages/Dashboard");
       } else navigate.push("/user/home");

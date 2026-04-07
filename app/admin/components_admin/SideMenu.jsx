@@ -1,5 +1,5 @@
 "use client";
-import { MdDashboard } from "react-icons/md";
+import { MdDashboard, MdLocationOn } from "react-icons/md";
 import { IoFileTray } from "react-icons/io5";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { ImUsers } from "react-icons/im";
@@ -212,7 +212,27 @@ export default function SideMenu() {
               <h1 className="text-md xs:hidden md:block">{t("admins")}</h1>
             </div>
           </Link>
-
+          <Link
+            href="/admin/pages/Deliverylocations"
+            onClick={() => setSelectedNamePage("deliverylocations_management")}
+          >
+            <div
+              id="deliverylocationsTab"
+              className={`flex gap-4 mx-3 xs:justify-center md:justify-start  items-center p-3 rounded-md cursor-pointer hover:bg-blue-100 hover:text-blue-700
+                 ${
+                   selectedNamePage === "deliverylocations_management"
+                     ? "bg-blue-100 text-blue-700"
+                     : ""
+                 }`}
+            >
+              <span className="text-2xl">
+                <MdLocationOn />
+              </span>
+              <h1 className="text-md xs:hidden md:block">
+                {t("deliverylocations")}
+              </h1>
+            </div>
+          </Link>
           <Link
             href="/admin/pages/Contact"
             onClick={() => setSelectedNamePage("Contact Management")}

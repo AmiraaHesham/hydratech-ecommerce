@@ -78,19 +78,19 @@ export default function Searchpage() {
               >
                 <option
                   value=""
-                  className=" rounded-md text-lg text-white font-semibold"
+                  className=" rounded-md text-lg text-blue-700 font-semibold"
                 >
                   {t("all")}
                 </option>
                 <option
                   value="true,price"
-                  className=" rounded-md text-lg text-white font-semibold"
+                  className=" rounded-md text-lg text-blue-700 font-semibold"
                 >
                   {t("priceLowToHigh")}{" "}
                 </option>
                 <option
                   value="false,price"
-                  className=" rounded-md text-lg text-white font-semibold"
+                  className=" rounded-md text-lg text-blue-700 font-semibold"
                 >
                   {t("priceHighToLow")}{" "}
                 </option>
@@ -116,9 +116,9 @@ export default function Searchpage() {
                   </div>
                 ))}
               </div>
-              <div className="w-full ">
+              <div className="w-full flex justify-center items-center ">
                 <button
-                  className="text-blue-600 px-5 py-1 flex justify-center items-center  my-3 rounded-lg"
+                  className="text-blue-600 px-5 py-1   my-3 rounded-lg"
                   onClick={() => {
                     pageNum.current += 1;
                     getAllProducts();

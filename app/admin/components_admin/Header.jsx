@@ -35,8 +35,13 @@ export default function Header({ page_title }) {
     case "Contact Management":
       setSelectedNamePage("contact_management");
       break;
+    case "Deliverylocations Management":
+      setSelectedNamePage("deliverylocations_management");
+      break;
   }
-
+  const changeLanguage = async () => {
+    await postRequest(`/api/users/${userId}/langauge/${locale}`, "", "");
+  };
   // const language =()=>{
   //   await postRequest(`/api/users/${userId}/langauge/${language}`)
   // }

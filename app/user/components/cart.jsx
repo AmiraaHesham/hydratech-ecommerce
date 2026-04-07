@@ -218,14 +218,13 @@ export default function Cart() {
                       <td className="font-semibold text-blue-500">
                         <div>
                           <span>
-                            {" "}
                             {product.unitPrice.toLocaleString("en-US")}{" "}
                             {t("currency")}{" "}
                           </span>
 
                           {product.oldUnitPrice ? (
                             <span className="text-gray-400 line-through text-sm mx-2 opacity-90">
-                              {product.oldUnitPrice.toLocaleString("en-US")}{" "}
+                              {product.oldUnitPrice.toLocaleString("en-US")}
                               {t("currency")}
                             </span>
                           ) : (
@@ -236,12 +235,14 @@ export default function Cart() {
                       <td className="">
                         <div className="flex gap-5">
                           {product.oldUnitPrice ? (
-                            <span className="bg-green-600 text-sm px-2 text-white rounded-md">
-                              {(
-                                ((product.oldUnitPrice - product.unitPrice) /
-                                  product.oldUnitPrice) *
-                                100
-                              ).toFixed()}
+                            <span className="bg-red-600 text-xs p-1 text-white rounded-md">
+                              {t("off")}
+                              {" " +
+                                (
+                                  ((product.oldUnitPrice - product.unitPrice) /
+                                    product.oldUnitPrice) *
+                                  100
+                                ).toFixed()}
                               %
                             </span>
                           ) : (
@@ -290,7 +291,7 @@ export default function Cart() {
                         {t("currency")}
                       </td>
                       {/* <td>{product.totalShippingCost}</td> */}
-                      <td className=" font-semibold text-lg text-gray-600 px-5 cursor-pointer">
+                      <td className=" font-semibold text-lg text-gray-600 hover:text-red-600 px-5 cursor-pointer">
                         <button
                           className=""
                           onClick={() => {
@@ -371,7 +372,7 @@ export default function Cart() {
               <div className="flex justify-between items-center mb-5">
                 <span className="text-gray-600">
                   {" "}
-                  {t("totalProducts") + " " + itemNum}
+                  {t("totalProducts") + " " + `[${itemNum}]`}
                 </span>
                 <span className="font-semibold">
                   {totalOrder.toLocaleString("en-US") + " " + t("currency")}{" "}
@@ -379,7 +380,7 @@ export default function Cart() {
               </div>
               <div className="flex justify-between items-center mb-5">
                 <span className="text-gray-600">{t("totalDiscount")} </span>
-                <span className="font-semibold text-green-700">
+                <span className="font-semibold text-red-700">
                   {totalDiscount.toLocaleString("en-US") +
                     "-" +
                     " " +
@@ -396,7 +397,7 @@ export default function Cart() {
               <hr className="my-6" />
               <div className="flex justify-between items-center text-2xl font-semibold">
                 <span>{t("grandTotal")} </span>
-                <span className="text-blue-500">
+                <span className="text-blue-800">
                   {totalOrder === 0
                     ? 0
                     : netTotalOrder.toLocaleString("en-US") +

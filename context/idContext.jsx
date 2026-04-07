@@ -11,8 +11,8 @@ export function IdProvider({ children }) {
   const [selectedAdminId, setSelectedAdminId] = useState(null);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [selectedOrderId, setSelectedOrderId] = useState(null);
+  const [selectedLocationId, setSelectedLocationId] = useState(null);
   const [selectedImgesSliders, setSelectedImagesSliders] = useState([]);
- 
 
   return (
     <IdContext.Provider
@@ -28,7 +28,9 @@ export function IdProvider({ children }) {
         selectedOrderId,
         setSelectedOrderId,
         selectedImgesSliders,
-        setSelectedImagesSliders
+        setSelectedImagesSliders,
+        selectedLocationId,
+        setSelectedLocationId,
       }}
     >
       {children}

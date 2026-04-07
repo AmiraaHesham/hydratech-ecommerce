@@ -74,9 +74,10 @@ export default function CategoryForm() {
     }
   };
 
-  const CategoryData = useCallback(async () => {
-    setLoading(true);
+  const CategoryData = async () => {
     if (selectedCategoryId != null) {
+      setLoading(true);
+
       try {
         let upload = document.querySelector("#label-uplod");
         let img = document.querySelector("#lable-img");
@@ -103,7 +104,7 @@ export default function CategoryForm() {
       img.classList.add("hidden");
       upload.classList.remove("hidden");
     }
-  }, [selectedCategoryId]);
+  };
 
   const updateCategory = async () => {
     let form = document.querySelector("#add-category-form");
@@ -141,9 +142,8 @@ export default function CategoryForm() {
   };
 
   useEffect(() => {
-    console.log(">>>>>>>>.." + selectedCategoryId);
     CategoryData();
-  }, [CategoryData]);
+  }, [selectedCategoryId]);
   return (
     <div
       id="add-category-form"

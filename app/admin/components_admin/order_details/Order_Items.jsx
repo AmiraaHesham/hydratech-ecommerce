@@ -46,9 +46,9 @@ export default function OrdersItems({ orderId }) {
           <thead className="bg-[#F9FAFB] text-xs text-gray-500  text-justify">
             <tr className=" text-gray-500 h-12  ">
               <th className="w-[2%] "></th>
-              <th className="w-[20%]">{t("product")}</th>
+              <th className="w-[30%]">{t("product")}</th>
               <th className="w-[10%] text-center    ">{t("price")}</th>
-              <th className="w-[25%] text-center">{t("quantity")}</th>
+              <th className="w-[10%] text-center">{t("quantity")}</th>
               <th className="w-[15%] text-center ">{t("total")}</th>
             </tr>
           </thead>
@@ -83,13 +83,14 @@ export default function OrdersItems({ orderId }) {
                   </td>
                   <td className="text-sm font-semibold text-center text-gray-500">
                     EG {item.item.price.toLocaleString("en-US")}
+                    {t("EG")}
                   </td>
                   <td className="text-sm text-center text-gray-500">
                     {item.quantity}
                   </td>
 
                   <td className="text-sm font-semibold text-center">
-                    EG {item.totalPrice.toLocaleString("en-US")}
+                    {item.totalPrice.toLocaleString("en-US")} {t("EG")}
                   </td>
                 </tr>
               );

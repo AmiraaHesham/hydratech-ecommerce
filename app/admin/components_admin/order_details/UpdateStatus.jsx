@@ -64,7 +64,7 @@ export default function UpdateStatus({ orderId }) {
   };
   return (
     <div className="relative flex items-center h-16 px-4 my-5">
-      {loading && (
+      {/* {loading && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
           <Image
             src="/Images/logo.png"
@@ -74,13 +74,13 @@ export default function UpdateStatus({ orderId }) {
             height={100}
           />
         </div>
-      )}
+      )} */}
       <div
         className="absolute top-1/2 left-0 right-0 h-0.5"
         style={{
           background: `linear-gradient(${
             lang === "en" ? "to right" : "to left"
-          }, red ${activeStep * orderStepPath}%, #e0e0e0 ${
+          }, blue ${activeStep * orderStepPath}%, #e0e0e0 ${
             activeStep * orderStepPath
           }%)`,
         }}
