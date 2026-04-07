@@ -43,8 +43,9 @@ export default function Form() {
   };
 
   const locationData = async () => {
-    setLoading(true);
     if (selectedLocationId != null) {
+      setLoading(true);
+
       try {
         const resData = await getRequest(
           `/api/admin/pickUpPlaces/${selectedLocationId}`
