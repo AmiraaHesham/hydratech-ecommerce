@@ -34,9 +34,9 @@ body {
 /* إخفاء الأيقونة الافتراضية */
 .swiper-button-prev,
 .swiper-button-next {
-  color: rgb(201, 2, 2) !important;
+  color: rgb(22, 2, 201) !important;
   font-size: 50px !important;
-  
+
 }
 
 /* إضافة سهم مخصص كنص */
