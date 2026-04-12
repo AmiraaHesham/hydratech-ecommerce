@@ -10,9 +10,11 @@ import { MdLocalPhone } from "react-icons/md";
 import { PiUserListFill } from "react-icons/pi";
 import { ImBlocked } from "react-icons/im";
 import { VscCircleFilled } from "react-icons/vsc";
-import { userOrders } from "./userOrders.jsx";
+import UserOrders from "./UserOrders.jsx";
+import { useNamePageInAdminContext } from "../../../../context/namePageInAdmin.jsx";
 export default function UserInfo({ userId }) {
   const { t } = useLanguage();
+  const { setSelectedNamePage } = useNamePageInAdminContext();
 
   const [userInfo, setUserInfo] = useState({
     username: "",
@@ -52,6 +54,7 @@ export default function UserInfo({ userId }) {
   };
   useEffect(() => {
     getUserInfo();
+    setSelectedNamePage("Users Management");
   }, []);
   return (
     <div className="w-full h-full">
@@ -76,12 +79,12 @@ export default function UserInfo({ userId }) {
               className={`${
                 userInfo.active === true
                   ? "text-green-600 bg-green-50"
-                  : "text-blue-600 bg-gray-100"
+                  : "text-gray-600 bg-gray-100"
               }  flex px-3 gap-2 rounded-2xl items-center justify-center`}
             >
               <span
                 className={`flex items-center justify-center ${
-                  userInfo.active === true ? "text-green-600" : "text-blue-600"
+                  userInfo.active === true ? "text-green-600" : "text-gray-600"
                 }`}
               >
                 <VscCircleFilled />
@@ -92,25 +95,14 @@ export default function UserInfo({ userId }) {
             <div
               className={`${
                 userInfo.blocked === false
-                  ? "text-gray-600 bg-gray-100  hover:bg-blue-100"
-                  : "text-blue-600 bg-blue-50  hover:bg-gray-100"
+                  ? "text-gray-600 bg-gray-100   hover:bg-red-100 hover:text-red-600"
+                  : "text-red-600 bg-red-50  "
               }  flex px-3 gap-2 rounded-2xl items-center justify-center`}
             >
-              <span
-              // className={` ${
-              //   userInfo.blocked === false
-              //     ? "text-gray-600"
-              //     : "text-blue-600"
-              // }`}
-              >
+              <span>
                 <ImBlocked />
               </span>
               <button
-                // className={`${
-                //   userInfo.blocked === false
-                //     ? "text-gray-600 bg-gray-100 "
-                //     : "text-blue-600 bg-blue-50 "
-                // }   rounded-2xl`}
                 onClick={() => {
                   console.log(userInfo.blocked);
                   if (userInfo.blocked === false) {
@@ -165,7 +157,7 @@ export default function UserInfo({ userId }) {
 
       <div className="flex items-start bg-[#F9FAFB] justify-between my-7  gap-5">
         <div className="md:order-1 w-full   xs:order-2">
-          <userOrders userId={userId} />
+          <UserOrders userId={userId} />
         </div>
         <div className="md:order-2 xs:order-1 xs:w-full h-[400px] md:w-[50%] bg-white">
           <div className="  bg-white p-7  border rounded-lg">

@@ -11,7 +11,7 @@ export default function Home() {
   useEffect(() => {
     // غيّر '/ar' إلى الرابط اللي عايزه
     console.log(role);
-    if (role === "admin") {
+    if (role === "ADMIN") {
       router.replace('/admin/pages/Dashboard')
     }
 

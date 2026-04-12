@@ -39,6 +39,11 @@ export default function FormProduct() {
       nameAr: "",
       nameEn: "",
     },
+    mainCategory: {
+      id: "",
+      nameAr: "",
+      nameEn: "",
+    },
     mainCategoryID: "",
     code: "",
     length: 0,
@@ -91,7 +96,7 @@ export default function FormProduct() {
 
   const getCategoriesById = async () => {
     const respose = await getRequest(
-      `/api/public/itemCategory/${mainCategoryID}`
+      `/api/admin/itemCategory/${mainCategoryID}`
     );
     setSubCategories(respose.subCategories);
     console.log(respose.subCategories);
@@ -145,6 +150,11 @@ export default function FormProduct() {
         width: "",
         length: "",
         subCategory: { id: "", nameAr: "", nameEn: "" },
+        mainCategory: {
+          id: "",
+          nameAr: "",
+          nameEn: "",
+        },
         code: "",
         mainImage: "",
         img2: "",
@@ -167,7 +177,7 @@ export default function FormProduct() {
   const productData = async () => {
     setLoading(true);
     try {
-      if (selectedProductId != null) {
+      if (selectedProductId !== null) {
         const deleteImg = document.querySelector("#delete-mainImage");
         deleteImg.classList.remove("hidden");
         const labelImg = document.querySelector("#mainImage");
@@ -196,11 +206,17 @@ export default function FormProduct() {
           img3: process.env.NEXT_PUBLIC_API_IMAGE_BASE_URL + res.img3 || "",
           subCategory: {
             ...prev.subCategory,
-            id: res.itemCategoryId.itemCategoryId,
+            id: res.itemCategory.subCategories.itemCategoryId,
+            nameAr: res.itemCategory.subCategories.nameAr,
+            nameEn: res.itemCategory.subCategories.nameEn,
+          },
+          mainCategory: {
+            id: res.itemCategory.itemCategoryId,
             nameAr: res.itemCategory.nameAr,
             nameEn: res.itemCategory.nameEn,
           },
         }));
+        setMainCategoryID(res.itemCategory.itemCategoryId);
         setenabledFavorite(res.favorite);
         setenabledActive(res.active);
       } else {
@@ -220,6 +236,11 @@ export default function FormProduct() {
           width: "",
           length: "",
           subCategory: { id: "", nameAr: "", nameEn: "" },
+          mainCategory: {
+            id: "",
+            nameAr: "",
+            nameEn: "",
+          },
         });
         const labelUpload = document.querySelector(`#label-mainImage`);
         labelUpload.classList.remove("hidden");
@@ -294,6 +315,7 @@ export default function FormProduct() {
   }, []);
   useEffect(() => {
     productData();
+    // getCategoriesById();
   }, [selectedProductId]);
   const { t } = useLanguage();
 
@@ -604,14 +626,17 @@ export default function FormProduct() {
                 {t("الفئة الرئيسية")}
               </label>
               <select
-                // value={product.category?.id || ""}
                 onChange={(e) => {
                   setMainCategoryID(e.target.value);
                 }}
                 required
                 className="w-full bg-[#F9FAFB] outline-none text-blue-900 text-base my-2 p-1 border rounded-md"
               >
-                <option value=""></option>
+                <option value={product.mainCategory.id || ""}>
+                  {localStorage.lang === "ar"
+                    ? product.mainCategory.nameAr
+                    : product.mainCategory.nameEn}
+                </option>
 
                 {itemCategory &&
                   itemCategory.map((category, index) => (
@@ -627,7 +652,7 @@ export default function FormProduct() {
               </label>
               <select
                 onClick={() => {
-                  mainCategoryID !== "" ? getCategoriesById() : "";
+                  mainCategoryID ? getCategoriesById() : "";
                 }}
                 type="text"
                 onChange={(e) => {
@@ -639,7 +664,7 @@ export default function FormProduct() {
                       id: selectedsubCategoryId,
                     },
                   }));
-                  console.log(e.target);
+                  console.log(e.target.value);
                 }}
                 required
                 className="w-full bg-[#F9FAFB] outline-none text-blue-900 text-base my-2 p-1 border rounded-md"

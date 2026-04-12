@@ -125,19 +125,19 @@ export default function UsersPage() {
                 >
                   <td>
                     <div className="flex items-center gap-4  w-[90px]  rounded-full   px-5 py-1 font-semibold  ">
-                      <span
-                        className={`flex items-center justify-center text-sm ${
+                      <button
+                        className={`flex items-center justify-center text-sm hover:text-green-600 ${
                           user.active === true
                             ? "text-green-600"
                             : "text-gray-600"
                         }`}
                       >
                         <FaCircle />
-                      </span>
+                      </button>
                       <button
-                        className={`flex items-center justify-center text-base ${
+                        className={`flex items-center justify-center text-base hover:text-red-600  ${
                           user.blocked === true
-                            ? "text-blue-600"
+                            ? "text-red-600"
                             : "text-gray-600"
                         }`}
                         onClick={() => {

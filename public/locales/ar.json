@@ -200,5 +200,6 @@
   "DELIVERY": "شحن",
   "delivery_method": "طريقة التوصيل",
   "choose": "اختر",
-  "locations": "الفروع"
+  "locations": "الفروع",
+  "order_cancel": "إلغاء الطلب"
 }

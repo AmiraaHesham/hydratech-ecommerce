@@ -89,6 +89,8 @@ export default function ProductsTable() {
   };
 
   const itemProductId = (product) => {
+    setSelectedProductId(product.itemId);
+
     let form = document.querySelector("#add-product-form");
     let nameFormProduct = document.querySelector("#nameFormProduct");
     let btn_saveProduct = document.querySelector("#btn-saveProduct");
@@ -98,7 +100,6 @@ export default function ProductsTable() {
     nameFormProduct.innerHTML = "Edit Product";
     form.classList.remove("hidden");
     form.classList.add("flex");
-    setSelectedProductId(product.itemId);
     console.log(getThumbnailUrl(products[0].mainImageURL));
   };
   const deleteProduct = async (product) => {
@@ -162,6 +163,8 @@ export default function ProductsTable() {
         <button
           className="p-2 text-white xs:text-xs md:text-sm rounded-md bg-blue-500 text-center flex items-center justify-center gap-2"
           onClick={() => {
+            setSelectedProductId(null);
+
             let form = document.querySelector("#add-product-form");
             form.classList.remove("hidden");
             form.classList.add("flex");
@@ -171,7 +174,6 @@ export default function ProductsTable() {
             btn_editProduct.classList.add("hidden");
             btn_saveProduct.classList.remove("hidden");
             nameFormProduct.innerHTML = t("add_product");
-            setSelectedProductId(null);
           }}
         >
           <span className="text-base">

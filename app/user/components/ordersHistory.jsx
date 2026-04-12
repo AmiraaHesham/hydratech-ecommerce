@@ -252,7 +252,7 @@ export default function OrdersHistory() {
                                 ? itemLine.item.nameAr
                                 : itemLine.item.nameEn}
                             </span>
-                            <div className="flex gap-3 mt-2 lg:text-sm xs:text-xs">
+                            <div className="flex gap-3 mt-2 text-xs ">
                               <span className="text-gray-500  ">
                                 {t("Model")} : {itemLine.item.code}
                               </span>

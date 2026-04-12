@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, useCallback } from 'react';
+"use client";
+import { createContext, useContext, useState, useCallback } from "react";
 
 const RefreshContext = createContext(undefined);
 
@@ -6,7 +7,7 @@ export function RefreshProvider({ children }) {
   const [refreshKey, setRefreshKey] = useState(0);
 
   const triggerRefresh = useCallback(() => {
-    setRefreshKey(prev => prev + 1);
+    setRefreshKey((prev) => prev + 1);
   }, []);
 
   return (
@@ -19,7 +20,7 @@ export function RefreshProvider({ children }) {
 export function useRefresh() {
   const context = useContext(RefreshContext);
   if (!context) {
-    throw new Error('useRefresh must be used within RefreshProvider');
+    throw new Error("useRefresh must be used within RefreshProvider");
   }
   return context;
 }

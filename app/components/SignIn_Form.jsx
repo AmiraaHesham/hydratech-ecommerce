@@ -83,7 +83,7 @@ export default function SignIn() {
       } else navigate.push("/user/home");
     } catch (err) {
       console.log(err);
-      toast.error(error.message);
+      toast.error(err.message);
     } finally {
       setLoading(false);
     }

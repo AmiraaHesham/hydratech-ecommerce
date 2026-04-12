@@ -199,5 +199,6 @@
   "choose": "Choose",
   "locations": "Locations",
   "PICKUP": "PICKUP",
-  "DELIVERY": "SHIPPING"
+  "DELIVERY": "SHIPPING",
+  "order_cancel": "Order Cancel"
 }

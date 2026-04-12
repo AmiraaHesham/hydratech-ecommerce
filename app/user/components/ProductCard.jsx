@@ -150,12 +150,12 @@ export default function ProductCard({ productInfo, favorite }) {
                   `#btn_fov_${productInfo.itemId}`
                 );
                 if (favorite === true) {
-                  btn_fov.classList.add("text-blue-600");
+                  btn_fov.classList.add("text-red-600");
                   deleteFavoriteItems(productInfo.itemId);
                 } else {
                   btn_fov.classList.remove("text-gray-400");
                   addFavoriteItems(productInfo.itemId);
-                  btn_fov.classList.add("text-blue-600");
+                  btn_fov.classList.add("text-red-600");
                 }
                 setSelectedProductId(productInfo.itemId);
               }}

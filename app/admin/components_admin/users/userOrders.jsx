@@ -10,7 +10,7 @@ import { postRequest } from "../../../../utils/requestsUtils.js";
 import { FaUserLarge } from "react-icons/fa6";
 import { IoReloadCircle } from "react-icons/io5";
 import { IoMdSearch } from "react-icons/io";
-export default function OrderOrders() {
+export default function UserOrders({ userId }) {
   const { t } = useLanguage();
   const navigate = useRouter();
   const [inputSearch, setInputSearch] = useState(null);
@@ -28,7 +28,7 @@ export default function OrderOrders() {
           size: 10,
           searchText: inputSearch,
           orderState: state,
-          userId: 0,
+          userId: userId,
         },
         ""
       );
@@ -92,12 +92,12 @@ export default function OrderOrders() {
           <thead className="bg-[#F9FAFB] text-xs text-gray-500  text-justify">
             <tr className=" text-gray-500 h-12">
               {/* <th className="w-[2%] "></th> */}
-              <th className="w-[20%] px-5 ">{t("order_id")}</th>
+              <th className="w-[25%] px-5 ">{t("order_id")}</th>
               <th className="w-[15%] ">{t("date")}</th>
-              <th className="w-[25%] ">{t("user")}</th>
               <th className="w-[15%] ">{t("items")}</th>
               <th className="w-[15%] ">{t("total")}</th>
-              <th className="w-[20%] ">{t("state_order")}</th>
+              <th className="w-[15%] ">{t("delivery_method")}</th>
+              <th className="w-[15%] px-2">{t("state_order")}</th>
             </tr>
           </thead>
           <tbody className="bg-white text-md w-full ">
@@ -140,7 +140,7 @@ export default function OrderOrders() {
                   return (
                     <tr
                       key={index}
-                      className=" text-blue-950 border w-full hover:bg-gray-50 cursor-pointer"
+                      className=" text-blue-950 border w-full hover:bg-gray-50 h-14 cursor-pointer"
                       onClick={() =>
                         navigate.push(
                           `/admin/pages/orders_page/OrderDetailsPage/${order.orderId}`
@@ -151,35 +151,27 @@ export default function OrderOrders() {
                         {order.code}
                       </td>
                       <td className="text-sm">{dateOnly}</td>
-                      <td>
-                        <div className="flex items-center gap-3">
-                          <span className="w-[40px] h-[40px] text-gray-600 my-2  bg-gray-50 flex justify-center items-center p-2 rounded-full border ">
-                            <FaUserLarge />
-                          </span>
-                          <div>
-                            <h1 className="font-semibold text-sm">
-                              {order.user.firstName + " " + order.user.lastName}
-                            </h1>
-                            <h1 className="text-xs  text-gray-500">
-                              {order.user.email}
-                            </h1>
-                          </div>
-                        </div>
-                      </td>
 
                       <td className="text-sm ">
                         <span className="py-2 px-5 font-semibold rounded-full   bg-blue-100 text-blue-600">
                           {order.orderItemLines.length}
                         </span>
                       </td>
-                      <td className="text-sm font-bold">
+                      <td className="text-sm font-bold ">
                         {order.total.toLocaleString("en-US")} {t("currency")}
+                      </td>
+                      <td className="text-sm px-3">
+                        {t(order.fulfillmentType)}
                       </td>
                       <td
                         className={`text-xs font-semibold ${
                           order.state === "PROCESSING"
                             ? "text-blue-500"
-                            : "text-blue-500"
+                            : order.state === "SHIPPED"
+                            ? "text-yellow-500"
+                            : order.state === "PENDING"
+                            ? "text-red-500"
+                            : "text-green-500"
                         }`}
                       >
                         {t(order.state)}
@@ -187,23 +179,20 @@ export default function OrderOrders() {
                     </tr>
                   );
                 })}
-            {orders.length <= 5 ? (
-              " "
-            ) : (
-              <tr className="h-5 text-center">
-                <td colSpan="6">
-                  <button
-                    className=" text-blue-600 w-[100px] py-1 text-center  my-3 rounded-lg"
-                    onClick={() => {
-                      pageNum.current += 1;
-                      getAllOrders();
-                    }}
-                  >
-                    <IoReloadCircle className="text-4xl" />
-                  </button>
-                </td>
-              </tr>
-            )}
+
+            <tr className="h-5 text-center">
+              <td colSpan="6">
+                <button
+                  className=" text-blue-600 w-[100px] py-1 text-center  my-3 rounded-lg"
+                  onClick={() => {
+                    pageNum.current += 1;
+                    getAllOrders();
+                  }}
+                >
+                  <MdOutlineDownloading className="text-4xl" />
+                </button>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>

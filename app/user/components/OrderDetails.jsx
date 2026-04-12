@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { MdDelete } from "react-icons/md";
-import { getRequest } from "../../../utils/requestsUtils";
+import { getRequest, postRequest } from "../../../utils/requestsUtils";
 import { useEffect, useState } from "react";
 import { useLanguage } from "../../../context/LanguageContext";
 import { useIdContext } from "../../../context/idContext";
@@ -49,7 +49,14 @@ export default function OrderDetails({ orderId }) {
     setDeliveryMethod(res.fulfillmentType);
     console.log(res);
   };
-
+  const orderCancel = async () => {
+    try {
+      if (state === "PENDING")
+        await postRequest(`/api/user/orders/${orderId}/cancel`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     getOrder();
   }, []);
@@ -268,6 +275,17 @@ export default function OrderDetails({ orderId }) {
                 {netTotalOrder === 0 ? 0 : netTotalOrder + " " + t("currency")}
               </span>
             </div>
+
+            <button
+              className={`w-full h-7  mt-5 rounded-md text-white ${
+                state === "PENDING"
+                  ? "bg-red-500 hover:bg-red-600"
+                  : "bg-gray-500 cursor-not-allowed"
+              }`}
+              onClick={orderCancel}
+            >
+              {t("order_cancel")}
+            </button>
           </div>
         </div>
       </div>

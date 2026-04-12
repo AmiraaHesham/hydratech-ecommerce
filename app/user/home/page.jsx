@@ -21,8 +21,6 @@ import {
   getFeatuerProducts,
   getSliderImage,
 } from "../../../utils/functions";
-import AOS from "aos";
-import "aos/dist/aos.css";
 
 import { useLanguage } from "../../../context/LanguageContext";
 import { AiFillStar } from "react-icons/ai";
